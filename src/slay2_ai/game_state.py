@@ -63,25 +63,60 @@ class GameState:
     def clone(self) -> "GameState":
         return copy.deepcopy(self)
 
+    def _effect_sig(self, effect: "Effect") -> str:
+        return f"{effect.__class__.__name__}:{repr(effect)}"
+
     def state_signature(self) -> tuple:
         return (
+            self.turn_index,
             self.player_hp,
+            self.player_max_hp,
             self.energy,
             self.block,
-            self.enemy_state.hp,
-            self.enemy_state.block,
             tuple(sorted(self.buffs.items())),
             tuple(sorted(self.debuffs.items())),
             tuple(self.hand),
+            tuple(self.draw_pile),
+            tuple(self.discard_pile),
+            tuple(self.exhaust_pile),
             tuple(self.cards_played_this_turn),
             self.attack_count_this_turn,
             self.skill_count_this_turn,
-            tuple((p.execute_turn, p.label or p.effect.__class__.__name__) for p in self.pending_effects),
-            tuple((t.event, t.label, t.remaining_uses, t.expire_turn) for t in self.triggers),
+            tuple(
+                sorted(
+                    (
+                        p.execute_turn,
+                        p.label,
+                        self._effect_sig(p.effect),
+                    )
+                    for p in self.pending_effects
+                )
+            ),
+            tuple(
+                sorted(
+                    (
+                        t.event,
+                        t.label,
+                        t.remaining_uses,
+                        t.expire_turn,
+                        self._effect_sig(t.effect),
+                    )
+                    for t in self.triggers
+                )
+            ),
+            self.enemy_state.hp,
+            self.enemy_state.max_hp,
+            self.enemy_state.block,
+            self.enemy_state.intent_damage,
+            tuple(sorted(self.enemy_state.buffs.items())),
+            tuple(sorted(self.enemy_state.debuffs.items())),
+            self.rng_seed,
         )
 
-    def draw_cards(self, n: int) -> int:
-        drawn = 0
+    def draw_cards(self, n: int) -> list[str]:
+        from .triggers import emit_event
+
+        drawn_cards: list[str] = []
         for _ in range(n):
             if not self.draw_pile:
                 if not self.discard_pile:
@@ -91,9 +126,15 @@ class GameState:
                 rnd = random.Random(self.rng_seed)
                 rnd.shuffle(self.draw_pile)
                 self.rng_seed += 1
-            self.hand.append(self.draw_pile.pop())
-            drawn += 1
-        return drawn
+
+            card_id = self.draw_pile.pop()
+            self.hand.append(card_id)
+            drawn_cards.append(card_id)
+
+        if drawn_cards:
+            emit_event(self, "on_draw", {"cards": list(drawn_cards), "count": len(drawn_cards)})
+
+        return drawn_cards
 
     def add_pending(self, delay_turns: int, effect: "Effect", label: str = "") -> None:
         self.pending_effects.append(

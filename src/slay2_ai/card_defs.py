@@ -143,12 +143,13 @@ def build_demo_cards() -> dict[str, CardDefinition]:
             card_type="skill",
             effects=[
                 AddTriggerEffect(
-                    Trigger(
+                    trigger=Trigger(
                         event="on_attack_played",
                         effect=GainBlock(3),
                         remaining_uses=1,
                         label="attack_once_gain_block",
-                    )
+                    ),
+                    expire_on_current_turn=True,
                 )
             ],
             description="本回合下次打出攻击牌时，获得3格挡。",

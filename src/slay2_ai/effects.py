@@ -14,34 +14,65 @@ class Effect:
         raise NotImplementedError
 
 
+def _pop_with_choices(hand: list[str], choices_remaining: list[str]) -> str | None:
+    while choices_remaining and choices_remaining[0] not in hand:
+        choices_remaining.pop(0)
+
+    if choices_remaining:
+        chosen = choices_remaining.pop(0)
+        hand.remove(chosen)
+        return chosen
+
+    if hand:
+        return hand.pop(0)
+
+    return None
+
+
 @dataclass
 class DealDamage(Effect):
     amount: int
     target: str = "enemy"
 
     def apply(self, state: GameState, ctx: dict) -> None:
-        dmg = self.amount
+        from .triggers import emit_event
+
+        raw_damage = self.amount
         if ctx.get("is_attack"):
             bonus = state.buffs.get("next_attack_bonus", 0)
             if bonus > 0:
-                dmg += bonus
+                raw_damage += bonus
                 state.buffs["next_attack_bonus"] = 0
 
             strength = state.buffs.get("strength", 0)
             if strength:
-                dmg += strength
+                raw_damage += strength
 
         if self.target == "enemy":
             enemy = state.enemy_state
-            actual = max(0, dmg - enemy.block)
-            enemy.block = max(0, enemy.block - dmg)
-            enemy.hp = max(0, enemy.hp - actual)
+            blocked_amount = min(enemy.block, raw_damage)
+            actual_hp_loss = max(0, raw_damage - enemy.block)
+            enemy.block = max(0, enemy.block - raw_damage)
+            enemy.hp = max(0, enemy.hp - actual_hp_loss)
         elif self.target == "player":
-            actual = max(0, dmg - state.block)
-            state.block = max(0, state.block - dmg)
-            state.player_hp = max(0, state.player_hp - actual)
+            blocked_amount = min(state.block, raw_damage)
+            actual_hp_loss = max(0, raw_damage - state.block)
+            state.block = max(0, state.block - raw_damage)
+            state.player_hp = max(0, state.player_hp - actual_hp_loss)
         else:
             raise ValueError(f"Unknown target {self.target}")
+
+        if raw_damage > 0:
+            emit_event(
+                state,
+                "on_damage_taken",
+                {
+                    "target": self.target,
+                    "raw_damage": raw_damage,
+                    "actual_hp_loss": actual_hp_loss,
+                    "blocked_amount": blocked_amount,
+                },
+            )
 
 
 @dataclass
@@ -49,7 +80,17 @@ class GainBlock(Effect):
     amount: int
 
     def apply(self, state: GameState, ctx: dict) -> None:
+        from .triggers import emit_event
+
         state.block += self.amount
+        emit_event(
+            state,
+            "on_block_gained",
+            {
+                "amount": self.amount,
+                "new_block": state.block,
+            },
+        )
 
 
 @dataclass
@@ -93,11 +134,23 @@ class ApplyDebuff(Effect):
 @dataclass
 class AddTriggerEffect(Effect):
     trigger: Trigger
+    expire_on_current_turn: bool = False
 
     def apply(self, state: GameState, ctx: dict) -> None:
         from .triggers import add_trigger
 
-        add_trigger(state, self.trigger)
+        trigger = Trigger(
+            event=self.trigger.event,
+            effect=self.trigger.effect,
+            condition=self.trigger.condition,
+            remaining_uses=self.trigger.remaining_uses,
+            expire_turn=self.trigger.expire_turn,
+            label=self.trigger.label,
+        )
+        if self.expire_on_current_turn and trigger.expire_turn is None:
+            trigger.expire_turn = state.turn_index
+
+        add_trigger(state, trigger)
 
 
 @dataclass
@@ -133,10 +186,13 @@ class DiscardCards(Effect):
     def apply(self, state: GameState, ctx: dict) -> None:
         from .triggers import emit_event
 
+        choices_remaining = ctx.setdefault("discard_choices_remaining", [])
         for _ in range(min(self.amount, len(state.hand))):
-            card_id = state.hand.pop(0)
-            state.discard_pile.append(card_id)
-            emit_event(state, "on_discard", {"card_id": card_id})
+            chosen = _pop_with_choices(state.hand, choices_remaining)
+            if chosen is None:
+                break
+            state.discard_pile.append(chosen)
+            emit_event(state, "on_discard", {"card_id": chosen})
 
 
 @dataclass
@@ -146,10 +202,13 @@ class ExhaustFromHand(Effect):
     def apply(self, state: GameState, ctx: dict) -> None:
         from .triggers import emit_event
 
+        choices_remaining = ctx.setdefault("exhaust_choices_remaining", [])
         for _ in range(min(self.amount, len(state.hand))):
-            card_id = state.hand.pop(0)
-            state.exhaust_pile.append(card_id)
-            emit_event(state, "on_exhaust", {"card_id": card_id})
+            chosen = _pop_with_choices(state.hand, choices_remaining)
+            if chosen is None:
+                break
+            state.exhaust_pile.append(chosen)
+            emit_event(state, "on_exhaust", {"card_id": chosen})
 
 
 @dataclass
