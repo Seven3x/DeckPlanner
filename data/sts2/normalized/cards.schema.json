@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/sts2/cards.schema.json",
+  "title": "STS2 Normalized Card Catalog",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "card_count",
+    "cards"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "sts2_cards.normalized.v1"
+    },
+    "card_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cards": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/card"
+      }
+    }
+  },
+  "$defs": {
+    "behaviorSpec": {
+      "type": "object",
+      "required": ["behavior_key", "params"],
+      "properties": {
+        "behavior_key": {"type": "string"},
+        "params": {"type": "object"}
+      },
+      "additionalProperties": true
+    },
+    "card": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "character",
+        "cost",
+        "type",
+        "rarity",
+        "tags",
+        "text",
+        "behavior_key",
+        "params",
+        "source"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "character": {"type": "string", "minLength": 1},
+        "cost": {
+          "oneOf": [
+            {"type": "integer", "minimum": 0},
+            {"type": "string", "minLength": 1}
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": ["attack", "skill", "power", "status", "curse", "other"]
+        },
+        "rarity": {
+          "type": "string",
+          "enum": ["basic", "common", "uncommon", "rare", "special"]
+        },
+        "tags": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "text": {"type": "string", "minLength": 1},
+        "behavior_key": {
+          "type": "string",
+          "enum": [
+            "deal_damage",
+            "gain_block",
+            "draw_cards",
+            "gain_energy",
+            "apply_buff",
+            "apply_debuff",
+            "set_next_attack_bonus",
+            "replay_next_card",
+            "schedule_effect",
+            "conditional",
+            "text_only",
+            "unimplemented"
+          ]
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

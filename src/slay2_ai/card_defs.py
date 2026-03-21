@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Literal
+from typing import Any, Literal
 
 from .effects import (
     AddTriggerEffect,
@@ -18,19 +18,24 @@ from .effects import (
 )
 from .triggers import Trigger
 
-CardType = Literal["attack", "skill", "power"]
+CardType = Literal["attack", "skill", "power", "status", "curse", "other"]
+CardCost = int | str
 
 
 @dataclass
 class CardDefinition:
     card_id: str
     name: str
-    cost: int
+    cost: CardCost
     card_type: CardType
     effects: list
     exhaust: bool = False
     tags: set[str] = field(default_factory=set)
     description: str = ""
+    behavior_key: str = "legacy_manual"
+    params: dict[str, Any] = field(default_factory=dict)
+    source: dict[str, Any] = field(default_factory=dict)
+    executable: bool = True
 
 
 def _combo_condition(state, ctx: dict) -> bool:

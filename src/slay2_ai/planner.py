@@ -73,6 +73,14 @@ def _required_choices(card: CardDefinition) -> tuple[int, int]:
     return discard_n, exhaust_n
 
 
+def _play_cost(card: CardDefinition) -> int | None:
+    if not card.executable:
+        return None
+    if not isinstance(card.cost, int):
+        return None
+    return card.cost
+
+
 def _remove_cards_once(cards: list[str], to_remove: tuple[str, ...]) -> list[str]:
     remaining = list(cards)
     for card_id in to_remove:
@@ -98,7 +106,10 @@ def legal_actions(state: GameState, cards: dict[str, CardDefinition]) -> list[Pl
 
     for card_id in state.hand:
         card = cards[card_id]
-        if card.cost > state.energy:
+        play_cost = _play_cost(card)
+        if play_cost is None:
+            continue
+        if play_cost > state.energy:
             continue
 
         post_play_hand = list(state.hand)
@@ -133,8 +144,11 @@ def _play_card_once(
     attack_count_before = state.attack_count_this_turn
 
     if not is_replay:
+        play_cost = _play_cost(card)
+        if play_cost is None:
+            raise ValueError(f"Card {action.card_id} is not executable in planner simulation")
         state.hand.remove(action.card_id)
-        state.energy -= card.cost
+        state.energy -= play_cost
         state.cards_played_this_turn.append(action.card_id)
         if card.card_type == "attack":
             state.attack_count_this_turn += 1
