@@ -1,2 +1,4 @@
 # Python 3.11+
-# 当前MVP仅使用标准库，无额外第三方依赖。
+# 当前MVP核心逻辑可只用标准库运行。
+# GUI 阶段引入 PySide6（Qt Widgets）。
+PySide6>=6.6,<7
