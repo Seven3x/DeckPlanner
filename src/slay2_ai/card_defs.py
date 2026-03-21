@@ -16,7 +16,7 @@ from .effects import (
     SetNextAttackBonus,
     SetReplayNextCard,
 )
-from .game_state import Trigger
+from .triggers import Trigger
 
 CardType = Literal["attack", "skill", "power"]
 
@@ -147,6 +147,7 @@ def build_demo_cards() -> dict[str, CardDefinition]:
                         event="on_attack_played",
                         effect=GainBlock(3),
                         remaining_uses=1,
+                        expire_turn=None,
                         label="attack_once_gain_block",
                     ),
                     expire_on_current_turn=True,

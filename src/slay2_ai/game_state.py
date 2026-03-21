@@ -1,15 +1,13 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Callable, Optional, TYPE_CHECKING
+from dataclasses import dataclass, field, fields, is_dataclass
+from typing import TYPE_CHECKING, Any
 import copy
 import random
 
 if TYPE_CHECKING:
     from .effects import Effect
-
-
-ConditionFn = Callable[["GameState", dict], bool]
+    from .triggers import Trigger
 
 
 @dataclass
@@ -20,16 +18,6 @@ class EnemyState:
     intent_damage: int = 0
     buffs: dict[str, int] = field(default_factory=dict)
     debuffs: dict[str, int] = field(default_factory=dict)
-
-
-@dataclass
-class Trigger:
-    event: str
-    effect: "Effect"
-    condition: Optional[ConditionFn] = None
-    remaining_uses: Optional[int] = 1
-    expire_turn: Optional[int] = None
-    label: str = ""
 
 
 @dataclass
@@ -56,15 +44,49 @@ class GameState:
     attack_count_this_turn: int
     skill_count_this_turn: int
     pending_effects: list[PendingEffect]
-    triggers: list[Trigger]
+    triggers: list["Trigger"]
     enemy_state: EnemyState
     rng_seed: int = 0
 
     def clone(self) -> "GameState":
         return copy.deepcopy(self)
 
-    def _effect_sig(self, effect: "Effect") -> str:
-        return f"{effect.__class__.__name__}:{repr(effect)}"
+    def _callable_sig(self, fn: Any) -> tuple[str, str] | None:
+        if fn is None:
+            return None
+        module = getattr(fn, "__module__", "")
+        qualname = getattr(fn, "__qualname__", getattr(fn, "__name__", type(fn).__name__))
+        return (module, qualname)
+
+    def _freeze_value(self, value: Any) -> Any:
+        if value is None or isinstance(value, (int, float, str, bool)):
+            return value
+
+        if isinstance(value, dict):
+            return tuple(sorted((self._freeze_value(k), self._freeze_value(v)) for k, v in value.items()))
+
+        if isinstance(value, (list, tuple)):
+            return tuple(self._freeze_value(v) for v in value)
+
+        if isinstance(value, set):
+            return tuple(sorted((self._freeze_value(v) for v in value), key=repr))
+
+        if callable(value):
+            return ("callable",) + (self._callable_sig(value) or ("", ""))
+
+        if is_dataclass(value) and not isinstance(value, type):
+            return (
+                value.__class__.__name__,
+                tuple(
+                    (field_info.name, self._freeze_value(getattr(value, field_info.name)))
+                    for field_info in fields(value)
+                ),
+            )
+
+        return (value.__class__.__name__, str(value))
+
+    def _effect_sig(self, effect: "Effect") -> tuple:
+        return self._freeze_value(effect)
 
     def state_signature(self) -> tuple:
         return (
@@ -85,23 +107,24 @@ class GameState:
             tuple(
                 sorted(
                     (
-                        p.execute_turn,
-                        p.label,
-                        self._effect_sig(p.effect),
+                        pending.execute_turn,
+                        pending.label,
+                        self._effect_sig(pending.effect),
                     )
-                    for p in self.pending_effects
+                    for pending in self.pending_effects
                 )
             ),
             tuple(
                 sorted(
                     (
-                        t.event,
-                        t.label,
-                        t.remaining_uses,
-                        t.expire_turn,
-                        self._effect_sig(t.effect),
+                        trigger.event,
+                        trigger.label,
+                        trigger.remaining_uses,
+                        trigger.expire_turn,
+                        self._callable_sig(trigger.condition),
+                        self._effect_sig(trigger.effect),
                     )
-                    for t in self.triggers
+                    for trigger in self.triggers
                 )
             ),
             self.enemy_state.hp,

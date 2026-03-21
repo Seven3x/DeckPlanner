@@ -82,14 +82,13 @@ def _remove_cards_once(cards: list[str], to_remove: tuple[str, ...]) -> list[str
 
 
 def _distinct_choice_tuples(pool: list[str], count: int) -> list[tuple[str, ...]]:
-    if count == 0:
+    actual_count = min(count, len(pool))
+    if actual_count == 0:
         return [()]
-    if len(pool) < count:
-        return []
 
     choices = {
         tuple(pool[i] for i in idxs)
-        for idxs in combinations(range(len(pool)), count)
+        for idxs in combinations(range(len(pool)), actual_count)
     }
     return sorted(choices)
 
@@ -107,14 +106,10 @@ def legal_actions(state: GameState, cards: dict[str, CardDefinition]) -> list[Pl
 
         discard_n, exhaust_n = _required_choices(card)
         discard_options = _distinct_choice_tuples(post_play_hand, discard_n)
-        if not discard_options:
-            continue
 
         for discard_choice in discard_options:
             hand_after_discard = _remove_cards_once(post_play_hand, discard_choice)
             exhaust_options = _distinct_choice_tuples(hand_after_discard, exhaust_n)
-            if not exhaust_options:
-                continue
 
             for exhaust_choice in exhaust_options:
                 actions.append(
@@ -157,11 +152,13 @@ def _play_card_once(
         "exhaust_choices_remaining": [] if is_replay else list(action.exhaust_choices),
     }
 
-    emit_event(state, "on_card_played", ctx)
-    if card.card_type == "attack":
-        emit_event(state, "on_attack_played", ctx)
-    elif card.card_type == "skill":
-        emit_event(state, "on_skill_played", ctx)
+    # replay 只复制牌效果，不再触发“打出一张牌”的事件。
+    if not is_replay:
+        emit_event(state, "on_card_played", ctx)
+        if card.card_type == "attack":
+            emit_event(state, "on_attack_played", ctx)
+        elif card.card_type == "skill":
+            emit_event(state, "on_skill_played", ctx)
 
     for effect in card.effects:
         effect.apply(state, ctx)
@@ -177,10 +174,11 @@ def _play_card_once(
 def simulate_play(state: GameState, action: PlayCardAction, cards: dict[str, CardDefinition]) -> GameState:
     nxt = state.clone()
 
+    # 只读取“打牌前已有”的 replay charge。
     pre_replay_charges = nxt.buffs.get("replay_next_card", 0)
     _play_card_once(nxt, action, cards, is_replay=False)
 
-    # 仅消费“打牌前已有”的 replay charge；当前牌新生成的 charge 保留给后续牌。
+    # 当前牌执行时新增加的 replay charge 不会用于当前牌自身。
     if pre_replay_charges > 0:
         current_total = nxt.buffs.get("replay_next_card", 0)
         nxt.buffs["replay_next_card"] = max(0, current_total - 1)
@@ -194,7 +192,7 @@ def advance_one_full_turn(state: GameState, draw_n: int = 5) -> GameState:
     nxt = state.clone()
     end_turn(nxt)
 
-    # 简化敌方回合：按 intent_damage 对玩家造成伤害。
+    # 简化敌方回合：按 intent_damage 对玩家造成一次伤害。
     incoming = max(0, nxt.enemy_state.intent_damage)
     if incoming > 0:
         DealDamage(incoming, target="player").apply(nxt, {"event": "enemy_turn", "is_attack": False})

@@ -3,7 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Callable
 
-from .game_state import GameState, Trigger
+from .game_state import GameState
+from .triggers import Trigger
 
 
 ConditionFn = Callable[[GameState, dict], bool]
@@ -62,7 +63,7 @@ class DealDamage(Effect):
         else:
             raise ValueError(f"Unknown target {self.target}")
 
-        if raw_damage > 0:
+        if actual_hp_loss > 0:
             emit_event(
                 state,
                 "on_damage_taken",
