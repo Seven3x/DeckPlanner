@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
+    QAbstractItemView,
     QFormLayout,
     QGroupBox,
     QHBoxLayout,
@@ -23,6 +24,7 @@ from ..models import (
     SearchResultSnapshot,
     SearchStepDetailViewModel,
     TriggerViewModel,
+    build_branch_comparison,
 )
 from .card_tile import CardTileWidget
 
@@ -111,7 +113,10 @@ class StatusTabsWidget(QWidget):
         self._search_summary_label = QLabel("暂无搜索结果。", self)
         self._recommended_sequence_list = QListWidget(self)
         self._candidate_branch_list = QListWidget(self)
+        self._candidate_branch_list.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self._candidate_steps_list = QListWidget(self)
+        self._branch_compare_view = QPlainTextEdit(self)
+        self._branch_compare_view.setReadOnly(True)
         self._search_step_detail_view = QPlainTextEdit(self)
         self._search_step_detail_view.setReadOnly(True)
 
@@ -241,6 +246,8 @@ class StatusTabsWidget(QWidget):
         middle = QGroupBox("候选分支", panel)
         middle_layout = QVBoxLayout(middle)
         middle_layout.addWidget(self._candidate_branch_list)
+        middle_layout.addWidget(QLabel("分支对比（选择两个分支）", panel))
+        middle_layout.addWidget(self._branch_compare_view)
         middle_layout.addWidget(QLabel("分支步骤", panel))
         middle_layout.addWidget(self._candidate_steps_list)
 
@@ -412,6 +419,7 @@ class StatusTabsWidget(QWidget):
     def _set_candidate_branches(self, branches: list[SearchBranchViewModel]) -> None:
         self._candidate_branch_list.clear()
         self._candidate_steps_list.clear()
+        self._branch_compare_view.setPlainText("选择两个候选分支后，将显示总分/动作序列/最终状态差异。")
         self._branch_lookup.clear()
         self._candidate_step_lookup.clear()
         for index, branch in enumerate(branches):
@@ -439,11 +447,33 @@ class StatusTabsWidget(QWidget):
     def _on_candidate_branch_selected(self) -> None:
         items = self._candidate_branch_list.selectedItems()
         if not items:
-            return
-        branch_key = items[0].data(Qt.UserRole)
-        if not isinstance(branch_key, str):
             self._candidate_steps_list.clear()
+            self._branch_compare_view.setPlainText("选择两个候选分支后，将显示总分/动作序列/最终状态差异。")
             return
+
+        branch_keys: list[str] = []
+        for item in items:
+            key = item.data(Qt.UserRole)
+            if isinstance(key, str) and key in self._branch_lookup:
+                branch_keys.append(key)
+
+        if not branch_keys:
+            self._candidate_steps_list.clear()
+            self._branch_compare_view.setPlainText("无可比较分支。")
+            return
+
+        selected_branches = [self._branch_lookup[key] for key in branch_keys if key in self._branch_lookup]
+        if len(selected_branches) >= 2:
+            comparison = build_branch_comparison(selected_branches[0], selected_branches[1])
+            self._branch_compare_view.setPlainText(comparison.detail_text())
+        else:
+            only = selected_branches[0]
+            self._branch_compare_view.setPlainText(
+                "当前仅选择了 1 个分支。再选择 1 个分支即可比较。\n\n"
+                f"{only.branch_label} 最终状态:\n{only.final_state_summary or '-'}"
+            )
+
+        branch_key = branch_keys[0]
         branch = self._branch_lookup.get(branch_key)
         if branch is None:
             self._candidate_steps_list.clear()
@@ -517,6 +547,7 @@ class StatusTabsWidget(QWidget):
             self._candidate_steps_list.clear()
             self._recommended_step_lookup.clear()
             self._candidate_step_lookup.clear()
+            self._branch_compare_view.setPlainText("暂无可比较分支。")
             self._search_step_detail_view.setPlainText("暂无搜索结果。")
             return
 
@@ -577,6 +608,7 @@ class StatusTabsWidget(QWidget):
             self._candidate_steps_list.clear()
             self._recommended_step_lookup.clear()
             self._candidate_step_lookup.clear()
+            self._branch_compare_view.setPlainText("暂无可比较分支。")
             self._search_step_detail_view.setPlainText("暂无搜索结果。")
             return
 

@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
 
-        self.setWindowTitle("Slay2 AI - 本地助手面板（Stage 3）")
+        self.setWindowTitle("Slay2 AI - 本地助手面板（Stage 4 MVP）")
         self.resize(1280, 860)
 
         self._log_bus = GuiLogBus()
@@ -117,8 +117,8 @@ class MainWindow(QMainWindow):
         )
         if not file_path:
             return
-        self._service.load_json_file(file_path)
-        self._refresh_status_view()
+        if self._service.load_json_file(file_path):
+            self._refresh_status_view()
 
     def _on_refresh(self) -> None:
         self._service.refresh_state()

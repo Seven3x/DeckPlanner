@@ -1,0 +1,94 @@
+{
+  "schema_version": "slay2_gui_state.v1",
+  "player": {
+    "hp": 42,
+    "max_hp": 60,
+    "energy": 3,
+    "block": 5,
+    "buffs": {
+      "strength": 1,
+      "replay_next_card": 1
+    },
+    "debuffs": {
+      "weak": 1
+    }
+  },
+  "enemy": {
+    "hp": 48,
+    "max_hp": 52,
+    "block": 3,
+    "intent_damage": 10,
+    "buffs": {},
+    "debuffs": {
+      "vulnerable": 1
+    }
+  },
+  "zones": {
+    "hand": ["echo_spell", "combo_slash", "jab"],
+    "draw_pile": ["strike", "defend", "insight"],
+    "discard_pile": ["bank_energy"],
+    "exhaust_pile": ["purge_tactics"]
+  },
+  "turn": {
+    "turn_index": 1,
+    "cards_played_this_turn": [],
+    "attack_count_this_turn": 0,
+    "skill_count_this_turn": 0,
+    "rng_seed": 7
+  },
+  "pending_effects": [
+    {
+      "execute_turn": 2,
+      "label": "next_turn_energy",
+      "effect": {
+        "type": "GainEnergy",
+        "amount": 2
+      }
+    },
+    {
+      "execute_turn": 2,
+      "label": "next_turn_bonus",
+      "effect": {
+        "type": "ScheduleEffect",
+        "delay_turns": 1,
+        "label": "delayed_damage",
+        "effect": {
+          "type": "DealDamage",
+          "amount": 6,
+          "target": "enemy"
+        }
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "event": "on_attack_played",
+      "label": "attack_once_gain_block",
+      "remaining_uses": 1,
+      "expire_turn": 1,
+      "condition": {
+        "type": "always"
+      },
+      "effect": {
+        "type": "GainBlock",
+        "amount": 3
+      }
+    },
+    {
+      "event": "on_turn_start",
+      "label": "low_hp_bonus",
+      "remaining_uses": null,
+      "expire_turn": null,
+      "condition": {
+        "type": "player_hp_ratio_lte",
+        "value": 0.5
+      },
+      "effect": {
+        "type": "ApplyBuff",
+        "key": "strength",
+        "amount": 1,
+        "target": "player"
+      }
+    }
+  ]
+}

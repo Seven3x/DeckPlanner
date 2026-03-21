@@ -152,6 +152,32 @@ class PendingEffectViewModel:
 
 
 @dataclass(frozen=True)
+class StateMetricsViewModel:
+    player_hp: int
+    player_max_hp: int
+    player_block: int
+    player_energy: int
+    enemy_hp: int
+    enemy_max_hp: int
+    enemy_block: int
+    enemy_intent_damage: int
+    hand_count: int
+    draw_count: int
+    discard_count: int
+    exhaust_count: int
+    pending_count: int
+    trigger_count: int
+
+    def summary_text(self) -> str:
+        return (
+            f"Player HP={self.player_hp}/{self.player_max_hp}, EN={self.player_energy}, BLK={self.player_block}; "
+            f"Enemy HP={self.enemy_hp}/{self.enemy_max_hp}, BLK={self.enemy_block}, Intent={self.enemy_intent_damage}; "
+            f"Hand={self.hand_count}, Draw={self.draw_count}, Discard={self.discard_count}, Exhaust={self.exhaust_count}; "
+            f"Pending={self.pending_count}, Triggers={self.trigger_count}"
+        )
+
+
+@dataclass(frozen=True)
 class SearchStepDetailViewModel:
     step_index: int
     action_text: str
@@ -159,10 +185,13 @@ class SearchStepDetailViewModel:
     after_summary: str
     score_before: float
     score_after: float
+    action_meta: list[str] = field(default_factory=list)
+    key_changes: list[str] = field(default_factory=list)
     event_logs: list[str] = field(default_factory=list)
     effect_logs: list[str] = field(default_factory=list)
     pending_changes: list[str] = field(default_factory=list)
     trigger_changes: list[str] = field(default_factory=list)
+    related_log_snippets: list[str] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)
 
     def list_text(self) -> str:
@@ -177,14 +206,16 @@ class SearchStepDetailViewModel:
             f"Action: {self.action_text}",
             f"Score: {self.score_before:.2f} -> {self.score_after:.2f}",
             "",
-            "Before:",
-            self.before_summary,
-            "",
-            "After:",
-            self.after_summary,
-            "",
-            "Events:",
+            "Action Meta:",
         ]
+        lines.extend(self.action_meta or ["<none>"])
+        lines.extend(["", "Before:"])
+        lines.append(self.before_summary)
+        lines.extend(["", "After:"])
+        lines.append(self.after_summary)
+        lines.extend(["", "Key Changes:"])
+        lines.extend(self.key_changes or ["<none>"])
+        lines.extend(["", "Events:"])
         lines.extend(self.event_logs or ["<none>"])
         lines.extend(["", "Effects:"])
         lines.extend(self.effect_logs or ["<none>"])
@@ -192,6 +223,8 @@ class SearchStepDetailViewModel:
         lines.extend(self.pending_changes or ["<none>"])
         lines.extend(["", "Trigger Changes:"])
         lines.extend(self.trigger_changes or ["<none>"])
+        lines.extend(["", "Related Logs:"])
+        lines.extend(self.related_log_snippets or ["<none>"])
         if self.notes:
             lines.extend(["", "Notes:"])
             lines.extend(self.notes)
@@ -205,12 +238,95 @@ class SearchBranchViewModel:
     actions: list[str] = field(default_factory=list)
     step_summaries: list[str] = field(default_factory=list)
     step_details: list[SearchStepDetailViewModel] = field(default_factory=list)
+    final_state_summary: str = ""
+    final_metrics: StateMetricsViewModel | None = None
 
     def list_text(self) -> str:
         action_preview = " -> ".join(self.actions[:3]) if self.actions else "<pass>"
         if len(self.actions) > 3:
             action_preview = f"{action_preview} -> ..."
         return f"{self.branch_label} | score={self.score:.2f} | {action_preview}"
+
+
+@dataclass(frozen=True)
+class SearchBranchComparisonViewModel:
+    branch_a_label: str
+    branch_b_label: str
+    score_a: float
+    score_b: float
+    score_delta: float
+    action_diff_lines: list[str]
+    final_state_diff_lines: list[str]
+
+    def detail_text(self) -> str:
+        lines = [
+            f"分支A: {self.branch_a_label} (score={self.score_a:.2f})",
+            f"分支B: {self.branch_b_label} (score={self.score_b:.2f})",
+            f"总分差异(A-B): {self.score_delta:+.2f}",
+            "",
+            "动作序列差异:",
+        ]
+        lines.extend(self.action_diff_lines or ["<none>"])
+        lines.extend(["", "最终状态摘要差异:"])
+        lines.extend(self.final_state_diff_lines or ["<none>"])
+        return "\n".join(lines)
+
+
+def _format_metric_delta(label: str, a_value: int, b_value: int) -> str:
+    if a_value == b_value:
+        return f"{label}: {a_value} (=)"
+    delta = a_value - b_value
+    return f"{label}: A={a_value}, B={b_value}, Δ={delta:+d}"
+
+
+def build_branch_comparison(
+    branch_a: SearchBranchViewModel,
+    branch_b: SearchBranchViewModel,
+) -> SearchBranchComparisonViewModel:
+    max_len = max(len(branch_a.actions), len(branch_b.actions))
+    action_lines: list[str] = []
+    for idx in range(max_len):
+        a_action = branch_a.actions[idx] if idx < len(branch_a.actions) else "<none>"
+        b_action = branch_b.actions[idx] if idx < len(branch_b.actions) else "<none>"
+        marker = "=" if a_action == b_action else "!"
+        action_lines.append(f"{idx + 1}. [{marker}] A: {a_action} | B: {b_action}")
+
+    final_lines: list[str]
+    if branch_a.final_metrics and branch_b.final_metrics:
+        metric_pairs = [
+            ("Player HP", branch_a.final_metrics.player_hp, branch_b.final_metrics.player_hp),
+            ("Player EN", branch_a.final_metrics.player_energy, branch_b.final_metrics.player_energy),
+            ("Player BLK", branch_a.final_metrics.player_block, branch_b.final_metrics.player_block),
+            ("Enemy HP", branch_a.final_metrics.enemy_hp, branch_b.final_metrics.enemy_hp),
+            ("Enemy BLK", branch_a.final_metrics.enemy_block, branch_b.final_metrics.enemy_block),
+            (
+                "Enemy Intent",
+                branch_a.final_metrics.enemy_intent_damage,
+                branch_b.final_metrics.enemy_intent_damage,
+            ),
+            ("Hand", branch_a.final_metrics.hand_count, branch_b.final_metrics.hand_count),
+            ("Draw", branch_a.final_metrics.draw_count, branch_b.final_metrics.draw_count),
+            ("Discard", branch_a.final_metrics.discard_count, branch_b.final_metrics.discard_count),
+            ("Exhaust", branch_a.final_metrics.exhaust_count, branch_b.final_metrics.exhaust_count),
+            ("Pending", branch_a.final_metrics.pending_count, branch_b.final_metrics.pending_count),
+            ("Triggers", branch_a.final_metrics.trigger_count, branch_b.final_metrics.trigger_count),
+        ]
+        final_lines = [_format_metric_delta(label, a_val, b_val) for label, a_val, b_val in metric_pairs]
+    else:
+        final_lines = [
+            f"A: {branch_a.final_state_summary or '-'}",
+            f"B: {branch_b.final_state_summary or '-'}",
+        ]
+
+    return SearchBranchComparisonViewModel(
+        branch_a_label=branch_a.branch_label,
+        branch_b_label=branch_b.branch_label,
+        score_a=branch_a.score,
+        score_b=branch_b.score,
+        score_delta=branch_a.score - branch_b.score,
+        action_diff_lines=action_lines,
+        final_state_diff_lines=final_lines,
+    )
 
 
 @dataclass(frozen=True)
