@@ -2,66 +2,73 @@
 
 ## 当前 GUI 目标
 - 为 `slay2_ai` 提供一个本地单机助手面板（PySide6 + Qt Widgets）。
-- 在不重构核心逻辑的前提下，建立可扩展 GUI 工程骨架。
-- 先完成“可运行窗口 + 分层架构 + 基础调用链路”。
+- 保持 GUI 与核心逻辑解耦，在不重构 `slay2_ai` 的前提下完善交互能力。
+- 完成“可交互 demo + planner 搜索 + 步骤回放详情 + 手动打牌 + 四类真实日志”。
 
 ## 当前阶段
-- Stage 1: 工程骨架与主窗口布局（进行中，已可运行）。
+- Stage 3: 从静态展示工具升级为可交互本地助手面板（已完成）。
 
-## 已完成项
-- 新建 GUI 包：`src/slay2_ai_gui/`。
-- 完成分层：`app.py`、`main_window.py`、`models/`、`widgets/`、`services/`、`logging/`。
-- 主窗口布局完成：
-  - 左侧状态区（4 个 tabs）：总览、手牌与牌堆、Triggers/Pending、搜索结果详情。
-  - 右侧操作区（6 个按钮）：运行 demo、搜索最优序列、手动执行动作、加载 JSON、刷新状态、清空日志。
-  - 底部日志区（4 通道）：事件触发、效果执行、搜索过程、错误异常。
-- 建立 `CoreGameService` 作为 GUI 到核心逻辑的薄适配层。
-- 建立 `GuiLogBus` 多通道日志桥，支持后续扩展更多日志来源。
-- “运行 demo / 搜索最优序列 / 刷新状态 / 清空日志”已打通基础链路。
-- “手动执行动作 / 加载 JSON”提供了 Stage-1 占位实现和扩展接口。
-- `requirements.txt` 已加入 `PySide6` 依赖。
+## Stage 3 已完成项
+- Demo 接入（GUI 内数据流）：
+  - `运行 demo` 按钮直接创建 `GameState`（通过 `demo.base_state`）。
+  - 运行 demo 后会清理旧日志、清空旧搜索结果、刷新左侧状态展示。
+  - demo 载入后可立即继续执行搜索或手动动作。
+- Planner 接入（最优序列 + 候选分支）：
+  - `搜索最优序列` 按钮调用 `search_best_sequence` 获取最佳动作序列与评分。
+  - 搜索结果区展示总分、最佳序列。
+  - 候选前 N 分支通过薄封装生成：
+    - 枚举当前合法首步动作
+    - 对每个首步状态继续调用 planner 搜索后续最优
+    - 按最终评分排序后展示前 N 条分支
+- 步骤详情查看（可点击）：
+  - 推荐序列与候选分支中的每一步都可点击查看详情。
+  - 详情包含：
+    - 本步动作
+    - 动作前状态摘要
+    - 动作后状态摘要
+    - 关键 events / effects
+    - trigger 变化
+    - pending changes 变化
+    - 评分前后变化
+- 手动执行动作：
+  - 操作区新增“手动打牌”下拉框，展示当前手牌中可执行卡牌。
+  - 点击 `执行所选手牌` 后执行所选卡牌并刷新状态。
+  - 当前阶段仅要求“按卡牌选择”，若该卡牌存在多种 discard/exhaust 分支，默认取第一种并写日志说明。
+  - 为后续复杂选择型动作预留扩展点（已保留 action variant 概念）。
+- 四类日志真实接线：
+  - 事件触发日志：真实捕获 `emit_event` 调用。
+  - 效果执行日志：真实捕获 effect `apply` 执行（含 card/trigger/pending 来源）。
+  - 搜索过程日志：记录搜索参数、候选分支评估、planner trace 摘要。
+  - 错误/异常日志：统一通过 `publish_exception` 进入错误通道。
+  - 日志接线策略为 service 层最小侵入式 runtime hook，不改核心算法行为。
 
-## 待完成项
-- JSON 到 `GameState` 的完整映射与校验。
-- 手动动作执行从“首个合法动作”升级为可选动作（下拉/列表）。
-- 事件/效果日志从“服务层摘要”升级为“核心执行过程细粒度日志”。
-- 搜索结果详情支持分支对比、终局状态快照、点击回放。
-- 增加 UI 自动化测试与服务层单元测试。
+## 本阶段新增/修改文件
+- 修改：
+  - `src/slay2_ai_gui/services/core_adapter.py`
+  - `src/slay2_ai_gui/models/view_models.py`
+  - `src/slay2_ai_gui/models/__init__.py`
+  - `src/slay2_ai_gui/widgets/action_panel.py`
+  - `src/slay2_ai_gui/widgets/status_tabs.py`
+  - `src/slay2_ai_gui/main_window.py`
+  - `docs/gui_build_status.md`
 
-## 新增文件列表
-- `src/slay2_ai_gui/__init__.py`
-- `src/slay2_ai_gui/__main__.py`
-- `src/slay2_ai_gui/app.py`
-- `src/slay2_ai_gui/main_window.py`
-- `src/slay2_ai_gui/models/__init__.py`
-- `src/slay2_ai_gui/models/view_models.py`
-- `src/slay2_ai_gui/widgets/__init__.py`
-- `src/slay2_ai_gui/widgets/action_panel.py`
-- `src/slay2_ai_gui/widgets/log_panel.py`
-- `src/slay2_ai_gui/widgets/status_tabs.py`
-- `src/slay2_ai_gui/services/__init__.py`
-- `src/slay2_ai_gui/services/core_adapter.py`
-- `src/slay2_ai_gui/logging/__init__.py`
-- `src/slay2_ai_gui/logging/log_bus.py`
-- `docs/gui_build_status.md`
+## 现状说明（可交互真实能力）
+- 可以在 GUI 内运行 demo 并获得真实初始状态。
+- 可以从 GUI 触发 planner 搜索并展示最优序列与评分。
+- 可以展示候选前 N 分支（基于首步展开 + 后续 planner 的薄封装）。
+- 可以点击具体步骤查看动作前后状态与关键执行细节。
+- 可以手动选择并执行一张当前可打出的手牌。
+- 四类日志均为真实执行过程产物，不是纯占位文本。
+
+## 仍待完成项（下一阶段）
+- 引入异步搜索执行（`QThread` / `QtConcurrent`），避免较深搜索阻塞 UI。
+- 为手动动作补齐复杂交互（discard/exhaust/targeting 可视编辑）。
+- 增加可视化状态 diff 组件（目前为摘要 + 关键变化列表）。
+- 完成 `JSON -> GameState` 的正式映射与校验。
+- 增加 GUI 自动化测试与 service 层回归测试。
 
 ## 已知风险 / 技术债
-- 当前 `triggers.emit_event`、`effects.apply` 没有统一日志 hook，GUI 只能记录服务层摘要。
-- Stage-1 未引入线程/异步，搜索耗时增大后可能阻塞 UI。
-- JSON 导入协议尚未固化，后续需定义 schema 与兼容策略。
-- 当前状态展示以只读为主，尚未支持复杂交互编辑。
-
-## 与核心逻辑的耦合点
-- `CoreGameService` 直接调用：
-  - `slay2_ai.card_defs.build_demo_cards`
-  - `slay2_ai.demo.base_state`
-  - `slay2_ai.planner.search_best_sequence / legal_actions / simulate_play`
-  - `slay2_ai.evaluator.evaluate_state`
-- GUI 不直接修改 `planner.py`/`game_state.py`/`effects.py` 内部实现，核心逻辑保持原状。
-
-## 下一阶段建议
-1. 先补 `JSON -> GameState` 适配器与字段校验，打通“加载后可刷新展示”。
-2. 将“手动执行动作”改成可选动作列表，并显示动作预期影响。
-3. 在不破坏核心逻辑的前提下，为 event/effect/search 增加标准日志回调接口。
-4. 搜索功能放入 `QThread` 或 `QtConcurrent`，避免 UI 阻塞。
-5. 增加基础测试（service 层 + GUI 冒烟启动测试）。
+- 当前 runtime hook 通过 monkey patch 实现，后续可收敛为核心层显式 hook 接口。
+- 候选分支为“首步展开 + 后续最优”的近似视图，不是完整搜索树可视化。
+- 搜索与分支构建仍在主线程执行，深度较大时会卡顿。
+- 手动动作对多分支卡牌默认选第一种，尚未提供完整选择器。

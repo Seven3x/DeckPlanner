@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
 
-        self.setWindowTitle("Slay2 AI - 本地助手面板（Stage 1）")
+        self.setWindowTitle("Slay2 AI - 本地助手面板（Stage 3）")
         self.resize(1280, 860)
 
         self._log_bus = GuiLogBus()
@@ -64,6 +64,10 @@ class MainWindow(QMainWindow):
         self._action_panel.manual_action_button.clicked.connect(
             lambda: self._guarded("手动执行动作", self._on_manual_action)
         )
+        self._action_panel.manual_card_combo.currentIndexChanged.connect(
+            lambda _index: self._guarded("同步手牌选择", self._on_manual_card_changed)
+        )
+        self._status_tabs.hand_card_selected.connect(self._on_hand_card_selected)
         self._action_panel.load_json_button.clicked.connect(
             lambda: self._guarded("加载 JSON", self._on_load_json)
         )
@@ -79,6 +83,7 @@ class MainWindow(QMainWindow):
             self._log_bus.publish_exception(exc, context=action_name)
 
     def _on_run_demo(self) -> None:
+        self._log_panel.clear_all()
         self._service.run_demo()
         self._refresh_status_view()
 
@@ -87,8 +92,21 @@ class MainWindow(QMainWindow):
         self._refresh_status_view()
 
     def _on_manual_action(self) -> None:
-        self._service.execute_first_legal_action()
+        card_id = self._action_panel.current_manual_card_id()
+        if not card_id:
+            self._log_bus.publish("event", "请先选择一张可执行手牌。")
+            return
+        self._service.execute_manual_action(card_id)
         self._refresh_status_view()
+
+    def _on_manual_card_changed(self) -> None:
+        card_id = self._action_panel.current_manual_card_id()
+        if not card_id:
+            return
+        self._status_tabs.select_hand_card_by_card_id(card_id)
+
+    def _on_hand_card_selected(self, card_id: str) -> None:
+        self._action_panel.set_current_manual_card_id(card_id, emit_signal=False)
 
     def _on_load_json(self) -> None:
         file_path, _ = QFileDialog.getOpenFileName(
@@ -109,4 +127,5 @@ class MainWindow(QMainWindow):
     def _refresh_status_view(self) -> None:
         snapshot = self._service.get_state_snapshot()
         search = self._service.get_search_snapshot()
+        self._action_panel.set_manual_card_options(self._service.list_manual_play_options())
         self._status_tabs.update_from_state(snapshot, search)
