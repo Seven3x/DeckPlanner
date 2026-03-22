@@ -17,7 +17,11 @@
         "target": "enemy"
       },
       "source": {
-        "raw_file": "data/sts2/raw/cards_sample.json",
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T12:00:00+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
         "raw_index": 0,
         "importer": "tools/sts2_import/normalize_cards.py",
         "schema_version": "sts2_cards.normalized.v1"

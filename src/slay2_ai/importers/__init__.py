@@ -5,6 +5,7 @@ from .sts2_loader import (
     build_card_catalog,
     load_normalized_cards,
     load_normalized_catalog,
+    resolve_normalized_catalog_path,
 )
 
 __all__ = [
@@ -14,4 +15,5 @@ __all__ = [
     "build_card_catalog",
     "load_normalized_cards",
     "load_normalized_catalog",
+    "resolve_normalized_catalog_path",
 ]

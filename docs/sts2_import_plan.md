@@ -5,19 +5,26 @@
 - Build a maintainable STS2 card import pipeline without copying game source code.
 - Keep import path offline and local-file based.
 - Normalize raw data into a stable schema for planner and GUI consumption.
-- Support partial behavior mapping first, with explicit `text_only` / `unimplemented` fallback.
+- Support full card catalog ingestion (catalog completeness) even when behavior execution is partial.
+- Keep explicit `text_only` / `unimplemented` fallback for non-executable cards.
 
 ## Directory layout
 
 - `tools/sts2_import/`
   - `normalize_cards.py`
+  - `raw_catalog_builder.py`
   - `behavior_registry.py`
+  - `import_status_report.py`
   - `sample_raw_loader.py`
   - `README.md`
 - `data/sts2/raw/`
-  - local raw input examples
+  - `cards_sample.json` (legacy single-file sample)
+  - `<version>/` (versioned multi-file raw catalog)
+    - `source_manifest.json`
+    - multiple raw JSON files
 - `data/sts2/normalized/`
-  - normalized output (`cards.json`)
+  - `cards.json` (legacy default output)
+  - `cards.<version>.json` (versioned normalized output)
   - schema files (`cards.schema.json`, `cards.schema.example.json`)
 - `src/slay2_ai/importers/`
   - runtime behavior mapper and normalized loader
@@ -36,22 +43,33 @@ Each normalized card uses these fields:
 - `text`: card text for display
 - `behavior_key`: runtime behavior mapping key
 - `params`: behavior parameter object
-- `source`: import provenance object
+- `source`: import provenance object (including version/source file metadata)
 
 ## Raw -> normalized flow
 
+### Single file mode
+
 1. Put raw JSON under `data/sts2/raw/`.
-2. Run `tools/sts2_import/normalize_cards.py`.
-3. Script validates required fields and behavior params.
-4. Script writes normalized payload to `data/sts2/normalized/cards.json`.
+2. Run `tools/sts2_import/normalize_cards.py --input ...`.
+3. Script validates required fields, behavior params, and normalized schema structure.
+4. Script writes normalized payload to `data/sts2/normalized/cards.json` (or custom output).
+
+### Versioned directory mode
+
+1. Create `data/sts2/raw/<version>/` with `source_manifest.json` and multiple raw JSON files.
+2. Optional pre-merge check: run `tools/sts2_import/raw_catalog_builder.py --input-dir ...`.
+3. Run `tools/sts2_import/normalize_cards.py --input-dir data/sts2/raw/<version>`.
+4. Script merges files, deduplicates repeated `id`, validates behavior/schema, and writes:
+   - `data/sts2/normalized/cards.<version>.json`
 
 Validation includes:
 
 - required card fields
-- unique `id`
+- duplicate `id` checks (including conflicting duplicates across files)
 - cost type checks (`int` or supported special token)
 - behavior key validity
 - nested behavior validation for `schedule_effect` and `conditional`
+- normalized payload schema-structure checks (`card_count`, required fields, enum fields)
 
 ## behavior_key design
 
@@ -86,27 +104,55 @@ Integration rules:
   - `executable=False`
   - empty `effects`
   - explicit tags and source markers
-- Planner now skips non-executable cards to prevent false simulation.
+- Planner skips non-executable cards to prevent false simulation.
+- Loader now supports both:
+  - `cards.json`
+  - `cards.<version>.json` (by `version` argument)
+
+## Import status reporting
+
+`tools/sts2_import/import_status_report.py` outputs coverage metrics:
+
+- total cards
+- executable cards
+- mapped cards
+- text_only cards
+- unimplemented cards
+- behavior key counts
+- character counts
+- type counts
+- rarity counts
+
+It can also write markdown report:
+
+- `docs/sts2_import_status_<version>.md`
 
 ## Supported now
 
-- Data normalization and schema validation
-- Local-file import only (no network dependency)
+- Offline local-file import only
+- Single-file and versioned-directory raw ingestion
+- Multi-file merge + duplicate detection/dedup
+- Normalized schema + behavior validation
 - Runtime mapping for common action cards
 - Conditional and delayed effect mapping
 - Explicit non-executable placeholders
+- Coverage/report generation for import progress
 
 ## Not yet supported
 
-- Full STS2 card pool ingestion
+- Full executable behavior for every STS2 card mechanic
 - Exhaustive condition language
 - Complex bespoke mechanics requiring custom engine state
 - Auto-upgrade handling (`+` versions) and localization packs
 
+## Current definition of "full card import"
+
+Catalog completeness: all cards are represented in normalized data with stable IDs and metadata.
+This does not imply all cards are executable in planner/runtime yet.
+
 ## Next extension path
 
-1. Add raw adapters for additional formats (YAML/CSV).
-2. Add richer condition registry and trigger construction.
-3. Add card upgrade variants and localization metadata.
-4. Add GUI-side import entry point for switching catalogs.
-5. Add regression tests for importer + planner compatibility.
+1. Add richer condition registry and trigger construction.
+2. Add card upgrade variants and localization metadata.
+3. Add regression tests for importer + planner compatibility.
+4. Add GUI-side catalog switching entry point with version selection.

@@ -9,6 +9,8 @@ from ..card_defs import CardDefinition
 from .behavior_registry import BehaviorBuildResult, UnsupportedBehaviorError, build_behavior
 
 NORMALIZED_SCHEMA_VERSION = "sts2_cards.normalized.v1"
+DEFAULT_NORMALIZED_DIR = Path("data/sts2/normalized")
+DEFAULT_CATALOG_NAME = "cards.json"
 
 
 @dataclass(frozen=True)
@@ -39,8 +41,37 @@ class NormalizedCatalogError(ValueError):
     pass
 
 
-def load_normalized_catalog(path: str | Path) -> tuple[dict[str, CardDefinition], CatalogLoadSummary]:
-    normalized_cards = load_normalized_cards(path)
+def resolve_normalized_catalog_path(
+    path: str | Path | None = None,
+    *,
+    version: str | None = None,
+    normalized_dir: str | Path = DEFAULT_NORMALIZED_DIR,
+) -> Path:
+    if path is not None and version is not None:
+        raise NormalizedCatalogError("Specify either 'path' or 'version', not both")
+
+    if path is not None:
+        return Path(path)
+
+    base_dir = Path(normalized_dir)
+    if version is not None:
+        return base_dir / f"cards.{version}.json"
+
+    return base_dir / DEFAULT_CATALOG_NAME
+
+
+def load_normalized_catalog(
+    path: str | Path | None = None,
+    *,
+    version: str | None = None,
+    normalized_dir: str | Path = DEFAULT_NORMALIZED_DIR,
+) -> tuple[dict[str, CardDefinition], CatalogLoadSummary]:
+    resolved_path = resolve_normalized_catalog_path(
+        path,
+        version=version,
+        normalized_dir=normalized_dir,
+    )
+    normalized_cards = load_normalized_cards(resolved_path)
     return build_card_catalog(normalized_cards)
 
 

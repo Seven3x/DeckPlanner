@@ -1,0 +1,53 @@
+{
+  "character": "curse",
+  "cards": [
+    {
+      "id": "sfc1.curse.regret_seed",
+      "name": "Regret Seed",
+      "character": "curse",
+      "cost": 1,
+      "type": "curse",
+      "rarity": "special",
+      "tags": ["curse"],
+      "text": "A curse with end-of-turn penalty text.",
+      "behavior_key": "text_only",
+      "params": {"reason": "curse penalty triggers outside current effect model"}
+    },
+    {
+      "id": "sfc1.curse.decay_loop",
+      "name": "Decay Loop",
+      "character": "curse",
+      "cost": 1,
+      "type": "curse",
+      "rarity": "special",
+      "tags": ["curse"],
+      "text": "Decay loop curse with special discard behavior.",
+      "behavior_key": "unimplemented",
+      "params": {"reason": "requires curse lifecycle hooks"}
+    },
+    {
+      "id": "sfc1.curse.doubt_mark",
+      "name": "Doubt Mark",
+      "character": "curse",
+      "cost": 1,
+      "type": "curse",
+      "rarity": "special",
+      "tags": ["curse", "debuff"],
+      "text": "A curse that modifies attack output by rule text.",
+      "behavior_key": "text_only",
+      "params": {"reason": "persistent attack penalty not modeled"}
+    },
+    {
+      "id": "sfc1.curse.ruin_contract",
+      "name": "Ruin Contract",
+      "character": "curse",
+      "cost": 1,
+      "type": "curse",
+      "rarity": "special",
+      "tags": ["curse"],
+      "text": "When drawn, executes a custom event script.",
+      "behavior_key": "unimplemented",
+      "params": {"reason": "draw-trigger event scripting not supported"}
+    }
+  ]
+}

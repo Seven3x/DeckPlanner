@@ -25,7 +25,8 @@
         "raw_file": "data/sts2/raw/cards_sample.json",
         "raw_index": 0,
         "importer": "tools/sts2_import/normalize_cards.py",
-        "schema_version": "sts2_cards.normalized.v1"
+        "schema_version": "sts2_cards.normalized.v1",
+        "source_file": "data/sts2/raw/cards_sample.json"
       }
     },
     {
@@ -49,7 +50,8 @@
         "raw_file": "data/sts2/raw/cards_sample.json",
         "raw_index": 1,
         "importer": "tools/sts2_import/normalize_cards.py",
-        "schema_version": "sts2_cards.normalized.v1"
+        "schema_version": "sts2_cards.normalized.v1",
+        "source_file": "data/sts2/raw/cards_sample.json"
       }
     },
     {
@@ -73,7 +75,8 @@
         "raw_file": "data/sts2/raw/cards_sample.json",
         "raw_index": 2,
         "importer": "tools/sts2_import/normalize_cards.py",
-        "schema_version": "sts2_cards.normalized.v1"
+        "schema_version": "sts2_cards.normalized.v1",
+        "source_file": "data/sts2/raw/cards_sample.json"
       }
     },
     {
@@ -97,7 +100,8 @@
         "raw_file": "data/sts2/raw/cards_sample.json",
         "raw_index": 3,
         "importer": "tools/sts2_import/normalize_cards.py",
-        "schema_version": "sts2_cards.normalized.v1"
+        "schema_version": "sts2_cards.normalized.v1",
+        "source_file": "data/sts2/raw/cards_sample.json"
       }
     },
     {
@@ -121,7 +125,8 @@
         "raw_file": "data/sts2/raw/cards_sample.json",
         "raw_index": 4,
         "importer": "tools/sts2_import/normalize_cards.py",
-        "schema_version": "sts2_cards.normalized.v1"
+        "schema_version": "sts2_cards.normalized.v1",
+        "source_file": "data/sts2/raw/cards_sample.json"
       }
     },
     {
@@ -145,7 +150,8 @@
         "raw_file": "data/sts2/raw/cards_sample.json",
         "raw_index": 5,
         "importer": "tools/sts2_import/normalize_cards.py",
-        "schema_version": "sts2_cards.normalized.v1"
+        "schema_version": "sts2_cards.normalized.v1",
+        "source_file": "data/sts2/raw/cards_sample.json"
       }
     },
     {
@@ -177,7 +183,8 @@
         "raw_file": "data/sts2/raw/cards_sample.json",
         "raw_index": 6,
         "importer": "tools/sts2_import/normalize_cards.py",
-        "schema_version": "sts2_cards.normalized.v1"
+        "schema_version": "sts2_cards.normalized.v1",
+        "source_file": "data/sts2/raw/cards_sample.json"
       }
     },
     {
@@ -220,7 +227,8 @@
         "raw_file": "data/sts2/raw/cards_sample.json",
         "raw_index": 7,
         "importer": "tools/sts2_import/normalize_cards.py",
-        "schema_version": "sts2_cards.normalized.v1"
+        "schema_version": "sts2_cards.normalized.v1",
+        "source_file": "data/sts2/raw/cards_sample.json"
       }
     },
     {
@@ -244,7 +252,8 @@
         "raw_file": "data/sts2/raw/cards_sample.json",
         "raw_index": 8,
         "importer": "tools/sts2_import/normalize_cards.py",
-        "schema_version": "sts2_cards.normalized.v1"
+        "schema_version": "sts2_cards.normalized.v1",
+        "source_file": "data/sts2/raw/cards_sample.json"
       }
     }
   ]

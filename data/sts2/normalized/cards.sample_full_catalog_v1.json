@@ -1,0 +1,799 @@
+{
+  "schema_version": "sts2_cards.normalized.v1",
+  "card_count": 27,
+  "cards": [
+    {
+      "id": "sfc1.ironclad.strike_red",
+      "name": "Strike Red",
+      "character": "ironclad",
+      "cost": 1,
+      "type": "attack",
+      "rarity": "basic",
+      "tags": [
+        "starter",
+        "strike"
+      ],
+      "text": "Deal 6 damage.",
+      "behavior_key": "deal_damage",
+      "params": {
+        "amount": 6
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "raw_index_in_file": 0,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 0,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.ironclad.defend_red",
+      "name": "Defend Red",
+      "character": "ironclad",
+      "cost": 1,
+      "type": "skill",
+      "rarity": "basic",
+      "tags": [
+        "starter"
+      ],
+      "text": "Gain 5 Block.",
+      "behavior_key": "gain_block",
+      "params": {
+        "amount": 5
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "raw_index_in_file": 1,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 1,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.ironclad.ember_slam",
+      "name": "Ember Slam",
+      "character": "ironclad",
+      "cost": 2,
+      "type": "attack",
+      "rarity": "uncommon",
+      "tags": [
+        "heavy"
+      ],
+      "text": "Deal 12 damage.",
+      "behavior_key": "deal_damage",
+      "params": {
+        "amount": 12
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "raw_index_in_file": 2,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 2,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.ironclad.battle_focus",
+      "name": "Battle Focus",
+      "character": "ironclad",
+      "cost": 1,
+      "type": "skill",
+      "rarity": "common",
+      "tags": [
+        "draw"
+      ],
+      "text": "Draw 2 cards.",
+      "behavior_key": "draw_cards",
+      "params": {
+        "amount": 2
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "raw_index_in_file": 3,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 3,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.ironclad.rage_forge",
+      "name": "Rage Forge",
+      "character": "ironclad",
+      "cost": 1,
+      "type": "power",
+      "rarity": "rare",
+      "tags": [
+        "buff"
+      ],
+      "text": "Gain 2 Strength.",
+      "behavior_key": "apply_buff",
+      "params": {
+        "key": "strength",
+        "amount": 2,
+        "target": "player"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "raw_index_in_file": 4,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 4,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.ironclad.delayed_blast_furnace",
+      "name": "Delayed Blast Furnace",
+      "character": "ironclad",
+      "cost": 2,
+      "type": "skill",
+      "rarity": "rare",
+      "tags": [
+        "delayed"
+      ],
+      "text": "Next turn, deal 14 damage.",
+      "behavior_key": "schedule_effect",
+      "params": {
+        "delay_turns": 1,
+        "label": "furnace_blast",
+        "effect": {
+          "behavior_key": "deal_damage",
+          "params": {
+            "amount": 14
+          }
+        }
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "raw_index_in_file": 5,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 5,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.ironclad.blood_gamble",
+      "name": "Blood Gamble",
+      "character": "ironclad",
+      "cost": 1,
+      "type": "skill",
+      "rarity": "uncommon",
+      "tags": [
+        "experimental"
+      ],
+      "text": "A complex self-damage conversion effect (engine TODO).",
+      "behavior_key": "unimplemented",
+      "params": {
+        "reason": "requires self-damage to energy conversion model"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/ironclad_cards.json",
+        "raw_index_in_file": 6,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 6,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.silent.strike_green",
+      "name": "Strike Green",
+      "character": "silent",
+      "cost": 1,
+      "type": "attack",
+      "rarity": "basic",
+      "tags": [
+        "starter",
+        "strike"
+      ],
+      "text": "Deal 6 damage.",
+      "behavior_key": "deal_damage",
+      "params": {
+        "amount": 6
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/silent_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/silent_cards.json",
+        "raw_index_in_file": 0,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 7,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.silent.defend_green",
+      "name": "Defend Green",
+      "character": "silent",
+      "cost": 1,
+      "type": "skill",
+      "rarity": "basic",
+      "tags": [
+        "starter"
+      ],
+      "text": "Gain 5 Block.",
+      "behavior_key": "gain_block",
+      "params": {
+        "amount": 5
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/silent_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/silent_cards.json",
+        "raw_index_in_file": 1,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 8,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.silent.shadow_step",
+      "name": "Shadow Step",
+      "character": "silent",
+      "cost": 0,
+      "type": "skill",
+      "rarity": "common",
+      "tags": [
+        "energy"
+      ],
+      "text": "Gain 1 Energy.",
+      "behavior_key": "gain_energy",
+      "params": {
+        "amount": 1
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/silent_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/silent_cards.json",
+        "raw_index_in_file": 2,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 9,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.silent.poison_needles",
+      "name": "Poison Needles",
+      "character": "silent",
+      "cost": 1,
+      "type": "attack",
+      "rarity": "common",
+      "tags": [
+        "poison"
+      ],
+      "text": "Apply 3 Poison.",
+      "behavior_key": "apply_debuff",
+      "params": {
+        "key": "poison",
+        "amount": 3,
+        "target": "enemy"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/silent_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/silent_cards.json",
+        "raw_index_in_file": 3,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 10,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.silent.tactical_echo",
+      "name": "Tactical Echo",
+      "character": "silent",
+      "cost": 1,
+      "type": "skill",
+      "rarity": "uncommon",
+      "tags": [
+        "echo"
+      ],
+      "text": "Replay the next card once.",
+      "behavior_key": "replay_next_card",
+      "params": {
+        "charges": 1
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/silent_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/silent_cards.json",
+        "raw_index_in_file": 4,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 11,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.silent.opportunist_probe",
+      "name": "Opportunist Probe",
+      "character": "silent",
+      "cost": 1,
+      "type": "attack",
+      "rarity": "uncommon",
+      "tags": [
+        "combo"
+      ],
+      "text": "Deal 5 damage. If an attack was played earlier this turn, deal 10 instead.",
+      "behavior_key": "conditional",
+      "params": {
+        "condition": {
+          "type": "attack_count_before_gte",
+          "value": 1
+        },
+        "if_true": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 10
+            }
+          }
+        ],
+        "if_false": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 5
+            }
+          }
+        ]
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/silent_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/silent_cards.json",
+        "raw_index_in_file": 5,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 12,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.silent.smoke_cipher",
+      "name": "Smoke Cipher",
+      "character": "silent",
+      "cost": 1,
+      "type": "skill",
+      "rarity": "rare",
+      "tags": [
+        "stealth"
+      ],
+      "text": "A hidden-state stealth mechanic not modeled in planner.",
+      "behavior_key": "text_only",
+      "params": {
+        "reason": "requires hidden-state and untargetable modeling"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/silent_cards.json",
+        "source_kind": "character_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/silent_cards.json",
+        "raw_index_in_file": 6,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 13,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.neutral.traveler_insight",
+      "name": "Traveler Insight",
+      "character": "neutral",
+      "cost": 0,
+      "type": "skill",
+      "rarity": "common",
+      "tags": [
+        "draw"
+      ],
+      "text": "Draw 1 card.",
+      "behavior_key": "draw_cards",
+      "params": {
+        "amount": 1
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/neutral_cards.json",
+        "source_kind": "neutral_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/neutral_cards.json",
+        "raw_index_in_file": 0,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 14,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.neutral.survivor_instinct",
+      "name": "Survivor Instinct",
+      "character": "neutral",
+      "cost": 1,
+      "type": "skill",
+      "rarity": "common",
+      "tags": [
+        "block"
+      ],
+      "text": "Gain 4 Block.",
+      "behavior_key": "gain_block",
+      "params": {
+        "amount": 4
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/neutral_cards.json",
+        "source_kind": "neutral_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/neutral_cards.json",
+        "raw_index_in_file": 1,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 15,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.neutral.rally_banner",
+      "name": "Rally Banner",
+      "character": "neutral",
+      "cost": 1,
+      "type": "power",
+      "rarity": "uncommon",
+      "tags": [
+        "buff"
+      ],
+      "text": "Gain 1 Dexterity.",
+      "behavior_key": "apply_buff",
+      "params": {
+        "key": "dexterity",
+        "amount": 1,
+        "target": "player"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/neutral_cards.json",
+        "source_kind": "neutral_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/neutral_cards.json",
+        "raw_index_in_file": 2,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 16,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.neutral.adaptive_flux",
+      "name": "Adaptive Flux",
+      "character": "neutral",
+      "cost": "X",
+      "type": "skill",
+      "rarity": "rare",
+      "tags": [
+        "variable"
+      ],
+      "text": "Consumes variable energy for context-aware scaling.",
+      "behavior_key": "text_only",
+      "params": {
+        "reason": "X-cost scaling policy not finalized"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/neutral_cards.json",
+        "source_kind": "neutral_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/neutral_cards.json",
+        "raw_index_in_file": 3,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 17,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.neutral.omen_protocol",
+      "name": "Omen Protocol",
+      "character": "neutral",
+      "cost": 2,
+      "type": "skill",
+      "rarity": "rare",
+      "tags": [
+        "trigger"
+      ],
+      "text": "Registers a delayed trigger with custom targeting logic.",
+      "behavior_key": "unimplemented",
+      "params": {
+        "reason": "requires trigger graph support"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/neutral_cards.json",
+        "source_kind": "neutral_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/neutral_cards.json",
+        "raw_index_in_file": 4,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 18,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.status.burn_minor",
+      "name": "Burn Minor",
+      "character": "status",
+      "cost": 1,
+      "type": "status",
+      "rarity": "special",
+      "tags": [
+        "status"
+      ],
+      "text": "At end of turn, lose HP (not modeled).",
+      "behavior_key": "unimplemented",
+      "params": {
+        "reason": "end-of-turn status processing not implemented"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/status_cards.json",
+        "source_kind": "status_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/status_cards.json",
+        "raw_index_in_file": 0,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 19,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.status.dazed_blank",
+      "name": "Dazed Blank",
+      "character": "status",
+      "cost": 1,
+      "type": "status",
+      "rarity": "special",
+      "tags": [
+        "status"
+      ],
+      "text": "Unplayable status card.",
+      "behavior_key": "text_only",
+      "params": {
+        "reason": "status card is intentionally non-executable"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/status_cards.json",
+        "source_kind": "status_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/status_cards.json",
+        "raw_index_in_file": 1,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 20,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.status.frail_echo",
+      "name": "Frail Echo",
+      "character": "status",
+      "cost": 1,
+      "type": "status",
+      "rarity": "special",
+      "tags": [
+        "status",
+        "debuff"
+      ],
+      "text": "Applies frail through a passive trigger.",
+      "behavior_key": "text_only",
+      "params": {
+        "reason": "passive trigger driven status effect"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/status_cards.json",
+        "source_kind": "status_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/status_cards.json",
+        "raw_index_in_file": 2,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 21,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.status.delayed_panic",
+      "name": "Delayed Panic",
+      "character": "status",
+      "cost": 1,
+      "type": "status",
+      "rarity": "special",
+      "tags": [
+        "status",
+        "delayed"
+      ],
+      "text": "On a future turn, applies a custom panic debuff.",
+      "behavior_key": "unimplemented",
+      "params": {
+        "reason": "custom debuff stack rules are missing"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/status_cards.json",
+        "source_kind": "status_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/status_cards.json",
+        "raw_index_in_file": 3,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 22,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.curse.regret_seed",
+      "name": "Regret Seed",
+      "character": "curse",
+      "cost": 1,
+      "type": "curse",
+      "rarity": "special",
+      "tags": [
+        "curse"
+      ],
+      "text": "A curse with end-of-turn penalty text.",
+      "behavior_key": "text_only",
+      "params": {
+        "reason": "curse penalty triggers outside current effect model"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/curse_cards.json",
+        "source_kind": "curse_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/curse_cards.json",
+        "raw_index_in_file": 0,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 23,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.curse.decay_loop",
+      "name": "Decay Loop",
+      "character": "curse",
+      "cost": 1,
+      "type": "curse",
+      "rarity": "special",
+      "tags": [
+        "curse"
+      ],
+      "text": "Decay loop curse with special discard behavior.",
+      "behavior_key": "unimplemented",
+      "params": {
+        "reason": "requires curse lifecycle hooks"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/curse_cards.json",
+        "source_kind": "curse_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/curse_cards.json",
+        "raw_index_in_file": 1,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 24,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.curse.doubt_mark",
+      "name": "Doubt Mark",
+      "character": "curse",
+      "cost": 1,
+      "type": "curse",
+      "rarity": "special",
+      "tags": [
+        "curse",
+        "debuff"
+      ],
+      "text": "A curse that modifies attack output by rule text.",
+      "behavior_key": "text_only",
+      "params": {
+        "reason": "persistent attack penalty not modeled"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/curse_cards.json",
+        "source_kind": "curse_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/curse_cards.json",
+        "raw_index_in_file": 2,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 25,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    },
+    {
+      "id": "sfc1.curse.ruin_contract",
+      "name": "Ruin Contract",
+      "character": "curse",
+      "cost": 1,
+      "type": "curse",
+      "rarity": "special",
+      "tags": [
+        "curse"
+      ],
+      "text": "When drawn, executes a custom event script.",
+      "behavior_key": "unimplemented",
+      "params": {
+        "reason": "draw-trigger event scripting not supported"
+      },
+      "source": {
+        "version": "sample_full_catalog_v1",
+        "source_file": "data/sts2/raw/sample_full_catalog_v1/curse_cards.json",
+        "source_kind": "curse_pool",
+        "import_timestamp": "2026-03-21T17:19:36+00:00",
+        "raw_file": "data/sts2/raw/sample_full_catalog_v1/curse_cards.json",
+        "raw_index_in_file": 3,
+        "source_manifest": "data/sts2/raw/sample_full_catalog_v1/source_manifest.json",
+        "raw_index": 26,
+        "importer": "tools/sts2_import/normalize_cards.py",
+        "schema_version": "sts2_cards.normalized.v1"
+      }
+    }
+  ]
+}
