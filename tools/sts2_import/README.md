@@ -6,6 +6,7 @@ This folder provides an offline import pipeline for Slay the Spire 2 card data.
 
 - `normalize_cards.py`: Convert raw card data into normalized schema (`cards.json` or `cards.<version>.json`).
 - `raw_catalog_builder.py`: Merge a versioned raw directory into a single raw catalog payload.
+- `import_sts2_database.py`: Import external STS2 single-card database JSON files directly into normalized schema.
 - `behavior_registry.py`: Shared behavior key validation for the normalizer.
 - `import_status_report.py`: Generate import coverage/status metrics for a normalized file.
 - `sample_raw_loader.py`: Runtime smoke-check that loads normalized cards into `slay2_ai`.
@@ -39,6 +40,39 @@ Example directory:
 
 `source_manifest.json` can explicitly list files and `source_kind`.
 If manifest omits `files`, the builder auto-scans `*.json` (excluding manifest).
+
+### External STS2 single-card database mode
+
+Use this for third-party/exported single-file-per-card payloads:
+
+- `data/sts2/external/sts2_database/<version>/`
+  - nested folders are allowed (character/status/curse/etc)
+  - each file is a single payload with top-level `card` object
+
+Importer command:
+
+```bash
+python tools/sts2_import/import_sts2_database.py \
+  --input-dir data/sts2/external/sts2_database/0.98.2 \
+  --version 0.98.2
+```
+
+Optional explicit output:
+
+```bash
+python tools/sts2_import/import_sts2_database.py \
+  --input-dir data/sts2/external/sts2_database/0.98.2 \
+  --version 0.98.2 \
+  --output data/sts2/normalized/cards.0.98.2.json
+```
+
+External importer behavior:
+
+- Recursively scans `*.json`.
+- Imports only payloads matching external single-card shape (`game_version`, `database_version`, `card`).
+- Skips invalid/non-matching files with clear skip reason summary.
+- Uses conservative behavior mapping; cards not safely mappable are marked `unimplemented`.
+- Preserves rich source metadata under `source` (`source_kind=sts2_database`, raw names/text/variables/upgrades/original file path).
 
 ## Build merged raw catalog
 
@@ -134,5 +168,10 @@ python tools/sts2_import/sample_raw_loader.py --version sample_full_catalog_v1
 ## Integration note
 
 Runtime adapter lives in `src/slay2_ai/importers/` and remains isolated from GUI main logic.
+
+There are now two import paths with different responsibilities:
+
+- Native raw catalog path: `raw_catalog_builder.py` + `normalize_cards.py` for repository-native raw datasets.
+- External DB path: `import_sts2_database.py` for third-party single-card JSON trees.
 
 Current definition of "full import": catalog ingestion completeness (all cards represented in normalized data), not full executable behavior coverage.

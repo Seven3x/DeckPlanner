@@ -13,6 +13,7 @@
 - `tools/sts2_import/`
   - `normalize_cards.py`
   - `raw_catalog_builder.py`
+  - `import_sts2_database.py`
   - `behavior_registry.py`
   - `import_status_report.py`
   - `sample_raw_loader.py`
@@ -47,6 +48,14 @@ Each normalized card uses these fields:
 
 ## Raw -> normalized flow
 
+Two import paths are supported:
+
+1. Native raw catalog path (`raw_catalog_builder.py` + `normalize_cards.py`)
+2. External single-card database path (`import_sts2_database.py`)
+
+The native path remains responsible for repository-owned raw catalogs.
+The external path is dedicated to full-catalog ingestion from third-party single-card JSON exports.
+
 ### Single file mode
 
 1. Put raw JSON under `data/sts2/raw/`.
@@ -70,6 +79,22 @@ Validation includes:
 - behavior key validity
 - nested behavior validation for `schedule_effect` and `conditional`
 - normalized payload schema-structure checks (`card_count`, required fields, enum fields)
+
+### External single-card database mode
+
+1. Put external files under a recursive directory tree, e.g.:
+   - `data/sts2/external/sts2_database/<version>/.../*.json`
+2. Run:
+   - `python tools/sts2_import/import_sts2_database.py --input-dir ... --version <version>`
+3. Importer recursively scans all `*.json`, imports only recognized payload shape, and skips invalid/non-matching files with skip details.
+4. Script writes:
+   - `data/sts2/normalized/cards.<version>.json`
+
+External importer mapping rules:
+
+- Conservatively maps only very safe behaviors (`deal_damage`, `gain_block`, `draw_cards`, `gain_energy`) when text is clearly single-effect.
+- Complex/power/triggered/ambiguous cards default to `unimplemented`.
+- Keeps rich provenance in `source`, including original file path and raw text/variables/upgrades metadata.
 
 ## behavior_key design
 
