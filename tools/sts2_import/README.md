@@ -1,30 +1,43 @@
-# STS2 Import Tools
+# STS2 导入工具
 
-This folder provides an offline import pipeline for Slay the Spire 2 card data.
+该目录提供 Slay the Spire 2 卡牌数据的离线导入流水线。
 
-## Directory purpose
+## 目录说明
 
-- `normalize_cards.py`: Convert raw card data into normalized schema (`cards.json` or `cards.<version>.json`).
-- `raw_catalog_builder.py`: Merge a versioned raw directory into a single raw catalog payload.
-- `import_sts2_database.py`: Import external STS2 single-card database JSON files directly into normalized schema.
-- `behavior_registry.py`: Shared behavior key validation for the normalizer.
-- `import_status_report.py`: Generate import coverage/status metrics for a normalized file.
-- `sample_raw_loader.py`: Runtime smoke-check that loads normalized cards into `slay2_ai`.
+- `normalize_cards.py`：将仓库原生 raw 数据规范化为 `cards.json` 或 `cards.<version>.json`
+- `raw_catalog_builder.py`：将版本目录下的多 raw 文件合并为一个 catalog
+- `import_sts2_database.py`：将外部“单文件单卡 JSON”直接导入 normalized schema
+- `behavior_registry.py`：normalizer 使用的行为键校验逻辑
+- `import_status_report.py`：生成 normalized 文件的导入覆盖率统计
+- `unimplemented_behavior_report.py`：对 `behavior_key == "unimplemented"` 做分布/文本/模板与候选规则分析
+- `sample_raw_loader.py`：运行时加载 smoke check，验证导入结果可被 `slay2_ai` 消费
 
-## Raw data layouts
+## 两条导入路径
 
-### Single file mode (legacy-compatible)
+仓库现在支持两条职责分离的导入路径：
 
-- Place one JSON file under `data/sts2/raw/`.
-- Payload can be either:
-  - JSON array of cards, or
-  - JSON object with `cards: []`.
+1. 原生 raw catalog 路径（`raw_catalog_builder.py` + `normalize_cards.py`）
+2. 外部单卡数据库路径（`import_sts2_database.py`）
 
-Reference sample: `data/sts2/raw/cards_sample.json`.
+职责区别：
 
-### Versioned directory mode (new)
+- 原生路径用于仓库维护的 raw 数据集
+- 外部路径用于第三方全量单卡 JSON 数据树
 
-Use this structure:
+## 原始数据组织
+
+### 1) 单文件模式（兼容旧流程）
+
+- 将一个 JSON 放在 `data/sts2/raw/`
+- payload 支持两种：
+  - 卡牌数组 `[]`
+  - 对象 `{"cards": []}`
+
+参考样例：`data/sts2/raw/cards_sample.json`
+
+### 2) 版本目录模式（原生 raw）
+
+目录结构示例：
 
 - `data/sts2/raw/<version>/`
   - `source_manifest.json`
@@ -34,54 +47,31 @@ Use this structure:
   - `status_cards.json`
   - `curse_cards.json`
 
-Example directory:
+示例目录：`data/sts2/raw/sample_full_catalog_v1/`
 
-- `data/sts2/raw/sample_full_catalog_v1/`
+说明：
 
-`source_manifest.json` can explicitly list files and `source_kind`.
-If manifest omits `files`, the builder auto-scans `*.json` (excluding manifest).
+- `source_manifest.json` 可显式声明文件列表与 `source_kind`
+- 若 manifest 不含 `files`，builder 会自动扫描 `*.json`（排除 manifest）
 
-### External STS2 single-card database mode
+### 3) 外部单卡数据库模式（新）
 
-Use this for third-party/exported single-file-per-card payloads:
+建议结构：
 
 - `data/sts2/external/sts2_database/<version>/`
-  - nested folders are allowed (character/status/curse/etc)
-  - each file is a single payload with top-level `card` object
+  - 可按角色/状态/诅咒等任意分层
+  - 每个文件是一个单卡 payload（顶层含 `card`）
 
-Importer command:
+## 使用方式
 
-```bash
-python tools/sts2_import/import_sts2_database.py \
-  --input-dir data/sts2/external/sts2_database/0.98.2 \
-  --version 0.98.2
-```
-
-Optional explicit output:
-
-```bash
-python tools/sts2_import/import_sts2_database.py \
-  --input-dir data/sts2/external/sts2_database/0.98.2 \
-  --version 0.98.2 \
-  --output data/sts2/normalized/cards.0.98.2.json
-```
-
-External importer behavior:
-
-- Recursively scans `*.json`.
-- Imports only payloads matching external single-card shape (`game_version`, `database_version`, `card`).
-- Skips invalid/non-matching files with clear skip reason summary.
-- Uses conservative behavior mapping; cards not safely mappable are marked `unimplemented`.
-- Preserves rich source metadata under `source` (`source_kind=sts2_database`, raw names/text/variables/upgrades/original file path).
-
-## Build merged raw catalog
+### A. 构建原生 raw 合并 catalog（可选）
 
 ```bash
 python tools/sts2_import/raw_catalog_builder.py \
   --input-dir data/sts2/raw/sample_full_catalog_v1
 ```
 
-Optional output override:
+可选输出路径：
 
 ```bash
 python tools/sts2_import/raw_catalog_builder.py \
@@ -89,16 +79,9 @@ python tools/sts2_import/raw_catalog_builder.py \
   --output /tmp/sts2_catalog_merged.json
 ```
 
-Builder behavior:
+### B. 规范化原生 raw
 
-- Merges multiple raw files from one version directory.
-- Deduplicates repeated `id` rows when payload is identical.
-- Raises an error for conflicting duplicate `id` payloads.
-- Adds source metadata per card (`version`, `source_file`, `source_kind`, `import_timestamp`).
-
-## Run normalization
-
-### Single file -> `cards.json`
+单文件到 `cards.json`：
 
 ```bash
 python tools/sts2_import/normalize_cards.py \
@@ -106,14 +89,14 @@ python tools/sts2_import/normalize_cards.py \
   --output data/sts2/normalized/cards.json
 ```
 
-### Versioned directory -> `cards.<version>.json`
+版本目录到 `cards.<version>.json`：
 
 ```bash
 python tools/sts2_import/normalize_cards.py \
   --input-dir data/sts2/raw/sample_full_catalog_v1
 ```
 
-Equivalent explicit version/output:
+等价显式写法：
 
 ```bash
 python tools/sts2_import/normalize_cards.py \
@@ -122,20 +105,52 @@ python tools/sts2_import/normalize_cards.py \
   --output data/sts2/normalized/cards.sample_full_catalog_v1.json
 ```
 
-Notes:
+说明：
 
-- `--input` and `--input-dir` are mutually exclusive.
-- Normalizer keeps behavior validation and schema-structure validation.
-- Output includes `card_count`.
+- `--input` 与 `--input-dir` 互斥
+- normalizer 会执行行为参数校验和 schema 结构校验
+- 输出包含 `card_count`
 
-## Generate import status report
+### C. 导入外部单卡数据库（新）
+
+基础命令：
+
+```bash
+python tools/sts2_import/import_sts2_database.py \
+  --input-dir data/sts2/external/sts2_database/0.98.2 \
+  --version 0.98.2
+```
+
+可选输出路径：
+
+```bash
+python tools/sts2_import/import_sts2_database.py \
+  --input-dir data/sts2/external/sts2_database/0.98.2 \
+  --version 0.98.2 \
+  --output data/sts2/normalized/cards.0.98.2.json
+```
+
+Importer 行为：
+
+- 递归扫描 `--input-dir` 下所有 `.json`
+- 仅导入符合“外部单卡数据库结构”的文件
+- 不符合或解析失败的文件会跳过并统计
+- 采用保守行为映射，仅对极少数明确文本映射到：
+  - `deal_damage`
+  - `gain_block`
+  - `draw_cards`
+  - `gain_energy`
+- 无法安全映射的卡统一标记 `unimplemented`
+- 在 `source` 中保留来源信息（版本、原始文本、变量、升级信息、原文件路径等）
+
+## 导入状态报告
 
 ```bash
 python tools/sts2_import/import_status_report.py \
   --input data/sts2/normalized/cards.sample_full_catalog_v1.json
 ```
 
-This prints:
+命令输出包含：
 
 - total cards
 - executable cards
@@ -147,31 +162,48 @@ This prints:
 - type counts
 - rarity counts
 
-It also writes markdown by default:
+默认还会写入 markdown：
 
 - `docs/sts2_import_status_<version>.md`
 
-## Load normalized cards into slay2_ai
+## 未实现行为分析报告
 
-Default file (`cards.json`):
+用于分析 `behavior_key == "unimplemented"` 的卡牌模式，给下一阶段补规则提供优先级依据。
+
+```bash
+python tools/sts2_import/unimplemented_behavior_report.py \
+  --input data/sts2/normalized/cards.0.98.2.json
+```
+
+默认输出：
+
+- 终端统计摘要（总体分布、Top 模板、候选分组计数）
+- `docs/sts2_unimplemented_analysis_<version>.md`
+- `data/sts2/normalized/unimplemented_analysis.<version>.json`
+
+分析范围（仅统计，不改映射）：
+
+- unimplemented 总量与按 character/type/rarity/cost 分布
+- 文本高频（完整文本、开头短语、关键词）
+- 轻量模板归并（数字归一化、标点统一、句式聚合）
+- 安全扩展候选分组（直接映射/参数提取/需新 trigger/effect/复杂暂缓）
+
+## 运行时加载检查
+
+默认文件（`cards.json`）：
 
 ```bash
 python tools/sts2_import/sample_raw_loader.py
 ```
 
-Versioned file (`cards.<version>.json`):
+版本文件（`cards.<version>.json`）：
 
 ```bash
 python tools/sts2_import/sample_raw_loader.py --version sample_full_catalog_v1
 ```
 
-## Integration note
+## 关键说明
 
-Runtime adapter lives in `src/slay2_ai/importers/` and remains isolated from GUI main logic.
-
-There are now two import paths with different responsibilities:
-
-- Native raw catalog path: `raw_catalog_builder.py` + `normalize_cards.py` for repository-native raw datasets.
-- External DB path: `import_sts2_database.py` for third-party single-card JSON trees.
-
-Current definition of "full import": catalog ingestion completeness (all cards represented in normalized data), not full executable behavior coverage.
+- `unimplemented` 是预期结果，不代表导入失败
+- 当前“全量导入”定义为 catalog 完整性，不等于全部卡牌都已可执行
+- 运行时导入适配位于 `src/slay2_ai/importers/`，与 GUI 主流程保持解耦

@@ -1,33 +1,34 @@
 # DeckPlanner
 
-A Python prototype for card-game decision planning based on **state simulation**, **event-driven effects**, and **search over action sequences**.
+一个基于 **状态模拟**、**事件驱动效果** 与 **动作序列搜索** 的卡牌决策规划 Python 原型项目。
 
-## Goal
+## 项目目标
 
-DeckPlanner is a local research project for building a card-game decision engine inspired by *Slay the Spire*-style combat.
+DeckPlanner 是一个本地研究型项目，目标是构建受 *Slay the Spire* 战斗启发的卡牌决策引擎。
 
-The project does **not** assign a fixed score to each card. Instead, it models:
+本项目**不**给每张卡固定分数，而是显式建模：
 
-- game state transitions
-- atomic card effects
-- triggers and delayed effects
-- turn-level action planning
-- heuristic evaluation of resulting states
+- 游戏状态转移
+- 原子化卡牌效果
+- 触发器与延迟效果
+- 回合内动作规划
+- 结果状态启发式评估
 
-The main goal is to answer:
+核心问题是：
 
-> Given the current state `s`, what is the best action sequence this turn?
+> 给定当前状态 `s`，本回合最优动作序列是什么？
 
 ---
 
-## Design Principles
+## 设计原则
 
-### 1. State-first, not static card scoring
-Card value is state-dependent.  
-We evaluate actions in context rather than giving every card a permanent score.
+### 1. 状态优先，而非静态卡牌评分
 
-### 2. Effects as composable atomic operations
-Complex cards should be represented as combinations of reusable effect primitives, such as:
+卡牌价值依赖上下文状态，不做永久静态评分。
+
+### 2. 效果原子化与可组合
+
+复杂卡牌应拆解为可复用效果原语，例如：
 
 - `DealDamage`
 - `GainBlock`
@@ -40,8 +41,9 @@ Complex cards should be represented as combinations of reusable effect primitive
 - `Conditional`
 - `ReplayCardEffect`
 
-### 3. Event-driven architecture
-The engine should support effects that respond to events like:
+### 3. 事件驱动架构
+
+引擎应支持基于事件响应的效果，例如：
 
 - `on_turn_start`
 - `on_turn_end`
@@ -54,36 +56,45 @@ The engine should support effects that respond to events like:
 - `on_discard`
 - `on_exhaust`
 
-### 4. Explicit delayed / cross-turn effects
-Delayed effects must be stored in state and executed later.  
-They should **not** be flattened into an immediate heuristic bonus.
+### 4. 显式延迟/跨回合效果
 
-### 5. Searchable action space
-The planner searches over playable card sequences within the current turn using:
+延迟效果必须进入状态并在后续时点执行，不能被拍平成即时启发式加分。
+
+### 5. 可搜索动作空间
+
+规划器在当前回合内对可出牌序列进行搜索，当前支持：
 
 - DFS
-- optional beam search
-- optional rollout later
+- 可选 beam search
+- 后续可扩展 rollout
 
 ---
 
-## Project Status
+## 当前状态
 
-Current target is an **MVP** that supports:
+当前目标是 **MVP**，覆盖：
 
-- one player
-- one enemy
-- hand / draw pile / discard pile / exhaust pile
-- basic card play
-- start/end of turn flow
-- delayed effects
-- single-use triggers
-- simple heuristic evaluator
-- turn-level sequence planner
+- 单玩家
+- 单敌人
+- 手牌 / 抽牌堆 / 弃牌堆 / 消耗堆
+- 基础出牌流程
+- 回合开始/结束流程
+- 延迟效果
+- 单次触发器
+- 简单启发式评估
+- 回合内序列规划
 
 ---
 
-## Planned Structure
+## 推荐运行方式
+
+```bash
+PYTHONPATH=src python3 -m slay2_ai.demo
+```
+
+---
+
+## 计划结构
 
 ```text
 DeckPlanner/
@@ -98,3 +109,4 @@ DeckPlanner/
 └── tests/
     ├── test_effects.py
     └── test_planner.py
+```

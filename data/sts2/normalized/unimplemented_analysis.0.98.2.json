@@ -1,0 +1,3463 @@
+{
+  "generated_at": "2026-03-22T15:33:06+00:00",
+  "source_file": "data/sts2/normalized/cards.0.98.2.json",
+  "version": "0.98.2",
+  "summary": {
+    "total_cards": 577,
+    "unimplemented_cards": 543,
+    "unimplemented_ratio": 0.941075
+  },
+  "counts_by_character": [
+    {
+      "key": "regent",
+      "count": 84
+    },
+    {
+      "key": "defect",
+      "count": 83
+    },
+    {
+      "key": "ironclad",
+      "count": 83
+    },
+    {
+      "key": "necrobinder",
+      "count": 82
+    },
+    {
+      "key": "silent",
+      "count": 81
+    },
+    {
+      "key": "colorless",
+      "count": 61
+    },
+    {
+      "key": "event",
+      "count": 26
+    },
+    {
+      "key": "curse",
+      "count": 18
+    },
+    {
+      "key": "token",
+      "count": 11
+    },
+    {
+      "key": "status",
+      "count": 10
+    },
+    {
+      "key": "quest",
+      "count": 3
+    },
+    {
+      "key": "deprecated",
+      "count": 1
+    }
+  ],
+  "counts_by_type": [
+    {
+      "key": "skill",
+      "count": 213
+    },
+    {
+      "key": "attack",
+      "count": 181
+    },
+    {
+      "key": "power",
+      "count": 112
+    },
+    {
+      "key": "curse",
+      "count": 18
+    },
+    {
+      "key": "status",
+      "count": 14
+    },
+    {
+      "key": "other",
+      "count": 5
+    }
+  ],
+  "counts_by_rarity": [
+    {
+      "key": "uncommon",
+      "count": 210
+    },
+    {
+      "key": "rare",
+      "count": 153
+    },
+    {
+      "key": "common",
+      "count": 93
+    },
+    {
+      "key": "special",
+      "count": 78
+    },
+    {
+      "key": "basic",
+      "count": 9
+    }
+  ],
+  "counts_by_cost": [
+    {
+      "key": "1",
+      "count": 269
+    },
+    {
+      "key": "0",
+      "count": 100
+    },
+    {
+      "key": "2",
+      "count": 94
+    },
+    {
+      "key": "3",
+      "count": 38
+    },
+    {
+      "key": "-1",
+      "count": 29
+    },
+    {
+      "key": "-2",
+      "count": 10
+    },
+    {
+      "key": "4",
+      "count": 1
+    },
+    {
+      "key": "5",
+      "count": 1
+    },
+    {
+      "key": "6",
+      "count": 1
+    }
+  ],
+  "top_texts": [
+    {
+      "text": "不能被打出",
+      "count": 3,
+      "sample_cards": [
+        "Injury",
+        "Soot",
+        "Wound"
+      ]
+    },
+    {
+      "text": "永恒,不能被打出",
+      "count": 2,
+      "sample_cards": [
+        "Curse of the Bell",
+        "Greed"
+      ]
+    },
+    {
+      "text": "消耗",
+      "count": 2,
+      "sample_cards": [
+        "Debris",
+        "Spore Mind"
+      ]
+    },
+    {
+      "text": "奇巧,获得1点敏捷。\n获得4点荆棘。",
+      "count": 1,
+      "sample_cards": [
+        "Abrasive"
+      ]
+    },
+    {
+      "text": "中毒会额外触发1次。",
+      "count": 1,
+      "sample_cards": [
+        "Accelerant"
+      ]
+    },
+    {
+      "text": "小刀额外造成4点伤害。",
+      "count": 1,
+      "sample_cards": [
+        "Accuracy"
+      ]
+    },
+    {
+      "text": "抽3张牌。\n丢弃1张牌。",
+      "count": 1,
+      "sample_cards": [
+        "Acrobatics"
+      ]
+    },
+    {
+      "text": "造成18点伤害。\n将这张牌的一张0能量复制品添加到你的弃牌堆。",
+      "count": 1,
+      "sample_cards": [
+        "Adaptive Strike"
+      ]
+    },
+    {
+      "text": "消耗,获得1能量。\n抽2张牌。",
+      "count": 1,
+      "sample_cards": [
+        "Adrenaline"
+      ]
+    },
+    {
+      "text": "你每打出一张牌，都获得1点格挡。",
+      "count": 1,
+      "sample_cards": [
+        "Afterimage"
+      ]
+    },
+    {
+      "text": "消耗,召唤6。",
+      "count": 1,
+      "sample_cards": [
+        "Afterlife"
+      ]
+    },
+    {
+      "text": "在你的回合开始时，将你弃牌堆的一张随机攻击牌放入你的手牌并将其升级。",
+      "count": 1,
+      "sample_cards": [
+        "Aggression"
+      ]
+    },
+    {
+      "text": "消耗,获得一瓶随机药水。",
+      "count": 1,
+      "sample_cards": [
+        "Alchemize"
+      ]
+    },
+    {
+      "text": "获得2能量。",
+      "count": 1,
+      "sample_cards": [
+        "Alignment"
+      ]
+    },
+    {
+      "text": "造成10点伤害。\n将你弃牌堆中的所有0能量牌放入你的手牌。",
+      "count": 1,
+      "sample_cards": [
+        "All for One"
+      ]
+    },
+    {
+      "text": "造成6点伤害。\n将一张此牌的复制品加入你的弃牌堆。",
+      "count": 1,
+      "sample_cards": [
+        "Anger"
+      ]
+    },
+    {
+      "text": "消耗,将你抽牌堆中的所有稀有牌放入你的手牌。",
+      "count": 1,
+      "sample_cards": [
+        "Anointed"
+      ]
+    },
+    {
+      "text": "在本回合获得3点敏捷。",
+      "count": 1,
+      "sample_cards": [
+        "Anticipate"
+      ]
+    },
+    {
+      "text": "消耗,固有,升级你的全部卡牌。",
+      "count": 1,
+      "sample_cards": [
+        "Apotheosis"
+      ]
+    },
+    {
+      "text": "虚无,消耗,获得1层无实体。",
+      "count": 1,
+      "sample_cards": [
+        "Apparition"
+      ]
+    },
+    {
+      "text": "获得5点格挡。\n升级你手牌中的一张牌。",
+      "count": 1,
+      "sample_cards": [
+        "Armaments"
+      ]
+    },
+    {
+      "text": "你每打出一张无色牌，都获得1点力量。",
+      "count": 1,
+      "sample_cards": [
+        "Arsenal"
+      ]
+    },
+    {
+      "text": "永恒,不能被打出,虚无",
+      "count": 1,
+      "sample_cards": [
+        "Ascender's Bane"
+      ]
+    },
+    {
+      "text": "造成6点伤害。\n你的消耗牌堆中每有一张牌，伤害增加3。",
+      "count": 1,
+      "sample_cards": [
+        "Ashen Strike"
+      ]
+    },
+    {
+      "text": "固有,消耗,造成10点伤害。\n给予1层易伤。",
+      "count": 1,
+      "sample_cards": [
+        "Assassinate"
+      ]
+    },
+    {
+      "text": "对所有敌人造成14点伤害。",
+      "count": 1,
+      "sample_cards": [
+        "Astral Pulse"
+      ]
+    },
+    {
+      "text": "你每抽10张牌，获得1能量。",
+      "count": 1,
+      "sample_cards": [
+        "Automation"
+      ]
+    },
+    {
+      "text": "获得5点格挡。\n抽2张牌。",
+      "count": 1,
+      "sample_cards": [
+        "Backflip"
+      ]
+    },
+    {
+      "text": "永恒,不能被打出,在你的回合结束时，如果这张牌在你的手牌中，则失去13点生命。",
+      "count": 1,
+      "sample_cards": [
+        "Bad Luck"
+      ]
+    },
+    {
+      "text": "造成7点伤害。\n生成1个闪电充能球。",
+      "count": 1,
+      "sample_cards": [
+        "Ball Lightning"
+      ]
+    }
+  ],
+  "top_prefixes": [
+    {
+      "prefix": "造成<N>点伤害",
+      "count": 95
+    },
+    {
+      "prefix": "消耗",
+      "count": 80
+    },
+    {
+      "prefix": "获得<N>点格挡",
+      "count": 43
+    },
+    {
+      "prefix": "在你的回合开始时",
+      "count": 24
+    },
+    {
+      "prefix": "不能被打出",
+      "count": 20
+    },
+    {
+      "prefix": "对所有敌人造成<N>点伤害",
+      "count": 14
+    },
+    {
+      "prefix": "虚无",
+      "count": 11
+    },
+    {
+      "prefix": "奥斯提造成<N>点伤害",
+      "count": 11
+    },
+    {
+      "prefix": "抽<N>张牌",
+      "count": 8
+    },
+    {
+      "prefix": "保留",
+      "count": 8
+    },
+    {
+      "prefix": "奇巧",
+      "count": 6
+    },
+    {
+      "prefix": "永恒",
+      "count": 6
+    },
+    {
+      "prefix": "铸造<N>",
+      "count": 6
+    },
+    {
+      "prefix": "造成<N>点伤害两次",
+      "count": 6
+    },
+    {
+      "prefix": "在你的回合结束时",
+      "count": 5
+    },
+    {
+      "prefix": "失去<N>点生命",
+      "count": 5
+    },
+    {
+      "prefix": "获得<N>能量",
+      "count": 4
+    },
+    {
+      "prefix": "固有",
+      "count": 4
+    },
+    {
+      "prefix": "召唤<N>",
+      "count": 4
+    },
+    {
+      "prefix": "你每打出一张牌",
+      "count": 3
+    },
+    {
+      "prefix": "造成<N>点伤害<N>次",
+      "count": 3
+    },
+    {
+      "prefix": "获得<N>层覆甲",
+      "count": 3
+    },
+    {
+      "prefix": "获得<N>☆",
+      "count": 3
+    },
+    {
+      "prefix": "获得<N>点力量",
+      "count": 3
+    },
+    {
+      "prefix": "获得<N>点集中",
+      "count": 2
+    },
+    {
+      "prefix": "在这个回合",
+      "count": 2
+    },
+    {
+      "prefix": "获得<N>个充能球栏位",
+      "count": 2
+    },
+    {
+      "prefix": "打出此牌后",
+      "count": 2
+    },
+    {
+      "prefix": "每当有一张牌被消耗时",
+      "count": 2
+    },
+    {
+      "prefix": "每当你打出一张灵魂时",
+      "count": 2
+    }
+  ],
+  "top_keywords": [
+    {
+      "keyword": "deal",
+      "count": 229,
+      "match_patterns": [
+        "\\bdeal\\b",
+        "造成",
+        "攻击"
+      ]
+    },
+    {
+      "keyword": "gain",
+      "count": 166,
+      "match_patterns": [
+        "\\bgain\\b",
+        "获得"
+      ]
+    },
+    {
+      "keyword": "exhaust",
+      "count": 107,
+      "match_patterns": [
+        "\\bexhaust\\b",
+        "消耗"
+      ]
+    },
+    {
+      "keyword": "draw",
+      "count": 101,
+      "match_patterns": [
+        "\\bdraw\\b",
+        "抽",
+        "抽牌"
+      ]
+    },
+    {
+      "keyword": "block",
+      "count": 86,
+      "match_patterns": [
+        "\\bblock\\b",
+        "格挡"
+      ]
+    },
+    {
+      "keyword": "energy",
+      "count": 61,
+      "match_patterns": [
+        "\\benergy\\b",
+        "能量"
+      ]
+    },
+    {
+      "keyword": "apply",
+      "count": 56,
+      "match_patterns": [
+        "\\bapply\\b",
+        "给予",
+        "施加"
+      ]
+    },
+    {
+      "keyword": "random",
+      "count": 43,
+      "match_patterns": [
+        "\\brandom\\b",
+        "随机"
+      ]
+    },
+    {
+      "keyword": "whenever",
+      "count": 43,
+      "match_patterns": [
+        "\\bwhenever\\b",
+        "每当"
+      ]
+    },
+    {
+      "keyword": "at_the_start",
+      "count": 40,
+      "match_patterns": [
+        "at the start",
+        "回合开始时"
+      ]
+    },
+    {
+      "keyword": "if",
+      "count": 34,
+      "match_patterns": [
+        "\\bif\\b",
+        "如果"
+      ]
+    },
+    {
+      "keyword": "vulnerable",
+      "count": 27,
+      "match_patterns": [
+        "\\bvulnerable\\b",
+        "易伤"
+      ]
+    },
+    {
+      "keyword": "for_each",
+      "count": 22,
+      "match_patterns": [
+        "for each",
+        "每有",
+        "每张",
+        "每次"
+      ]
+    },
+    {
+      "keyword": "weak",
+      "count": 21,
+      "match_patterns": [
+        "\\bweak\\b",
+        "虚弱"
+      ]
+    },
+    {
+      "keyword": "at_the_end",
+      "count": 16,
+      "match_patterns": [
+        "at the end",
+        "回合结束时"
+      ]
+    },
+    {
+      "keyword": "retain",
+      "count": 16,
+      "match_patterns": [
+        "\\bretain\\b",
+        "保留"
+      ]
+    },
+    {
+      "keyword": "choose",
+      "count": 15,
+      "match_patterns": [
+        "\\bchoose\\b",
+        "选择"
+      ]
+    },
+    {
+      "keyword": "poison",
+      "count": 12,
+      "match_patterns": [
+        "\\bpoison\\b",
+        "中毒"
+      ]
+    },
+    {
+      "keyword": "discard",
+      "count": 11,
+      "match_patterns": [
+        "\\bdiscard\\b",
+        "丢弃"
+      ]
+    },
+    {
+      "keyword": "upgrade",
+      "count": 4,
+      "match_patterns": [
+        "\\bupgrade\\b",
+        "升级"
+      ]
+    },
+    {
+      "keyword": "burn",
+      "count": 1,
+      "match_patterns": [
+        "\\bburn\\b",
+        "灼伤"
+      ]
+    }
+  ],
+  "normalized_patterns": [
+    {
+      "pattern": "造成<N>点伤害. / 给予<N>层易伤",
+      "count": 4,
+      "type_mix": {
+        "attack": 4
+      },
+      "sample_cards": [
+        {
+          "name": "Beam Cell",
+          "id": "BeamCell",
+          "character": "defect",
+          "type": "attack",
+          "text": "造成3点伤害。 / 给予1层易伤。"
+        },
+        {
+          "name": "Squash",
+          "id": "Squash",
+          "character": "event",
+          "type": "attack",
+          "text": "造成10点伤害。 / 给予2层易伤。"
+        },
+        {
+          "name": "Bash",
+          "id": "Bash",
+          "character": "ironclad",
+          "type": "attack",
+          "text": "造成8点伤害。 / 给予2层易伤。"
+        },
+        {
+          "name": "Break",
+          "id": "Break",
+          "character": "ironclad",
+          "type": "attack",
+          "text": "造成20点伤害。 / 给予5层易伤。"
+        }
+      ]
+    },
+    {
+      "pattern": "造成<N>点伤害. / 给予<N>层虚弱. / 给予<N>层易伤",
+      "count": 4,
+      "type_mix": {
+        "attack": 4
+      },
+      "sample_cards": [
+        {
+          "name": "Uppercut",
+          "id": "Uppercut",
+          "character": "ironclad",
+          "type": "attack",
+          "text": "造成13点伤害。 / 给予1层虚弱。 / 给予1层易伤。"
+        },
+        {
+          "name": "Comet",
+          "id": "Comet",
+          "character": "regent",
+          "type": "attack",
+          "text": "造成33点伤害。 / 给予3层虚弱。 / 给予3层易伤。"
+        },
+        {
+          "name": "Falling Star",
+          "id": "FallingStar",
+          "character": "regent",
+          "type": "attack",
+          "text": "造成7点伤害。 / 给予1层虚弱。 / 给予1层易伤。"
+        },
+        {
+          "name": "Gamma Blast",
+          "id": "GammaBlast",
+          "character": "regent",
+          "type": "attack",
+          "text": "造成13点伤害。 / 给予2层虚弱。 / 给予2层易伤。"
+        }
+      ]
+    },
+    {
+      "pattern": "获得<N>点格挡. / 抽<N>张牌",
+      "count": 3,
+      "type_mix": {
+        "skill": 3
+      },
+      "sample_cards": [
+        {
+          "name": "Finesse",
+          "id": "Finesse",
+          "character": "colorless",
+          "type": "skill",
+          "text": "获得4点格挡。 / 抽1张牌。"
+        },
+        {
+          "name": "Shrug It Off",
+          "id": "ShrugItOff",
+          "character": "ironclad",
+          "type": "skill",
+          "text": "获得8点格挡。 / 抽1张牌。"
+        },
+        {
+          "name": "Backflip",
+          "id": "Backflip",
+          "character": "silent",
+          "type": "skill",
+          "text": "获得5点格挡。 / 抽2张牌。"
+        }
+      ]
+    },
+    {
+      "pattern": "获得<N>层覆甲",
+      "count": 3,
+      "type_mix": {
+        "power": 3
+      },
+      "sample_cards": [
+        {
+          "name": "Eternal Armor",
+          "id": "EternalArmor",
+          "character": "colorless",
+          "type": "power",
+          "text": "获得7层覆甲。"
+        },
+        {
+          "name": "Stone Armor",
+          "id": "StoneArmor",
+          "character": "ironclad",
+          "type": "power",
+          "text": "获得4层覆甲。"
+        },
+        {
+          "name": "Neutron Aegis",
+          "id": "NeutronAegis",
+          "character": "regent",
+          "type": "power",
+          "text": "获得8层覆甲。"
+        }
+      ]
+    },
+    {
+      "pattern": "不能被打出",
+      "count": 3,
+      "type_mix": {
+        "status": 2,
+        "curse": 1
+      },
+      "sample_cards": [
+        {
+          "name": "Injury",
+          "id": "Injury",
+          "character": "curse",
+          "type": "curse",
+          "text": "不能被打出"
+        },
+        {
+          "name": "Soot",
+          "id": "Soot",
+          "character": "status",
+          "type": "status",
+          "text": "不能被打出"
+        },
+        {
+          "name": "Wound",
+          "id": "Wound",
+          "character": "status",
+          "type": "status",
+          "text": "不能被打出"
+        }
+      ]
+    },
+    {
+      "pattern": "消耗, 获得<N>能量",
+      "count": 3,
+      "type_mix": {
+        "skill": 3
+      },
+      "sample_cards": [
+        {
+          "name": "Production",
+          "id": "Production",
+          "character": "colorless",
+          "type": "skill",
+          "text": "消耗,获得2能量。"
+        },
+        {
+          "name": "Supercritical",
+          "id": "Supercritical",
+          "character": "defect",
+          "type": "skill",
+          "text": "消耗,获得4能量。"
+        },
+        {
+          "name": "Wisp",
+          "id": "Wisp",
+          "character": "necrobinder",
+          "type": "skill",
+          "text": "消耗,获得1能量。"
+        }
+      ]
+    },
+    {
+      "pattern": "抽<N>张牌. / 丢弃<N>张牌",
+      "count": 2,
+      "type_mix": {
+        "skill": 2
+      },
+      "sample_cards": [
+        {
+          "name": "Acrobatics",
+          "id": "Acrobatics",
+          "character": "silent",
+          "type": "skill",
+          "text": "抽3张牌。 / 丢弃1张牌。"
+        },
+        {
+          "name": "Prepared",
+          "id": "Prepared",
+          "character": "silent",
+          "type": "skill",
+          "text": "抽1张牌。 / 丢弃1张牌。"
+        }
+      ]
+    },
+    {
+      "pattern": "消耗, 获得<N>能量. / 抽<N>张牌",
+      "count": 2,
+      "type_mix": {
+        "skill": 2
+      },
+      "sample_cards": [
+        {
+          "name": "Adrenaline",
+          "id": "Adrenaline",
+          "character": "silent",
+          "type": "skill",
+          "text": "消耗,获得1能量。 / 抽2张牌。"
+        },
+        {
+          "name": "Fuel",
+          "id": "Fuel",
+          "character": "token",
+          "type": "skill",
+          "text": "消耗,获得1能量。 / 抽1张牌。"
+        }
+      ]
+    },
+    {
+      "pattern": "消耗, 召唤<N>",
+      "count": 2,
+      "type_mix": {
+        "skill": 2
+      },
+      "sample_cards": [
+        {
+          "name": "Afterlife",
+          "id": "Afterlife",
+          "character": "necrobinder",
+          "type": "skill",
+          "text": "消耗,召唤6。"
+        },
+        {
+          "name": "Reanimate",
+          "id": "Reanimate",
+          "character": "necrobinder",
+          "type": "skill",
+          "text": "消耗,召唤20。"
+        }
+      ]
+    },
+    {
+      "pattern": "造成<N>点伤害. / 在你的下个回合开始时, 将此卡返回你的手牌",
+      "count": 2,
+      "type_mix": {
+        "attack": 2
+      },
+      "sample_cards": [
+        {
+          "name": "Bolas",
+          "id": "Bolas",
+          "character": "colorless",
+          "type": "attack",
+          "text": "造成3点伤害。 / 在你的下个回合开始时，将此卡返回你的手牌。"
+        },
+        {
+          "name": "Thrumming Hatchet",
+          "id": "ThrummingHatchet",
+          "character": "colorless",
+          "type": "attack",
+          "text": "造成11点伤害。 / 在你的下个回合开始时，将此卡返回你的手牌。"
+        }
+      ]
+    },
+    {
+      "pattern": "不能被打出, 在你的回合结束时, 如果这张牌在你的手牌中, 你受到<N>点伤害",
+      "count": 2,
+      "type_mix": {
+        "curse": 1,
+        "status": 1
+      },
+      "sample_cards": [
+        {
+          "name": "Decay",
+          "id": "Decay",
+          "character": "curse",
+          "type": "curse",
+          "text": "不能被打出,在你的回合结束时，如果这张牌在你的手牌中,你受到2点伤害。"
+        },
+        {
+          "name": "Burn",
+          "id": "Burn",
+          "character": "status",
+          "type": "status",
+          "text": "不能被打出,在你的回合结束时，如果这张牌在你的手牌中，你受到2点伤害。"
+        }
+      ]
+    },
+    {
+      "pattern": "造成<N>点伤害<N>次",
+      "count": 2,
+      "type_mix": {
+        "attack": 2
+      },
+      "sample_cards": [
+        {
+          "name": "Peck",
+          "id": "Peck",
+          "character": "event",
+          "type": "attack",
+          "text": "造成2点伤害3次。"
+        },
+        {
+          "name": "Celestial Might",
+          "id": "CelestialMight",
+          "character": "regent",
+          "type": "attack",
+          "text": "造成6点伤害3次。"
+        }
+      ]
+    },
+    {
+      "pattern": "造成<N>点伤害. / 生成<N>个冰霜充能球",
+      "count": 2,
+      "type_mix": {
+        "attack": 2
+      },
+      "sample_cards": [
+        {
+          "name": "Cold Snap",
+          "id": "ColdSnap",
+          "character": "defect",
+          "type": "attack",
+          "text": "造成6点伤害。 / 生成1个冰霜充能球。"
+        },
+        {
+          "name": "Ice Lance",
+          "id": "IceLance",
+          "character": "defect",
+          "type": "attack",
+          "text": "造成19点伤害。 / 生成3个冰霜充能球。"
+        }
+      ]
+    },
+    {
+      "pattern": "永恒, 不能被打出",
+      "count": 2,
+      "type_mix": {
+        "curse": 2
+      },
+      "sample_cards": [
+        {
+          "name": "Curse of the Bell",
+          "id": "CurseOfTheBell",
+          "character": "curse",
+          "type": "curse",
+          "text": "永恒,不能被打出"
+        },
+        {
+          "name": "Greed",
+          "id": "Greed",
+          "character": "curse",
+          "type": "curse",
+          "text": "永恒,不能被打出"
+        }
+      ]
+    },
+    {
+      "pattern": "获得<N>点格挡. / 造成<N>点伤害",
+      "count": 2,
+      "type_mix": {
+        "attack": 2
+      },
+      "sample_cards": [
+        {
+          "name": "Iron Wave",
+          "id": "IronWave",
+          "character": "ironclad",
+          "type": "attack",
+          "text": "获得5点格挡。 / 造成5点伤害。"
+        },
+        {
+          "name": "Dash",
+          "id": "Dash",
+          "character": "silent",
+          "type": "attack",
+          "text": "获得10点格挡。 / 造成10点伤害。"
+        }
+      ]
+    },
+    {
+      "pattern": "消耗",
+      "count": 2,
+      "type_mix": {
+        "curse": 1,
+        "status": 1
+      },
+      "sample_cards": [
+        {
+          "name": "Spore Mind",
+          "id": "SporeMind",
+          "character": "curse",
+          "type": "curse",
+          "text": "消耗"
+        },
+        {
+          "name": "Debris",
+          "id": "Debris",
+          "character": "status",
+          "type": "status",
+          "text": "消耗"
+        }
+      ]
+    },
+    {
+      "pattern": "对所有敌人造成<N>点伤害<N>次",
+      "count": 2,
+      "type_mix": {
+        "attack": 2
+      },
+      "sample_cards": [
+        {
+          "name": "Exterminate",
+          "id": "Exterminate",
+          "character": "event",
+          "type": "attack",
+          "text": "对所有敌人造成3点伤害4次。"
+        },
+        {
+          "name": "Seven Stars",
+          "id": "SevenStars",
+          "character": "regent",
+          "type": "attack",
+          "text": "对所有敌人造成7点伤害7次。"
+        }
+      ]
+    },
+    {
+      "pattern": "造成<N>点伤害. / 抽<N>张牌",
+      "count": 2,
+      "type_mix": {
+        "attack": 2
+      },
+      "sample_cards": [
+        {
+          "name": "Flash of Steel",
+          "id": "FlashOfSteel",
+          "character": "colorless",
+          "type": "attack",
+          "text": "造成5点伤害。 / 抽1张牌。"
+        },
+        {
+          "name": "Pommel Strike",
+          "id": "PommelStrike",
+          "character": "ironclad",
+          "type": "attack",
+          "text": "造成9点伤害。 / 抽1张牌。"
+        }
+      ]
+    },
+    {
+      "pattern": "消耗, 给予<N>层虚弱. / 给予<N>层易伤",
+      "count": 2,
+      "type_mix": {
+        "skill": 2
+      },
+      "sample_cards": [
+        {
+          "name": "Putrefy",
+          "id": "Putrefy",
+          "character": "necrobinder",
+          "type": "skill",
+          "text": "消耗,给予2层虚弱。 / 给予2层易伤。"
+        },
+        {
+          "name": "Know Thy Place",
+          "id": "KnowThyPlace",
+          "character": "regent",
+          "type": "skill",
+          "text": "消耗,给予1层虚弱。 / 给予1层易伤。"
+        }
+      ]
+    },
+    {
+      "pattern": "造成<N>点伤害. / 给予<N>层虚弱",
+      "count": 2,
+      "type_mix": {
+        "attack": 2
+      },
+      "sample_cards": [
+        {
+          "name": "Neutralize",
+          "id": "Neutralize",
+          "character": "silent",
+          "type": "attack",
+          "text": "造成3点伤害。 / 给予1层虚弱。"
+        },
+        {
+          "name": "Sucker Punch",
+          "id": "SuckerPunch",
+          "character": "silent",
+          "type": "attack",
+          "text": "造成8点伤害。 / 给予1层虚弱。"
+        }
+      ]
+    },
+    {
+      "pattern": "铸造<N>",
+      "count": 2,
+      "type_mix": {
+        "skill": 2
+      },
+      "sample_cards": [
+        {
+          "name": "Spoils of Battle",
+          "id": "SpoilsOfBattle",
+          "character": "regent",
+          "type": "skill",
+          "text": "铸造10。"
+        },
+        {
+          "name": "The Smith",
+          "id": "TheSmith",
+          "character": "regent",
+          "type": "skill",
+          "text": "铸造30。"
+        }
+      ]
+    },
+    {
+      "pattern": "随机对敌人造成<N>点伤害x次",
+      "count": 2,
+      "type_mix": {
+        "attack": 2
+      },
+      "sample_cards": [
+        {
+          "name": "Volley",
+          "id": "Volley",
+          "character": "colorless",
+          "type": "attack",
+          "text": "随机对敌人造成10点伤害X次。"
+        },
+        {
+          "name": "Stardust",
+          "id": "Stardust",
+          "character": "regent",
+          "type": "attack",
+          "text": "随机对敌人造成5点伤害X次。"
+        }
+      ]
+    },
+    {
+      "pattern": "奇巧, 获得<N>点敏捷. / 获得<N>点荆棘",
+      "count": 1,
+      "type_mix": {
+        "power": 1
+      },
+      "sample_cards": [
+        {
+          "name": "Abrasive",
+          "id": "Abrasive",
+          "character": "silent",
+          "type": "power",
+          "text": "奇巧,获得1点敏捷。 / 获得4点荆棘。"
+        }
+      ]
+    },
+    {
+      "pattern": "中毒会额外触发<N>次",
+      "count": 1,
+      "type_mix": {
+        "power": 1
+      },
+      "sample_cards": [
+        {
+          "name": "Accelerant",
+          "id": "Accelerant",
+          "character": "silent",
+          "type": "power",
+          "text": "中毒会额外触发1次。"
+        }
+      ]
+    },
+    {
+      "pattern": "小刀额外造成<N>点伤害",
+      "count": 1,
+      "type_mix": {
+        "power": 1
+      },
+      "sample_cards": [
+        {
+          "name": "Accuracy",
+          "id": "Accuracy",
+          "character": "silent",
+          "type": "power",
+          "text": "小刀额外造成4点伤害。"
+        }
+      ]
+    },
+    {
+      "pattern": "造成<N>点伤害. / 将这张牌的一张<N>能量复制品添加到你的弃牌堆",
+      "count": 1,
+      "type_mix": {
+        "attack": 1
+      },
+      "sample_cards": [
+        {
+          "name": "Adaptive Strike",
+          "id": "AdaptiveStrike",
+          "character": "defect",
+          "type": "attack",
+          "text": "造成18点伤害。 / 将这张牌的一张0能量复制品添加到你的弃牌堆。"
+        }
+      ]
+    },
+    {
+      "pattern": "你每打出一张牌, 都获得<N>点格挡",
+      "count": 1,
+      "type_mix": {
+        "power": 1
+      },
+      "sample_cards": [
+        {
+          "name": "Afterimage",
+          "id": "Afterimage",
+          "character": "silent",
+          "type": "power",
+          "text": "你每打出一张牌，都获得1点格挡。"
+        }
+      ]
+    },
+    {
+      "pattern": "在你的回合开始时, 将你弃牌堆的一张随机攻击牌放入你的手牌并将其升级",
+      "count": 1,
+      "type_mix": {
+        "power": 1
+      },
+      "sample_cards": [
+        {
+          "name": "Aggression",
+          "id": "Aggression",
+          "character": "ironclad",
+          "type": "power",
+          "text": "在你的回合开始时，将你弃牌堆的一张随机攻击牌放入你的手牌并将其升级。"
+        }
+      ]
+    },
+    {
+      "pattern": "消耗, 获得一瓶随机药水",
+      "count": 1,
+      "type_mix": {
+        "skill": 1
+      },
+      "sample_cards": [
+        {
+          "name": "Alchemize",
+          "id": "Alchemize",
+          "character": "colorless",
+          "type": "skill",
+          "text": "消耗,获得一瓶随机药水。"
+        }
+      ]
+    },
+    {
+      "pattern": "获得<N>能量",
+      "count": 1,
+      "type_mix": {
+        "skill": 1
+      },
+      "sample_cards": [
+        {
+          "name": "Alignment",
+          "id": "Alignment",
+          "character": "regent",
+          "type": "skill",
+          "text": "获得2能量。"
+        }
+      ]
+    }
+  ],
+  "safe_candidate_groups": {
+    "likely_direct_mapping": {
+      "count": 217,
+      "top_patterns": [
+        {
+          "pattern": "造成<N>点伤害. / 给予<N>层易伤",
+          "count": 4,
+          "sample_cards": [
+            {
+              "name": "Beam Cell",
+              "id": "BeamCell",
+              "character": "defect",
+              "type": "attack",
+              "text": "造成3点伤害。 / 给予1层易伤。"
+            },
+            {
+              "name": "Squash",
+              "id": "Squash",
+              "character": "event",
+              "type": "attack",
+              "text": "造成10点伤害。 / 给予2层易伤。"
+            },
+            {
+              "name": "Bash",
+              "id": "Bash",
+              "character": "ironclad",
+              "type": "attack",
+              "text": "造成8点伤害。 / 给予2层易伤。"
+            },
+            {
+              "name": "Break",
+              "id": "Break",
+              "character": "ironclad",
+              "type": "attack",
+              "text": "造成20点伤害。 / 给予5层易伤。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 给予<N>层虚弱. / 给予<N>层易伤",
+          "count": 4,
+          "sample_cards": [
+            {
+              "name": "Uppercut",
+              "id": "Uppercut",
+              "character": "ironclad",
+              "type": "attack",
+              "text": "造成13点伤害。 / 给予1层虚弱。 / 给予1层易伤。"
+            },
+            {
+              "name": "Comet",
+              "id": "Comet",
+              "character": "regent",
+              "type": "attack",
+              "text": "造成33点伤害。 / 给予3层虚弱。 / 给予3层易伤。"
+            },
+            {
+              "name": "Falling Star",
+              "id": "FallingStar",
+              "character": "regent",
+              "type": "attack",
+              "text": "造成7点伤害。 / 给予1层虚弱。 / 给予1层易伤。"
+            },
+            {
+              "name": "Gamma Blast",
+              "id": "GammaBlast",
+              "character": "regent",
+              "type": "attack",
+              "text": "造成13点伤害。 / 给予2层虚弱。 / 给予2层易伤。"
+            }
+          ]
+        },
+        {
+          "pattern": "获得<N>点格挡. / 抽<N>张牌",
+          "count": 3,
+          "sample_cards": [
+            {
+              "name": "Finesse",
+              "id": "Finesse",
+              "character": "colorless",
+              "type": "skill",
+              "text": "获得4点格挡。 / 抽1张牌。"
+            },
+            {
+              "name": "Shrug It Off",
+              "id": "ShrugItOff",
+              "character": "ironclad",
+              "type": "skill",
+              "text": "获得8点格挡。 / 抽1张牌。"
+            },
+            {
+              "name": "Backflip",
+              "id": "Backflip",
+              "character": "silent",
+              "type": "skill",
+              "text": "获得5点格挡。 / 抽2张牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 获得<N>能量",
+          "count": 3,
+          "sample_cards": [
+            {
+              "name": "Production",
+              "id": "Production",
+              "character": "colorless",
+              "type": "skill",
+              "text": "消耗,获得2能量。"
+            },
+            {
+              "name": "Supercritical",
+              "id": "Supercritical",
+              "character": "defect",
+              "type": "skill",
+              "text": "消耗,获得4能量。"
+            },
+            {
+              "name": "Wisp",
+              "id": "Wisp",
+              "character": "necrobinder",
+              "type": "skill",
+              "text": "消耗,获得1能量。"
+            }
+          ]
+        },
+        {
+          "pattern": "抽<N>张牌. / 丢弃<N>张牌",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Acrobatics",
+              "id": "Acrobatics",
+              "character": "silent",
+              "type": "skill",
+              "text": "抽3张牌。 / 丢弃1张牌。"
+            },
+            {
+              "name": "Prepared",
+              "id": "Prepared",
+              "character": "silent",
+              "type": "skill",
+              "text": "抽1张牌。 / 丢弃1张牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 获得<N>能量. / 抽<N>张牌",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Adrenaline",
+              "id": "Adrenaline",
+              "character": "silent",
+              "type": "skill",
+              "text": "消耗,获得1能量。 / 抽2张牌。"
+            },
+            {
+              "name": "Fuel",
+              "id": "Fuel",
+              "character": "token",
+              "type": "skill",
+              "text": "消耗,获得1能量。 / 抽1张牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害<N>次",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Peck",
+              "id": "Peck",
+              "character": "event",
+              "type": "attack",
+              "text": "造成2点伤害3次。"
+            },
+            {
+              "name": "Celestial Might",
+              "id": "CelestialMight",
+              "character": "regent",
+              "type": "attack",
+              "text": "造成6点伤害3次。"
+            }
+          ]
+        },
+        {
+          "pattern": "获得<N>点格挡. / 造成<N>点伤害",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Iron Wave",
+              "id": "IronWave",
+              "character": "ironclad",
+              "type": "attack",
+              "text": "获得5点格挡。 / 造成5点伤害。"
+            },
+            {
+              "name": "Dash",
+              "id": "Dash",
+              "character": "silent",
+              "type": "attack",
+              "text": "获得10点格挡。 / 造成10点伤害。"
+            }
+          ]
+        },
+        {
+          "pattern": "对所有敌人造成<N>点伤害<N>次",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Exterminate",
+              "id": "Exterminate",
+              "character": "event",
+              "type": "attack",
+              "text": "对所有敌人造成3点伤害4次。"
+            },
+            {
+              "name": "Seven Stars",
+              "id": "SevenStars",
+              "character": "regent",
+              "type": "attack",
+              "text": "对所有敌人造成7点伤害7次。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 抽<N>张牌",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Flash of Steel",
+              "id": "FlashOfSteel",
+              "character": "colorless",
+              "type": "attack",
+              "text": "造成5点伤害。 / 抽1张牌。"
+            },
+            {
+              "name": "Pommel Strike",
+              "id": "PommelStrike",
+              "character": "ironclad",
+              "type": "attack",
+              "text": "造成9点伤害。 / 抽1张牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 给予<N>层虚弱. / 给予<N>层易伤",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Putrefy",
+              "id": "Putrefy",
+              "character": "necrobinder",
+              "type": "skill",
+              "text": "消耗,给予2层虚弱。 / 给予2层易伤。"
+            },
+            {
+              "name": "Know Thy Place",
+              "id": "KnowThyPlace",
+              "character": "regent",
+              "type": "skill",
+              "text": "消耗,给予1层虚弱。 / 给予1层易伤。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 给予<N>层虚弱",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Neutralize",
+              "id": "Neutralize",
+              "character": "silent",
+              "type": "attack",
+              "text": "造成3点伤害。 / 给予1层虚弱。"
+            },
+            {
+              "name": "Sucker Punch",
+              "id": "SuckerPunch",
+              "character": "silent",
+              "type": "attack",
+              "text": "造成8点伤害。 / 给予1层虚弱。"
+            }
+          ]
+        },
+        {
+          "pattern": "获得<N>能量",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Alignment",
+              "id": "Alignment",
+              "character": "regent",
+              "type": "skill",
+              "text": "获得2能量。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 将你弃牌堆中的所有<N>能量牌放入你的手牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "All for One",
+              "id": "AllForOne",
+              "character": "defect",
+              "type": "attack",
+              "text": "造成10点伤害。 / 将你弃牌堆中的所有0能量牌放入你的手牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 将你抽牌堆中的所有稀有牌放入你的手牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Anointed",
+              "id": "Anointed",
+              "character": "colorless",
+              "type": "skill",
+              "text": "消耗,将你抽牌堆中的所有稀有牌放入你的手牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "在本回合获得<N>点敏捷",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Anticipate",
+              "id": "Anticipate",
+              "character": "silent",
+              "type": "skill",
+              "text": "在本回合获得3点敏捷。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 固有, 升级你的全部卡牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Apotheosis",
+              "id": "Apotheosis",
+              "character": "event",
+              "type": "skill",
+              "text": "消耗,固有,升级你的全部卡牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "虚无, 消耗, 获得<N>层无实体",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Apparition",
+              "id": "Apparition",
+              "character": "event",
+              "type": "skill",
+              "text": "虚无,消耗,获得1层无实体。"
+            }
+          ]
+        },
+        {
+          "pattern": "获得<N>点格挡. / 升级你手牌中的一张牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Armaments",
+              "id": "Armaments",
+              "character": "ironclad",
+              "type": "skill",
+              "text": "获得5点格挡。 / 升级你手牌中的一张牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "固有, 消耗, 造成<N>点伤害. / 给予<N>层易伤",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Assassinate",
+              "id": "Assassinate",
+              "character": "silent",
+              "type": "attack",
+              "text": "固有,消耗,造成10点伤害。 / 给予1层易伤。"
+            }
+          ]
+        },
+        {
+          "pattern": "对所有敌人造成<N>点伤害",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Astral Pulse",
+              "id": "AstralPulse",
+              "character": "regent",
+              "type": "attack",
+              "text": "对所有敌人造成14点伤害。"
+            }
+          ]
+        },
+        {
+          "pattern": "抽<N>张牌. / 你在本回合内不能再抽任何牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Battle Trance",
+              "id": "BattleTrance",
+              "character": "ironclad",
+              "type": "skill",
+              "text": "抽3张牌。 / 你在本回合内不能再抽任何牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "另一名玩家获得<N>能量",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Believe in You",
+              "id": "BelieveInYou",
+              "character": "colorless",
+              "type": "skill",
+              "text": "另一名玩家获得3能量。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 添加<N>张小刀到你的手牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Blade Dance",
+              "id": "BladeDance",
+              "character": "silent",
+              "type": "skill",
+              "text": "消耗,添加3张小刀到你的手牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 给予等量于所造成伤害的灾厄",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Blight Strike",
+              "id": "BlightStrike",
+              "character": "necrobinder",
+              "type": "attack",
+              "text": "造成8点伤害。 / 给予等量于所造成伤害的灾厄。"
+            }
+          ]
+        },
+        {
+          "pattern": "失去<N>点生命. / 获得<N>点格挡",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Blood Wall",
+              "id": "BloodWall",
+              "character": "ironclad",
+              "type": "skill",
+              "text": "失去2点生命。 / 获得16点格挡。"
+            }
+          ]
+        },
+        {
+          "pattern": "失去<N>点生命. / 获得<N>能量",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Bloodletting",
+              "id": "Bloodletting",
+              "character": "ironclad",
+              "type": "skill",
+              "text": "失去3点生命。 / 获得2能量。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成你当前格挡值的伤害",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Body Slam",
+              "id": "BodySlam",
+              "character": "ironclad",
+              "type": "attack",
+              "text": "造成你当前格挡值的伤害。"
+            }
+          ]
+        },
+        {
+          "pattern": "获得<N>点格挡. / 将一张眩晕添加到你的弃牌堆中",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Boost Away",
+              "id": "BoostAway",
+              "character": "defect",
+              "type": "skill",
+              "text": "获得6点格挡。 / 将一张眩晕添加到你的弃牌堆中。"
+            }
+          ]
+        },
+        {
+          "pattern": "给予自身<N>层灾厄. / 获得<N>能量",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Borrowed Time",
+              "id": "BorrowedTime",
+              "character": "necrobinder",
+              "type": "skill",
+              "text": "给予自身3层灾厄。 / 获得1能量。"
+            }
+          ]
+        }
+      ]
+    },
+    "needs_small_param_extraction": {
+      "count": 71,
+      "top_patterns": [
+        {
+          "pattern": "随机对敌人造成<N>点伤害x次",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Volley",
+              "id": "Volley",
+              "character": "colorless",
+              "type": "attack",
+              "text": "随机对敌人造成10点伤害X次。"
+            },
+            {
+              "name": "Stardust",
+              "id": "Stardust",
+              "character": "regent",
+              "type": "attack",
+              "text": "随机对敌人造成5点伤害X次。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 获得一瓶随机药水",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Alchemize",
+              "id": "Alchemize",
+              "character": "colorless",
+              "type": "skill",
+              "text": "消耗,获得一瓶随机药水。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 你的消耗牌堆中每有一张牌, 伤害增加<N>",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Ashen Strike",
+              "id": "AshenStrike",
+              "character": "ironclad",
+              "type": "attack",
+              "text": "造成6点伤害。 / 你的消耗牌堆中每有一张牌，伤害增加3。"
+            }
+          ]
+        },
+        {
+          "pattern": "打出你弃牌堆中的<N>张随机攻击牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Beat Down",
+              "id": "BeatDown",
+              "character": "colorless",
+              "type": "skill",
+              "text": "打出你弃牌堆中的3张随机攻击牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "如果奥斯提存活, 则他对所有敌人造成<N>点伤害并且你获得<N>点格挡. / 然后奥斯提死去",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Bone Shards",
+              "id": "BoneShards",
+              "character": "necrobinder",
+              "type": "attack",
+              "text": "如果奥斯提存活，则他对所有敌人造成9点伤害并且你获得9点格挡。 / 然后奥斯提死去。"
+            }
+          ]
+        },
+        {
+          "pattern": "随机给予敌人<N>层中毒<N>次",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Bouncing Flask",
+              "id": "BouncingFlask",
+              "character": "silent",
+              "type": "skill",
+              "text": "随机给予敌人3层中毒3次。"
+            }
+          ]
+        },
+        {
+          "pattern": "如果敌方拥有中毒, 则给予<N>层中毒",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Bubble Bubble",
+              "id": "BubbleBubble",
+              "character": "silent",
+              "type": "skill",
+              "text": "如果敌方拥有中毒，则给予9层中毒。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 该敌人身上每有一层易伤就额外造成<N>点伤害",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Bully",
+              "id": "Bully",
+              "character": "ironclad",
+              "type": "attack",
+              "text": "造成4点伤害。 / 该敌人身上每有一层易伤就额外造成2点伤害。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 将<N>张随机无色牌添加到你的手牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Bundle of Joy",
+              "id": "BundleOfJoy",
+              "character": "regent",
+              "type": "skill",
+              "text": "消耗,将3张随机无色牌添加到你的手牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "打出你抽牌堆顶部的x张牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Cascade",
+              "id": "Cascade",
+              "character": "ironclad",
+              "type": "skill",
+              "text": "打出你抽牌堆顶部的X张牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "从你的抽牌堆中随机打出<N>张牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Catastrophe",
+              "id": "Catastrophe",
+              "character": "colorless",
+              "type": "skill",
+              "text": "从你的抽牌堆中随机打出2张牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 你每有一张拥有☆耗能的卡牌, 这张牌就额外造成<N>点伤害",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Crescent Spear",
+              "id": "CrescentSpear",
+              "character": "regent",
+              "type": "attack",
+              "text": "造成6点伤害。 / 你每有一张拥有☆耗能的卡牌，这张牌就额外造成2点伤害。"
+            }
+          ]
+        },
+        {
+          "pattern": "获得<N>点格挡. / 如果你在本回合中曾给予过灾厄, 则额外获得<N>次格挡",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Death's Door",
+              "id": "DeathsDoor",
+              "character": "necrobinder",
+              "type": "skill",
+              "text": "获得6点格挡。 / 如果你在本回合中曾给予过灾厄，则额外获得2次格挡。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 抽<N>张牌. / 选择你手牌中的一张技能牌, 并将其打出<N>次",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Decisions, Decisions",
+              "id": "DecisionsDecisions",
+              "character": "regent",
+              "type": "skill",
+              "text": "消耗,抽3张牌。 / 选择你手牌中的一张技能牌，并将其打出3次。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 从<N>张随机牌中选择<N>张加入你的手牌. 这张牌在本回合的耗能为<N>能量",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Discovery",
+              "id": "Discovery",
+              "character": "colorless",
+              "type": "skill",
+              "text": "消耗,从3张随机牌中选择1张加入你的手牌。这张牌在本回合的耗能为0能量。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 如果该敌人有易伤状态, 则攻击两次",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Dismantle",
+              "id": "Dismantle",
+              "character": "ironclad",
+              "type": "attack",
+              "text": "造成8点伤害。 / 如果该敌人有易伤状态，则攻击两次。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 将一张随机技能牌添加到你的手牌中. 这张牌在本回合内可以免费打出",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Distraction",
+              "id": "Distraction",
+              "character": "event",
+              "type": "skill",
+              "text": "消耗,将一张随机技能牌添加到你的手牌中。这张牌在本回合内可以免费打出。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 敌人身上每有一层易伤, 就获得<N>点力量",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Dominate",
+              "id": "Dominate",
+              "character": "ironclad",
+              "type": "skill",
+              "text": "消耗,敌人身上每有一层易伤，就获得1点力量。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 随机升级你弃牌堆中的<N>张牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Drain Power",
+              "id": "DrainPower",
+              "character": "necrobinder",
+              "type": "attack",
+              "text": "造成10点伤害。 / 随机升级你弃牌堆中的2张牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "对所有敌人造成<N>点伤害. / 每有一名敌人被击杀, 就重复此效果",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Echoing Slash",
+              "id": "EchoingSlash",
+              "character": "silent",
+              "type": "attack",
+              "text": "对所有敌人造成10点伤害。 / 每有一名敌人被击杀，就重复此效果。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗所有手牌. / 如果有至少<N>张牌通过这个方法被消耗了, 则获得<N>层无实体",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Eidolon",
+              "id": "Eidolon",
+              "character": "necrobinder",
+              "type": "skill",
+              "text": "消耗所有手牌。 / 如果有至少9张牌通过这个方法被消耗了，则获得1层无实体。"
+            }
+          ]
+        },
+        {
+          "pattern": "保留, 造成<N>点伤害x次",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Eradicate",
+              "id": "Eradicate",
+              "character": "necrobinder",
+              "type": "attack",
+              "text": "保留,造成11点伤害X次。"
+            }
+          ]
+        },
+        {
+          "pattern": "抽<N>张牌. / 如果抽到的是技能牌, 则获得<N>点格挡",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Escape Plan",
+              "id": "EscapePlan",
+              "character": "silent",
+              "type": "skill",
+              "text": "抽1张牌。 / 如果抽到的是技能牌，则获得3点格挡。"
+            }
+          ]
+        },
+        {
+          "pattern": "获得<N>点格挡. / 如果你在本回合获得消耗过卡牌, 则额外获得<N>点格挡",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Evil Eye",
+              "id": "EvilEye",
+              "character": "ironclad",
+              "type": "skill",
+              "text": "获得8点格挡。 / 如果你在本回合获得消耗过卡牌，则额外获得8点格挡。"
+            }
+          ]
+        },
+        {
+          "pattern": "你的手牌中每有一张攻击牌, 就会获得能量",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Expect a Fight",
+              "id": "ExpectAFight",
+              "character": "ironclad",
+              "type": "skill",
+              "text": "你的手牌中每有一张攻击牌，就会获得能量。"
+            }
+          ]
+        },
+        {
+          "pattern": "奥斯提造成<N>点伤害. / 如果这是这张牌第一次在本回合被打出, 则抽<N>张牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Fetch",
+              "id": "Fetch",
+              "character": "necrobinder",
+              "type": "attack",
+              "text": "奥斯提造成3点伤害。 / 如果这是这张牌第一次在本回合被打出，则抽1张牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 消耗所有手牌. / 每张被消耗的牌造成<N>点伤害",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Fiend Fire",
+              "id": "FiendFire",
+              "character": "ironclad",
+              "type": "attack",
+              "text": "消耗,消耗所有手牌。 / 每张被消耗的牌造成7点伤害。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗你所有的状态牌. / 每有一张被消耗的牌, 就随机对敌人造成<N>点伤害",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Flak Cannon",
+              "id": "FlakCannon",
+              "character": "defect",
+              "type": "attack",
+              "text": "消耗你所有的状态牌。 / 每有一张被消耗的牌，就随机对敌人造成8点伤害。"
+            }
+          ]
+        },
+        {
+          "pattern": "奥斯提造成<N>点伤害. / 如果奥斯提本回合攻击过, 则这张牌的费用变为<N>能量",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Flatten",
+              "id": "Flatten",
+              "character": "necrobinder",
+              "type": "attack",
+              "text": "奥斯提造成12点伤害。 / 如果奥斯提本回合攻击过，则这张牌的费用变为0能量。"
+            }
+          ]
+        },
+        {
+          "pattern": "手牌中每有一张技能牌, 造成<N>点伤害",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Flechettes",
+              "id": "Flechettes",
+              "character": "silent",
+              "type": "attack",
+              "text": "手牌中每有一张技能牌，造成5点伤害。"
+            }
+          ]
+        }
+      ]
+    },
+    "needs_new_effect_or_trigger": {
+      "count": 125,
+      "top_patterns": [
+        {
+          "pattern": "获得<N>层覆甲",
+          "count": 3,
+          "sample_cards": [
+            {
+              "name": "Eternal Armor",
+              "id": "EternalArmor",
+              "character": "colorless",
+              "type": "power",
+              "text": "获得7层覆甲。"
+            },
+            {
+              "name": "Stone Armor",
+              "id": "StoneArmor",
+              "character": "ironclad",
+              "type": "power",
+              "text": "获得4层覆甲。"
+            },
+            {
+              "name": "Neutron Aegis",
+              "id": "NeutronAegis",
+              "character": "regent",
+              "type": "power",
+              "text": "获得8层覆甲。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 在你的下个回合开始时, 将此卡返回你的手牌",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Bolas",
+              "id": "Bolas",
+              "character": "colorless",
+              "type": "attack",
+              "text": "造成3点伤害。 / 在你的下个回合开始时，将此卡返回你的手牌。"
+            },
+            {
+              "name": "Thrumming Hatchet",
+              "id": "ThrummingHatchet",
+              "character": "colorless",
+              "type": "attack",
+              "text": "造成11点伤害。 / 在你的下个回合开始时，将此卡返回你的手牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "奇巧, 获得<N>点敏捷. / 获得<N>点荆棘",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Abrasive",
+              "id": "Abrasive",
+              "character": "silent",
+              "type": "power",
+              "text": "奇巧,获得1点敏捷。 / 获得4点荆棘。"
+            }
+          ]
+        },
+        {
+          "pattern": "中毒会额外触发<N>次",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Accelerant",
+              "id": "Accelerant",
+              "character": "silent",
+              "type": "power",
+              "text": "中毒会额外触发1次。"
+            }
+          ]
+        },
+        {
+          "pattern": "小刀额外造成<N>点伤害",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Accuracy",
+              "id": "Accuracy",
+              "character": "silent",
+              "type": "power",
+              "text": "小刀额外造成4点伤害。"
+            }
+          ]
+        },
+        {
+          "pattern": "你每打出一张牌, 都获得<N>点格挡",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Afterimage",
+              "id": "Afterimage",
+              "character": "silent",
+              "type": "power",
+              "text": "你每打出一张牌，都获得1点格挡。"
+            }
+          ]
+        },
+        {
+          "pattern": "在你的回合开始时, 将你弃牌堆的一张随机攻击牌放入你的手牌并将其升级",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Aggression",
+              "id": "Aggression",
+              "character": "ironclad",
+              "type": "power",
+              "text": "在你的回合开始时，将你弃牌堆的一张随机攻击牌放入你的手牌并将其升级。"
+            }
+          ]
+        },
+        {
+          "pattern": "你每打出一张无色牌, 都获得<N>点力量",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Arsenal",
+              "id": "Arsenal",
+              "character": "regent",
+              "type": "power",
+              "text": "你每打出一张无色牌，都获得1点力量。"
+            }
+          ]
+        },
+        {
+          "pattern": "你每抽<N>张牌, 获得<N>能量",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Automation",
+              "id": "Automation",
+              "character": "colorless",
+              "type": "power",
+              "text": "你每抽10张牌，获得1能量。"
+            }
+          ]
+        },
+        {
+          "pattern": "格挡不再在你的回合开始时消失",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Barricade",
+              "id": "Barricade",
+              "character": "ironclad",
+              "type": "power",
+              "text": "格挡不再在你的回合开始时消失。"
+            }
+          ]
+        },
+        {
+          "pattern": "每当你在你的回合获得格挡时, 其他玩家获得相应一半的格挡",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Beacon of Hope",
+              "id": "BeaconOfHope",
+              "character": "colorless",
+              "type": "power",
+              "text": "每当你在你的回合获得格挡时，其他玩家获得相应一半的格挡。"
+            }
+          ]
+        },
+        {
+          "pattern": "获得<N>点集中. / 在你的回合开始时, 失去<N>点集中",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Biased Cognition",
+              "id": "BiasedCognition",
+              "character": "defect",
+              "type": "power",
+              "text": "获得4点集中。 / 在你的回合开始时，失去1点集中。"
+            }
+          ]
+        },
+        {
+          "pattern": "每当你使用或获得☆时, 对所有敌人造成<N>点伤害",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Black Hole",
+              "id": "BlackHole",
+              "character": "regent",
+              "type": "power",
+              "text": "每当你使用或获得☆时,对所有敌人造成3点伤害。"
+            }
+          ]
+        },
+        {
+          "pattern": "每当你在本回合打出一张攻击牌时, 本回合获得<N>点力量",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Blade of Ink",
+              "id": "BladeOfInk",
+              "character": "silent",
+              "type": "skill",
+              "text": "每当你在本回合打出一张攻击牌时，本回合获得2点力量。"
+            }
+          ]
+        },
+        {
+          "pattern": "获得<N>点格挡. / 你的下一回合开始时格挡不会消失",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Blur",
+              "id": "Blur",
+              "character": "silent",
+              "type": "skill",
+              "text": "获得5点格挡。 / 你的下一回合开始时格挡不会消失。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 造成<N>点伤害. / 在你的回合开始时, 从消耗牌堆打出这张牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Bombardment",
+              "id": "Bombardment",
+              "character": "regent",
+              "type": "attack",
+              "text": "消耗,造成18点伤害。 / 在你的回合开始时，从消耗牌堆打出这张牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "阻止下<N>次你受到的生命值损伤",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Buffer",
+              "id": "Buffer",
+              "character": "defect",
+              "type": "power",
+              "text": "阻止下1次你受到的生命值损伤。"
+            }
+          ]
+        },
+        {
+          "pattern": "每当你打出一张攻击牌时, 将一张随机攻击牌添加到你的手牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Calamity",
+              "id": "Calamity",
+              "character": "colorless",
+              "type": "power",
+              "text": "每当你打出一张攻击牌时，将一张随机攻击牌添加到你的手牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "奥斯提的攻击额外造成<N>点伤害",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Calcify",
+              "id": "Calcify",
+              "character": "necrobinder",
+              "type": "power",
+              "text": "奥斯提的攻击额外造成4点伤害。"
+            }
+          ]
+        },
+        {
+          "pattern": "在你的回合开始时, 将<N>张随机牌添加到你的手牌中. 添加的牌会获得虚无",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Call of the Void",
+              "id": "CallOfTheVoid",
+              "character": "necrobinder",
+              "type": "power",
+              "text": "在你的回合开始时，将1张随机牌添加到你的手牌中。添加的牌会获得虚无。"
+            }
+          ]
+        },
+        {
+          "pattern": "每当你被攻击时, 对攻击者造成<N>点伤害",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Caltrops",
+              "id": "Caltrops",
+              "character": "event",
+              "type": "power",
+              "text": "每当你被攻击时，对攻击者造成3点伤害。"
+            }
+          ]
+        },
+        {
+          "pattern": "获得<N>点格挡. / 在下个回合获得<N>能量",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Charge Battery",
+              "id": "ChargeBattery",
+              "character": "defect",
+              "type": "skill",
+              "text": "获得7点格挡。 / 在下个回合获得1能量。"
+            }
+          ]
+        },
+        {
+          "pattern": "每当你花费☆时, 每花费一点☆, 获得<N>点格挡",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Child of the Stars",
+              "id": "ChildOfTheStars",
+              "character": "regent",
+              "type": "power",
+              "text": "每当你花费☆时，每花费一点☆，获得2点格挡。"
+            }
+          ]
+        },
+        {
+          "pattern": "在本回合保留你的手牌. / 在下个回合, / 获得<N>能量与<N>☆",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Convergence",
+              "id": "Convergence",
+              "character": "regent",
+              "type": "skill",
+              "text": "在本回合保留你的手牌。 / 在下个回合， / 获得1能量与1☆。"
+            }
+          ]
+        },
+        {
+          "pattern": "技能牌消耗变为<N>能量. / 每当你打出一张技能牌时, 将其消耗",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Corruption",
+              "id": "Corruption",
+              "character": "ironclad",
+              "type": "power",
+              "text": "技能牌消耗变为0能量。 / 每当你打出一张技能牌时，将其消耗。"
+            }
+          ]
+        },
+        {
+          "pattern": "在你的回合开始时, 给予随机敌人<N>点灾厄",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Countdown",
+              "id": "Countdown",
+              "character": "necrobinder",
+              "type": "power",
+              "text": "在你的回合开始时，给予随机敌人6点灾厄。"
+            }
+          ]
+        },
+        {
+          "pattern": "在你的回合开始时, 将一张随机能力牌加入你的手牌",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Creative AI",
+              "id": "CreativeAi",
+              "character": "defect",
+              "type": "power",
+              "text": "在你的回合开始时，将一张随机能力牌加入你的手牌。"
+            }
+          ]
+        },
+        {
+          "pattern": "在你的回合开始时, 失去<N>点生命并获得<N>点格挡",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Crimson Mantle",
+              "id": "CrimsonMantle",
+              "character": "ironclad",
+              "type": "power",
+              "text": "在你的回合开始时，失去1点生命并获得8点格挡。"
+            }
+          ]
+        },
+        {
+          "pattern": "有易伤状态的敌人额外受到<N>%的伤害",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Cruelty",
+              "id": "Cruelty",
+              "character": "ironclad",
+              "type": "power",
+              "text": "有易伤状态的敌人额外受到25%的伤害。"
+            }
+          ]
+        },
+        {
+          "pattern": "每当你打出一张耗能大于等于<N>能量的牌时, 获得<N>点格挡",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Danse Macabre",
+              "id": "DanseMacabre",
+              "character": "necrobinder",
+              "type": "power",
+              "text": "每当你打出一张耗能大于等于2能量的牌时，获得3点格挡。"
+            }
+          ]
+        }
+      ]
+    },
+    "complex_defer": {
+      "count": 130,
+      "top_patterns": [
+        {
+          "pattern": "不能被打出",
+          "count": 3,
+          "sample_cards": [
+            {
+              "name": "Injury",
+              "id": "Injury",
+              "character": "curse",
+              "type": "curse",
+              "text": "不能被打出"
+            },
+            {
+              "name": "Soot",
+              "id": "Soot",
+              "character": "status",
+              "type": "status",
+              "text": "不能被打出"
+            },
+            {
+              "name": "Wound",
+              "id": "Wound",
+              "character": "status",
+              "type": "status",
+              "text": "不能被打出"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 召唤<N>",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Afterlife",
+              "id": "Afterlife",
+              "character": "necrobinder",
+              "type": "skill",
+              "text": "消耗,召唤6。"
+            },
+            {
+              "name": "Reanimate",
+              "id": "Reanimate",
+              "character": "necrobinder",
+              "type": "skill",
+              "text": "消耗,召唤20。"
+            }
+          ]
+        },
+        {
+          "pattern": "不能被打出, 在你的回合结束时, 如果这张牌在你的手牌中, 你受到<N>点伤害",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Decay",
+              "id": "Decay",
+              "character": "curse",
+              "type": "curse",
+              "text": "不能被打出,在你的回合结束时，如果这张牌在你的手牌中,你受到2点伤害。"
+            },
+            {
+              "name": "Burn",
+              "id": "Burn",
+              "character": "status",
+              "type": "status",
+              "text": "不能被打出,在你的回合结束时，如果这张牌在你的手牌中，你受到2点伤害。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 生成<N>个冰霜充能球",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Cold Snap",
+              "id": "ColdSnap",
+              "character": "defect",
+              "type": "attack",
+              "text": "造成6点伤害。 / 生成1个冰霜充能球。"
+            },
+            {
+              "name": "Ice Lance",
+              "id": "IceLance",
+              "character": "defect",
+              "type": "attack",
+              "text": "造成19点伤害。 / 生成3个冰霜充能球。"
+            }
+          ]
+        },
+        {
+          "pattern": "永恒, 不能被打出",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Curse of the Bell",
+              "id": "CurseOfTheBell",
+              "character": "curse",
+              "type": "curse",
+              "text": "永恒,不能被打出"
+            },
+            {
+              "name": "Greed",
+              "id": "Greed",
+              "character": "curse",
+              "type": "curse",
+              "text": "永恒,不能被打出"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Spore Mind",
+              "id": "SporeMind",
+              "character": "curse",
+              "type": "curse",
+              "text": "消耗"
+            },
+            {
+              "name": "Debris",
+              "id": "Debris",
+              "character": "status",
+              "type": "status",
+              "text": "消耗"
+            }
+          ]
+        },
+        {
+          "pattern": "铸造<N>",
+          "count": 2,
+          "sample_cards": [
+            {
+              "name": "Spoils of Battle",
+              "id": "SpoilsOfBattle",
+              "character": "regent",
+              "type": "skill",
+              "text": "铸造10。"
+            },
+            {
+              "name": "The Smith",
+              "id": "TheSmith",
+              "character": "regent",
+              "type": "skill",
+              "text": "铸造30。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 将这张牌的一张<N>能量复制品添加到你的弃牌堆",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Adaptive Strike",
+              "id": "AdaptiveStrike",
+              "character": "defect",
+              "type": "attack",
+              "text": "造成18点伤害。 / 将这张牌的一张0能量复制品添加到你的弃牌堆。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 将一张此牌的复制品加入你的弃牌堆",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Anger",
+              "id": "Anger",
+              "character": "ironclad",
+              "type": "attack",
+              "text": "造成6点伤害。 / 将一张此牌的复制品加入你的弃牌堆。"
+            }
+          ]
+        },
+        {
+          "pattern": "永恒, 不能被打出, 虚无",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Ascender's Bane",
+              "id": "AscendersBane",
+              "character": "curse",
+              "type": "curse",
+              "text": "永恒,不能被打出,虚无"
+            }
+          ]
+        },
+        {
+          "pattern": "永恒, 不能被打出, 在你的回合结束时, 如果这张牌在你的手牌中, 则失去<N>点生命",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Bad Luck",
+              "id": "BadLuck",
+              "character": "curse",
+              "type": "curse",
+              "text": "永恒,不能被打出,在你的回合结束时，如果这张牌在你的手牌中，则失去13点生命。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 生成<N>个闪电充能球",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Ball Lightning",
+              "id": "BallLightning",
+              "character": "defect",
+              "type": "attack",
+              "text": "造成7点伤害。 / 生成1个闪电充能球。"
+            }
+          ]
+        },
+        {
+          "pattern": "对所有敌人造成<N>点伤害. / 本场战斗中每打出过一张虚无牌, 此牌费用就减少<N>能量",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Banshee's Cry",
+              "id": "BansheesCry",
+              "character": "necrobinder",
+              "type": "attack",
+              "text": "对所有敌人造成33点伤害。 / 本场战斗中每打出过一张虚无牌，此牌费用就减少2能量。"
+            }
+          ]
+        },
+        {
+          "pattern": "当前每有一个充能球, 造成<N>点伤害",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Barrage",
+              "id": "Barrage",
+              "character": "defect",
+              "type": "attack",
+              "text": "当前每有一个充能球，造成5点伤害。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 铸造<N>. / 本回合此前你击中过该敌人几次, 就额外铸造<N>",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Beat into Shape",
+              "id": "BeatIntoShape",
+              "character": "regent",
+              "type": "attack",
+              "text": "造成5点伤害。 / 铸造5。 / 本回合此前你击中过该敌人几次，就额外铸造5。"
+            }
+          ]
+        },
+        {
+          "pattern": "在你的回合结束时, 如果这张牌在你的手牌中, / 则失去<N>点生命",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Beckon",
+              "id": "Beckon",
+              "character": "status",
+              "type": "status",
+              "text": "在你的回合结束时，如果这张牌在你的手牌中， / 则失去6点生命。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 选择你手牌中的一张牌, 将其变化为仆从俯冲",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "BEGONE!",
+              "id": "Begone",
+              "character": "regent",
+              "type": "attack",
+              "text": "造成4点伤害。 / 选择你手牌中的一张牌，将其变化为仆从俯冲。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 抽<N>张牌. / 获得<N>能量. / 获得<N>☆. / 铸造<N>",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Big Bang",
+              "id": "BigBang",
+              "character": "regent",
+              "type": "skill",
+              "text": "消耗,抽1张牌。 / 获得1能量。 / 获得1☆。 / 铸造5。"
+            }
+          ]
+        },
+        {
+          "pattern": "召唤<N>",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Bodyguard",
+              "id": "Bodyguard",
+              "character": "necrobinder",
+              "type": "skill",
+              "text": "召唤5。"
+            }
+          ]
+        },
+        {
+          "pattern": "失去<N>个充能球栏位. / 获得<N>点力量. / 获得<N>点敏捷",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Bulk Up",
+              "id": "BulkUp",
+              "character": "defect",
+              "type": "power",
+              "text": "失去1个充能球栏位。 / 获得2点力量。 / 获得2点敏捷。"
+            }
+          ]
+        },
+        {
+          "pattern": "获得<N>点格挡. / 铸造<N>",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Bulwark",
+              "id": "Bulwark",
+              "character": "regent",
+              "type": "skill",
+              "text": "获得13点格挡。 / 铸造10。"
+            }
+          ]
+        },
+        {
+          "pattern": "不能被打出, 能在休息处被孵化",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Byrdonis Egg",
+              "id": "ByrdonisEgg",
+              "character": "quest",
+              "type": "other",
+              "text": "不能被打出,能在休息处被孵化。"
+            }
+          ]
+        },
+        {
+          "pattern": "获得<N>个充能球栏位",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Capacitor",
+              "id": "Capacitor",
+              "character": "defect",
+              "type": "power",
+              "text": "获得2个充能球栏位。"
+            }
+          ]
+        },
+        {
+          "pattern": "生成<N>个随机充能球",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Chaos",
+              "id": "Chaos",
+              "character": "defect",
+              "type": "skill",
+              "text": "生成1个随机充能球。"
+            }
+          ]
+        },
+        {
+          "pattern": "选择你抽牌堆中的<N>张牌, 将其变化为/ 仆从打击",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "CHARGE!!",
+              "id": "Charge",
+              "character": "regent",
+              "type": "skill",
+              "text": "选择你抽牌堆中的2张牌，将其变化为 / 仆从打击。"
+            }
+          ]
+        },
+        {
+          "pattern": "消耗, 当前每有一名敌人, 就生成<N>个冰霜充能球",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Chill",
+              "id": "Chill",
+              "character": "defect",
+              "type": "skill",
+              "text": "消耗,当前每有一名敌人，就生成1个冰霜充能球。"
+            }
+          ]
+        },
+        {
+          "pattern": "造成<N>点伤害. / 本场战斗中所有爪击卡牌的伤害增加<N>点",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Claw",
+              "id": "Claw",
+              "character": "defect",
+              "type": "attack",
+              "text": "造成3点伤害。 / 本场战斗中所有爪击卡牌的伤害增加2点。"
+            }
+          ]
+        },
+        {
+          "pattern": "召唤<N>. / 从你的抽牌堆中选一张牌消耗",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Cleanse",
+              "id": "Cleanse",
+              "character": "necrobinder",
+              "type": "skill",
+              "text": "召唤3。 / 从你的抽牌堆中选一张牌消耗。"
+            }
+          ]
+        },
+        {
+          "pattern": "不能被打出, 虚无",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Clumsy",
+              "id": "Clumsy",
+              "character": "curse",
+              "type": "curse",
+              "text": "不能被打出,虚无"
+            }
+          ]
+        },
+        {
+          "pattern": "获得<N>点格挡. / 将你手牌中的全部状态牌变化为燃料",
+          "count": 1,
+          "sample_cards": [
+            {
+              "name": "Compact",
+              "id": "Compact",
+              "character": "defect",
+              "type": "skill",
+              "text": "获得6点格挡。 / 将你手牌中的全部状态牌变化为燃料。"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "representative_examples": {
+    "most_common_by_type": {
+      "attack": {
+        "pattern": "造成<N>点伤害. / 给予<N>层易伤",
+        "count": 4,
+        "sample_cards": [
+          {
+            "name": "Beam Cell",
+            "id": "BeamCell",
+            "character": "defect",
+            "type": "attack",
+            "text": "造成3点伤害。 / 给予1层易伤。"
+          },
+          {
+            "name": "Squash",
+            "id": "Squash",
+            "character": "event",
+            "type": "attack",
+            "text": "造成10点伤害。 / 给予2层易伤。"
+          },
+          {
+            "name": "Bash",
+            "id": "Bash",
+            "character": "ironclad",
+            "type": "attack",
+            "text": "造成8点伤害。 / 给予2层易伤。"
+          },
+          {
+            "name": "Break",
+            "id": "Break",
+            "character": "ironclad",
+            "type": "attack",
+            "text": "造成20点伤害。 / 给予5层易伤。"
+          }
+        ]
+      },
+      "skill": {
+        "pattern": "获得<N>点格挡. / 抽<N>张牌",
+        "count": 3,
+        "sample_cards": [
+          {
+            "name": "Finesse",
+            "id": "Finesse",
+            "character": "colorless",
+            "type": "skill",
+            "text": "获得4点格挡。 / 抽1张牌。"
+          },
+          {
+            "name": "Shrug It Off",
+            "id": "ShrugItOff",
+            "character": "ironclad",
+            "type": "skill",
+            "text": "获得8点格挡。 / 抽1张牌。"
+          },
+          {
+            "name": "Backflip",
+            "id": "Backflip",
+            "character": "silent",
+            "type": "skill",
+            "text": "获得5点格挡。 / 抽2张牌。"
+          }
+        ]
+      },
+      "power": {
+        "pattern": "获得<N>层覆甲",
+        "count": 3,
+        "sample_cards": [
+          {
+            "name": "Eternal Armor",
+            "id": "EternalArmor",
+            "character": "colorless",
+            "type": "power",
+            "text": "获得7层覆甲。"
+          },
+          {
+            "name": "Stone Armor",
+            "id": "StoneArmor",
+            "character": "ironclad",
+            "type": "power",
+            "text": "获得4层覆甲。"
+          },
+          {
+            "name": "Neutron Aegis",
+            "id": "NeutronAegis",
+            "character": "regent",
+            "type": "power",
+            "text": "获得8层覆甲。"
+          }
+        ]
+      }
+    },
+    "by_character": {
+      "regent": [
+        {
+          "name": "Comet",
+          "id": "Comet",
+          "type": "attack",
+          "text": "造成33点伤害。 / 给予3层虚弱。 / 给予3层易伤。"
+        },
+        {
+          "name": "Falling Star",
+          "id": "FallingStar",
+          "type": "attack",
+          "text": "造成7点伤害。 / 给予1层虚弱。 / 给予1层易伤。"
+        },
+        {
+          "name": "Gamma Blast",
+          "id": "GammaBlast",
+          "type": "attack",
+          "text": "造成13点伤害。 / 给予2层虚弱。 / 给予2层易伤。"
+        }
+      ],
+      "defect": [
+        {
+          "name": "Beam Cell",
+          "id": "BeamCell",
+          "type": "attack",
+          "text": "造成3点伤害。 / 给予1层易伤。"
+        },
+        {
+          "name": "Supercritical",
+          "id": "Supercritical",
+          "type": "skill",
+          "text": "消耗,获得4能量。"
+        },
+        {
+          "name": "Cold Snap",
+          "id": "ColdSnap",
+          "type": "attack",
+          "text": "造成6点伤害。 / 生成1个冰霜充能球。"
+        }
+      ],
+      "ironclad": [
+        {
+          "name": "Bash",
+          "id": "Bash",
+          "type": "attack",
+          "text": "造成8点伤害。 / 给予2层易伤。"
+        },
+        {
+          "name": "Break",
+          "id": "Break",
+          "type": "attack",
+          "text": "造成20点伤害。 / 给予5层易伤。"
+        },
+        {
+          "name": "Uppercut",
+          "id": "Uppercut",
+          "type": "attack",
+          "text": "造成13点伤害。 / 给予1层虚弱。 / 给予1层易伤。"
+        }
+      ],
+      "necrobinder": [
+        {
+          "name": "Wisp",
+          "id": "Wisp",
+          "type": "skill",
+          "text": "消耗,获得1能量。"
+        },
+        {
+          "name": "Afterlife",
+          "id": "Afterlife",
+          "type": "skill",
+          "text": "消耗,召唤6。"
+        },
+        {
+          "name": "Putrefy",
+          "id": "Putrefy",
+          "type": "skill",
+          "text": "消耗,给予2层虚弱。 / 给予2层易伤。"
+        }
+      ],
+      "silent": [
+        {
+          "name": "Backflip",
+          "id": "Backflip",
+          "type": "skill",
+          "text": "获得5点格挡。 / 抽2张牌。"
+        },
+        {
+          "name": "Acrobatics",
+          "id": "Acrobatics",
+          "type": "skill",
+          "text": "抽3张牌。 / 丢弃1张牌。"
+        },
+        {
+          "name": "Adrenaline",
+          "id": "Adrenaline",
+          "type": "skill",
+          "text": "消耗,获得1能量。 / 抽2张牌。"
+        }
+      ],
+      "colorless": [
+        {
+          "name": "Eternal Armor",
+          "id": "EternalArmor",
+          "type": "power",
+          "text": "获得7层覆甲。"
+        },
+        {
+          "name": "Finesse",
+          "id": "Finesse",
+          "type": "skill",
+          "text": "获得4点格挡。 / 抽1张牌。"
+        },
+        {
+          "name": "Production",
+          "id": "Production",
+          "type": "skill",
+          "text": "消耗,获得2能量。"
+        }
+      ],
+      "event": [
+        {
+          "name": "Squash",
+          "id": "Squash",
+          "type": "attack",
+          "text": "造成10点伤害。 / 给予2层易伤。"
+        },
+        {
+          "name": "Exterminate",
+          "id": "Exterminate",
+          "type": "attack",
+          "text": "对所有敌人造成3点伤害4次。"
+        },
+        {
+          "name": "Peck",
+          "id": "Peck",
+          "type": "attack",
+          "text": "造成2点伤害3次。"
+        }
+      ],
+      "curse": [
+        {
+          "name": "Injury",
+          "id": "Injury",
+          "type": "curse",
+          "text": "不能被打出"
+        },
+        {
+          "name": "Curse of the Bell",
+          "id": "CurseOfTheBell",
+          "type": "curse",
+          "text": "永恒,不能被打出"
+        },
+        {
+          "name": "Decay",
+          "id": "Decay",
+          "type": "curse",
+          "text": "不能被打出,在你的回合结束时，如果这张牌在你的手牌中,你受到2点伤害。"
+        }
+      ],
+      "token": [
+        {
+          "name": "Fuel",
+          "id": "Fuel",
+          "type": "skill",
+          "text": "消耗,获得1能量。 / 抽1张牌。"
+        },
+        {
+          "name": "Disintegration",
+          "id": "Disintegration",
+          "type": "status",
+          "text": "在你的回合结束时，受到6点伤害。"
+        },
+        {
+          "name": "Luminesce",
+          "id": "Luminesce",
+          "type": "skill",
+          "text": "消耗,保留,获得2能量。"
+        }
+      ],
+      "status": [
+        {
+          "name": "Soot",
+          "id": "Soot",
+          "type": "status",
+          "text": "不能被打出"
+        },
+        {
+          "name": "Wound",
+          "id": "Wound",
+          "type": "status",
+          "text": "不能被打出"
+        },
+        {
+          "name": "Burn",
+          "id": "Burn",
+          "type": "status",
+          "text": "不能被打出,在你的回合结束时，如果这张牌在你的手牌中，你受到2点伤害。"
+        }
+      ],
+      "quest": [
+        {
+          "name": "Byrdonis Egg",
+          "id": "ByrdonisEgg",
+          "type": "other",
+          "text": "不能被打出,能在休息处被孵化。"
+        },
+        {
+          "name": "Lantern Key",
+          "id": "LanternKey",
+          "type": "other",
+          "text": "不能被打出,在下一阶段解锁一个特殊事件。"
+        },
+        {
+          "name": "Spoils Map",
+          "id": "SpoilsMap",
+          "type": "other",
+          "text": "不能被打出,在下一阶段的地图上，标记一个有600额外金币的地点。"
+        }
+      ]
+    },
+    "insufficient_pool": {
+      "deprecated": 1
+    }
+  }
+}
