@@ -11,6 +11,12 @@
 - 在 catalog ingestion 已完成的前提下，继续提升 behavior coverage
 - 优先提升 Attack / Skill 的可执行覆盖率
 - 仅在 Q3 边界内谨慎扩展 trigger power
+- 本轮用户已确认：
+  - `Strangle` 保持 `unimplemented`
+  - `Parry` 可扩到单一卡牌 ID 精确过滤
+  - `SerpentForm` 本阶段不专门扩引擎
+  - `Shroud` / doom 族继续延期
+  - `Bolas` / `ThrummingHatchet` 保持 `unimplemented`
 - 引入并统计 `passive_modeled`
 - 保持 Q7 相关“返回此牌到手牌”效果为 `unimplemented`
 
@@ -66,15 +72,36 @@
   - importer / status report / loader smoke / planner legal actions smoke 通过
   - 定向验证确认 `Predator` 会正确挂起 `next_turn_draw`
 
+### 第 3 轮
+
+- executable / passive_modeled / unimplemented：`131 / 5 / 441`
+- 新增支持：
+  - `Lose HP. Exhaust 1 card. Gain Strength.`
+  - `Lose HP. Deal damage to ALL enemies.`
+  - `Whenever you play Sovereign Blade, gain Block.`
+- 典型覆盖卡牌：
+  - `Brand`
+  - `Breakthrough`
+  - `Parry`
+- 规则变更：
+  - trigger 条件新增 `event_card_id_is`
+  - 明确只支持“单一卡牌 ID 精确过滤”，不扩成通用复杂过滤系统
+- 验证：
+  - importer / status report / loader smoke / planner legal actions smoke 通过
+  - 定向验证通过：
+    - `Parry` 只在 `card_id == SovereignBlade` 时获得格挡
+    - `Acrobatics` 不会误触发 `Parry`
+    - `Brand` / `Breakthrough` 已作为 executable 卡进入运行时
+
 ## 本阶段结果
 
-- 最终 executable coverage：`128 / 577`
+- 最终 executable coverage：`131 / 577`
 - 最终 passive-modeled coverage：`5 / 577`
-- 最终 unimplemented：`444 / 577`
+- 最终 unimplemented：`441 / 577`
 - 相比本阶段基线：
-  - executable `+13`
+  - executable `+16`
   - passive_modeled `+5`
-  - unimplemented `-18`
+  - unimplemented `-21`
 
 ## 本轮新增支持的主要模式
 
@@ -93,28 +120,41 @@
   - `next_turn_energy`
   - `next_turn_draw`
   - `next_turn_draw + energy`
+- 额外低风险 Attack / Skill 组合：
+  - `lose_hp + exhaust_from_hand + gain_strength`
+  - `lose_hp + aoe_damage`
+- 单一卡牌 ID 精确过滤 trigger：
+  - `Whenever you play Sovereign Blade, gain Block.`
 - 不可执行但已建模的手牌被动 HP loss：
   - `passive_modeled`
 
 ## 刻意保持未实现的模式
 
+- `Strangle` 这类 `enemy loses HP` 持续触发族
 - `Deal damage. At the start of your next turn, return this to your Hand.`
 - 依赖 card instance identity / zone transfer 的延迟回手
 - doom / summon / Osty / forge / stars 等资源系统相关 trigger
+- `Shroud` / doom trigger 族
+- `SerpentForm` 这类虽然技术上可做、但当前阶段不优先的复杂 Power
 - 更复杂的持续型 power：
   - 多事件混合
   - 多层条件
   - 长链式条件
   - 语义明显超出当前 trigger/effect 模型的效果
-- `enemy loses HP` 与 `deal damage` 不等价的持续触发族
 
 ## 风险与边界说明
 
 - `passive_modeled` 只用于“已建模但不进入 legal actions”的效果，未混入 executable coverage
 - 手牌被动效果当前只做显式建模与分层统计，没有把它们伪装成可打出的牌
 - `lose_hp` 与 `deal_damage(target=player)` 分开处理，避免被格挡错误吸收
-- `cost >= N` trigger 只支持单一额外数值条件，不继续扩到复杂资源或多条件组合
-- `return this to your Hand` 仍然保持 `unimplemented`，避免污染模型
+- `enemy loses HP` 不近似为 `deal_damage`，因此 `Strangle` 继续保持 `unimplemented`
+- trigger power 当前只扩到：
+  - 单一额外数值条件
+  - 单一简单过滤条件
+  - 单一卡牌 ID 精确过滤
+- `Parry` 的扩展边界仅限单卡 ID，不继续扩到通用复杂过滤
+- `Shroud` / doom 族继续延期，不为其引入额外资源子系统
+- `return this to your Hand` 仍然保持 `unimplemented`，因为缺少 card instance identity / zone transfer，避免污染模型
 
 ## 下一步建议
 
@@ -122,14 +162,14 @@
   - 小范围延迟收益模板
   - 少量明确的基础组合模板
 - 若继续扩 trigger power，建议只考虑：
-  - 单一精确卡牌过滤
   - 单一简单 tag 过滤
+  - 已确认边界内的单一卡牌 ID 精确过滤
   - 仍可直接复用现有 effect 的模式
 - 若要让 `passive_modeled` 进入真实运行时评估，下一步应单独设计“非动作型被动注入”机制，但不要混入 planner legal actions
 
 ## 停止原因
 
-- executable coverage 已从 `115` 提升到 `128`，有实质提升
+- executable coverage 已从 `115` 提升到 `131`，有实质提升
 - passive-modeled coverage 已工程化拆分并单独统计
-- Q3 边界内的 trigger power 已小幅扩张到“单一额外数值条件”
-- 剩余高影响缺口主要转向复杂机制、资源系统、HP loss 语义差异与 card instance identity 问题
+- Q3 边界内的 trigger power 已小幅扩张到“单一卡牌 ID 精确过滤”
+- 剩余高影响缺口主要转向复杂机制、资源系统、doom、HP loss 语义差异与 card instance identity 问题

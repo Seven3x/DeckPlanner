@@ -371,6 +371,16 @@ def _build_condition(raw_spec: dict[str, Any]) -> ConditionFn:
         event_card_character_is.__name__ = f"normalized_cond_event_card_character_is_{expected_character}"
         return event_card_character_is
 
+    if condition_type == "event_card_id_is":
+        expected_card_id = _required_str(raw_spec, "value").strip().lower()
+
+        def event_card_id_is(state: GameState, ctx: dict) -> bool:
+            del state
+            return str(ctx.get("card_id", "")).strip().lower() == expected_card_id
+
+        event_card_id_is.__name__ = f"normalized_cond_event_card_id_is_{expected_card_id}"
+        return event_card_id_is
+
     if condition_type == "event_debuff_key_is":
         expected_key = _required_str(raw_spec, "value").strip().lower()
 

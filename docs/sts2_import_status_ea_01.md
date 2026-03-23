@@ -1,28 +1,28 @@
 # STS2 Import Status (ea_01)
 
 - Source file: `data/sts2/normalized/cards.ea_01.json`
-- Generated at (UTC): `2026-03-23T14:52:29+00:00`
+- Generated at (UTC): `2026-03-23T16:01:51+00:00`
 
 ## Summary
 
 | Metric | Count |
 | --- | ---: |
 | total_cards | 577 |
-| executable_cards | 128 |
-| mapped_cards | 128 |
+| executable_cards | 131 |
+| mapped_cards | 131 |
 | passive_modeled_cards | 5 |
 | text_only_cards | 0 |
-| unimplemented_cards | 444 |
+| unimplemented_cards | 441 |
 
 ## Behavior Key Counts
 
 | Key | Count |
 | --- | ---: |
-| unimplemented | 444 |
-| sequence | 61 |
+| unimplemented | 441 |
+| sequence | 63 |
 | deal_damage | 20 |
+| add_trigger | 13 |
 | gain_block | 13 |
-| add_trigger | 12 |
 | draw_cards | 7 |
 | gain_energy | 6 |
 | passive_in_hand_trigger | 5 |

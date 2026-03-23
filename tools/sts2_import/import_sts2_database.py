@@ -403,6 +403,27 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
         ),
         (
             re.compile(
+                r"^Lose (?P<hp>(?:\d+|\{[^{}]+\})) HP\. Exhaust (?P<exhaust>(?:\d+|\{[^{}]+\})) card\. Gain (?P<amount>(?:\d+|\{[^{}]+\})) Strength\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("lose_hp", {"amount": _parse_amount_token(m.group("hp"), variables), "target": "player"}),
+                ("exhaust_from_hand", {"amount": _parse_amount_token(m.group("exhaust"), variables)}),
+                ("apply_buff", {"key": "strength", "amount": _parse_amount_token(m.group("amount"), variables), "target": "player"}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Lose (?P<hp>(?:\d+|\{[^{}]+\})) HP\. Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage to ALL enemies\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("lose_hp", {"amount": _parse_amount_token(m.group("hp"), variables), "target": "player"}),
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables), "target": "enemy"}),
+            ),
+        ),
+        (
+            re.compile(
                 r"^Gain (?P<block>(?:\d+|\{[^{}]+\})) Block\. Draw (?P<draw>(?:\d+|\{[^{}]+\})) (?:card|cards|\{[^{}]+\})\.$",
                 re.IGNORECASE,
             ),
@@ -780,6 +801,24 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
             lambda m: _sequence(
                 ("apply_buff", {"key": "strength", "amount": -(_parse_amount_token(m.group("amount"), variables) or 0), "target": "enemy"}),
                 ("schedule_effect", {"delay_turns": 1, "label": "expire_enemy_strength_loss_this_turn", "effect": {"behavior_key": "apply_buff", "params": {"key": "strength", "amount": _parse_amount_token(m.group("amount"), variables), "target": "enemy"}}}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Whenever you play Sovereign Blade, gain (?P<amount>(?:\d+|\{[^{}]+\})) Block\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: (
+                "add_trigger",
+                {
+                    "event": "on_card_played",
+                    "label": "on_play_sovereign_blade_gain_block",
+                    "condition": {"type": "event_card_id_is", "value": "SovereignBlade"},
+                    "effect": {
+                        "behavior_key": "gain_block",
+                        "params": {"amount": _parse_amount_token(m.group("amount"), variables)},
+                    },
+                },
             ),
         ),
         (

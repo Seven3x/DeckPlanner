@@ -1,4 +1,4 @@
-# STS2 行为问题待用户确认
+# STS2 行为边界已确认决策
 
 ## 已落实的边界
 
@@ -14,17 +14,20 @@
 
 ### Q3. trigger power 扩展边界
 
-- 本轮已落实到：
+- 本阶段允许到：
   - 确定性事件
   - 单一额外数值条件
   - 单一简单过滤条件
-- 本轮新增实例：
+  - 单一卡牌 ID 精确过滤
+- 已纳入实例：
   - `DanseMacabre`
+  - `Parry`
 - 明确保留不做：
   - 多层嵌套条件
   - doom / summon / 复杂资源体系条件
   - 多事件混合触发
   - 长链式条件
+  - 通用复杂卡牌过滤系统
 
 ### Q4. 资源系统优先级
 
@@ -43,7 +46,7 @@
   - 引入 `passive_modeled`
   - 单独统计 `passive_modeled_cards`
   - 不进入 planner legal actions
-- 本轮已纳入 `passive_modeled` 的卡牌：
+- 已纳入 `passive_modeled` 的卡牌：
   - `BadLuck`
   - `Burn`
   - `Decay`
@@ -58,91 +61,56 @@
   - 当前引擎缺少 card instance identity / zone transfer 语义
   - 用近似会污染模型
 
-## 当前待确认问题
+## 本轮 5 条已确认决策
 
-### 1. `Strangle` 是否允许把 “lose HP” 近似成伤害？
+### 1. `Strangle`
 
-- 卡牌 ID / 名称：
-  - `Strangle` / `Strangle`
-- 文本：
-  - `Deal {Damage:diff()} damage. Whenever you play a card this turn, the enemy loses {StranglePower:diff()} HP.`
-- 可能解释：
-  - 解释 A：新增敌方 `lose_hp` 语义，绕过格挡
-  - 解释 B：近似成 `deal_damage` 到当前敌人
-  - 解释 C：继续保持 `unimplemented`
-- 倾向方案：
-  - 解释 C
-- 不确定原因：
+- 已确认：
+  - `enemy loses HP` 目前不要近似成普通伤害
+  - 继续保持 `unimplemented`
+- 原因：
   - `lose HP` 与 `deal damage` 在是否吃格挡上有明确语义差异
-- 影响范围：
-  - 一小组 `enemy loses HP` 类持续效果，尤其是 attack/skill 挂载的临时 trigger
+  - 这类效果需要独立语义，当前阶段不做错误近似
 
-### 2. `Parry` 这类“精确卡名过滤”是否要纳入下一步 trigger 边界？
+### 2. `Parry`
 
-- 卡牌 ID / 名称：
-  - `Parry` / `Parry`
-- 文本：
-  - `Whenever you play Sovereign Blade, gain {ParryPower:diff()} Block.`
-- 可能解释：
-  - 解释 A：新增按 `card_id` 精确过滤的简单 trigger 条件
-  - 解释 B：把它视为超出当前边界，继续 `unimplemented`
-- 倾向方案：
-  - 解释 A，但仅限“单一卡牌 ID 精确过滤”
-- 不确定原因：
-  - 它仍是简单过滤，但会把 trigger 条件从 tag/character 扩到 card identity
-- 影响范围：
-  - 一小批“当你打出某张特定牌时”类型的 power
+- 已确认：
+  - 允许扩展到“单一卡牌 ID 精确过滤”的 trigger
+  - 但只限这一种小范围扩展
+- 已执行：
+  - 新增 `event_card_id_is`
+  - `Parry` 已映射为可执行 trigger
+- 明确保留不做：
+  - 不扩成通用复杂过滤系统
+  - 不同时引入多重复杂条件
 
-### 3. `SerpentForm` 是否值得在当前阶段纳入？
+### 3. `SerpentForm`
 
-- 卡牌 ID / 名称：
-  - `SerpentForm` / `Serpent Form`
-- 文本：
-  - `Whenever you play a card, deal {SerpentFormPower:diff()} damage to a random enemy.`
-- 可能解释：
-  - 解释 A：直接按当前随机目标近似映射为 `on_card_played -> deal_damage(enemy)`
-  - 解释 B：因为当前阶段不优先啃 Power，继续 `unimplemented`
-- 倾向方案：
-  - 解释 B
-- 不确定原因：
-  - 从建模风险看它是可做的，但从阶段优先级看它会继续把精力推向 Power
-- 影响范围：
-  - 少量确定性 trigger power 的进一步扩展
+- 已确认：
+  - 技术上可做，但本阶段不优先
+  - 除非被已支持的低风险模板自然覆盖，否则不专门扩引擎
+- 当前状态：
+  - 保持 `unimplemented`
 
-### 4. `Shroud` / `Doom` 触发族是否继续延期？
+### 4. `Shroud` / doom trigger 族
 
-- 卡牌 ID / 名称：
-  - `Shroud` / `Shroud`
-- 文本：
-  - `Whenever you apply Doom, gain {Block:diff()} Block.`
-- 可能解释：
-  - 解释 A：为 `doom` 建立最小 debuff 键并纳入 trigger
-  - 解释 B：继续延期，等 doom 资源/状态体系单独设计
-- 倾向方案：
-  - 解释 B
-- 不确定原因：
-  - 一旦引入 doom，后续很容易牵连更多持续效果、资源规则与结算时机
-- 影响范围：
-  - 一组 doom 相关 power 与 combo 卡牌
+- 已确认：
+  - 继续延期
+  - 当前不要把 doom 拉进模型
+- 当前状态：
+  - 保持 `unimplemented`
+- 原因：
+  - 当前不为 doom 新增资源子系统或 trigger 分支
 
-### 5. `Bolas` / `ThrummingHatchet` 的“return this to your Hand” 是否仍保持完全不近似？
+### 5. `Bolas` / `ThrummingHatchet`
 
-- 卡牌 ID / 名称：
-  - `Bolas` / `Bolas`
-  - `ThrummingHatchet` / `Thrumming Hatchet`
-- 文本：
-  - `Deal {Damage:diff()} damage. At the start of your next turn, return this to your Hand.`
-- 可能解释：
-  - 解释 A：新增 card instance identity 与 zone transfer
-  - 解释 B：近似为下回合额外摸到一张副本
-  - 解释 C：保持 `unimplemented`
-- 倾向方案：
-  - 解释 C
-- 不确定原因：
-  - 当前任何“替代副本”近似都会污染牌区语义与规划结果
-- 影响范围：
-  - 一小组延迟回手攻击牌
+- 已确认：
+  - `return this to your Hand` 继续保持 `unimplemented`
+- 原因：
+  - 当前缺少 `card instance identity`
+  - 当前缺少 `zone transfer` 语义
+  - 不用“抽一张替代副本”之类近似去糊
 
 ## 当前开放问题数量
 
-- `5`
+- `0`

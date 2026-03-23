@@ -2842,8 +2842,32 @@
         "target:self"
       ],
       "text": "失去1点生命。\n消耗1张牌。\n获得1点力量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "lose_hp",
+            "params": {
+              "amount": 1,
+              "target": "player"
+            }
+          },
+          {
+            "behavior_key": "exhaust_from_hand",
+            "params": {
+              "amount": 1
+            }
+          },
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "strength",
+              "amount": 1,
+              "target": "player"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -2946,8 +2970,25 @@
         "target:allenemies"
       ],
       "text": "失去1点生命。\n对所有敌人造成9点伤害。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "lose_hp",
+            "params": {
+              "amount": 1,
+              "target": "player"
+            }
+          },
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 9,
+              "target": "enemy"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -16808,8 +16849,21 @@
         "target:self"
       ],
       "text": "每当你打出君王之剑时，获得6点格挡。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "add_trigger",
+      "params": {
+        "event": "on_card_played",
+        "label": "on_play_sovereign_blade_gain_block",
+        "condition": {
+          "type": "event_card_id_is",
+          "value": "SovereignBlade"
+        },
+        "effect": {
+          "behavior_key": "gain_block",
+          "params": {
+            "amount": 6
+          }
+        }
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
