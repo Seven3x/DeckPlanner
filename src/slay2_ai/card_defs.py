@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Literal
+from typing import Any, Literal, Union
 
 from .effects import (
     AddTriggerEffect,
@@ -19,7 +19,7 @@ from .effects import (
 from .triggers import Trigger
 
 CardType = Literal["attack", "skill", "power", "status", "curse", "other"]
-CardCost = int | str
+CardCost = Union[int, str]
 
 
 @dataclass

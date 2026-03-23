@@ -107,7 +107,9 @@ def main() -> None:
 
     assert summary.total_cards == len(cards), "summary total count mismatch"
     assert summary.executable_cards > 0, "expected at least one executable card"
-    assert summary.text_only_cards > 0, "expected at least one text-only card"
+    assert summary.unimplemented_cards > 0 or summary.text_only_cards > 0, (
+        "expected at least one non-executable card"
+    )
     assert text_only_probe not in action_ids, "text_only/non-executable card should not be executable"
     print("Validation checks passed.")
 

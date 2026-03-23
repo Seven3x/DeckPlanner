@@ -169,7 +169,7 @@ def build_card_catalog(normalized_cards: list[NormalizedCard]) -> tuple[dict[str
             cost=card.cost,
             card_type=card.card_type,
             effects=behavior_result.effects,
-            exhaust=False,
+            exhaust="exhaust" in {tag.lower() for tag in tags},
             tags=tags,
             description=card.text,
             behavior_key=card.behavior_key,

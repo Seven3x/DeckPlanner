@@ -14,6 +14,16 @@ MAPPED_BEHAVIOR_KEYS = {
     "gain_block",
     "draw_cards",
     "gain_energy",
+    "discard_cards",
+    "exhaust_from_hand",
+    "apply_debuff",
+    "apply_buff",
+    "sequence",
+}
+
+SAFE_BUFF_KEYS = {
+    "strength": "strength",
+    "dexterity": "dexterity",
 }
 
 TYPE_MAP = {
@@ -31,6 +41,15 @@ RARITY_MAP = {
     "uncommon": "uncommon",
     "rare": "rare",
     "special": "special",
+    "status": "special",
+    "curse": "special",
+    "ancient": "special",
+}
+
+SAFE_DEBUFF_KEYS = {
+    "weak": "weak",
+    "vulnerable": "vulnerable",
+    "poison": "poison",
 }
 
 
@@ -133,7 +152,21 @@ def _remove_markup(text: str) -> str:
 
 def _normalize_for_matching(text: str) -> str:
     stripped = _remove_markup(text).replace("\r\n", "\n").replace("\r", "\n").strip()
+    stripped = re.sub(r"\.\s*\.", ". ", stripped)
     return re.sub(r"\s+", " ", stripped)
+
+
+def _normalized_english_text(card: dict[str, Any]) -> str:
+    for key in ("text_raw_eng", "text_default_eng"):
+        value = card.get(key)
+        if isinstance(value, str) and value.strip():
+            text = value.strip()
+            text = text.replace("\r\n", "\n").replace("\r", "\n")
+            text = _remove_markup(text)
+            text = text.replace("\n", ". ")
+            text = re.sub(r"\.\s*\.", ". ", text)
+            return re.sub(r"\s+", " ", text).strip()
+    return ""
 
 
 def _parse_amount_token(token: str, variables: dict[str, Any]) -> int | None:
@@ -147,6 +180,8 @@ def _parse_amount_token(token: str, variables: dict[str, Any]) -> int | None:
 
     var_name = placeholder.group("name")
     value = variables.get(var_name)
+    if value is None:
+        value = _resolve_variable_fallback(var_name, variables)
     if isinstance(value, bool):
         return None
     if isinstance(value, int):
@@ -158,22 +193,96 @@ def _parse_amount_token(token: str, variables: dict[str, Any]) -> int | None:
     return None
 
 
+def _resolve_variable_fallback(var_name: str, variables: dict[str, Any]) -> Any:
+    direct_candidates = [
+        var_name.replace("Calculated", ""),
+        var_name.replace("Calculation", ""),
+        "Damage" if "damage" in var_name.lower() else None,
+        "Block" if "block" in var_name.lower() else None,
+        "Cards" if "card" in var_name.lower() else None,
+        "Energy" if "energy" in var_name.lower() else None,
+    ]
+    for candidate in direct_candidates:
+        if candidate and candidate in variables:
+            return variables[candidate]
+
+    lowered_name = var_name.lower()
+    ranked_keys = sorted(
+        (
+            key
+            for key in variables
+            if isinstance(key, str) and key.lower() != "keywords"
+        ),
+        key=lambda key: (
+            0 if lowered_name in key.lower() or key.lower() in lowered_name else 1,
+            key,
+        ),
+    )
+    for key in ranked_keys:
+        value = variables.get(key)
+        if isinstance(value, (int, str)) and not isinstance(value, bool):
+            return value
+    return None
+
+
+def _sequence(*effects: tuple[str, dict[str, Any]]) -> tuple[str, dict[str, Any]]:
+    return "sequence", {"effects": [{"behavior_key": key, "params": params} for key, params in effects]}
+
+
+def _parse_repeat_token(token: str, variables: dict[str, Any]) -> int | None:
+    amount = _parse_amount_token(token, variables)
+    if amount is None or amount <= 1 or amount > 5:
+        return None
+    return amount
+
+
+def _parse_placeholder_name(token: str) -> str | None:
+    matched = re.match(r"^\{(?P<name>[A-Za-z0-9_]+):[^}]+\}$", token.strip())
+    if not matched:
+        return None
+    return matched.group("name")
+
+
+def _normalize_tags(card: dict[str, Any]) -> list[str]:
+    tags: list[str] = []
+    variables = card.get("variables")
+    if isinstance(variables, dict):
+        keywords = variables.get("keywords")
+        if isinstance(keywords, list):
+            for keyword in keywords:
+                if isinstance(keyword, str) and keyword.strip():
+                    tags.append(keyword.strip().lower())
+
+    target_type = card.get("targetType")
+    if isinstance(target_type, str) and target_type.strip():
+        tags.append(f"target:{target_type.strip().lower()}")
+
+    upgrades = card.get("upgrades")
+    if isinstance(upgrades, dict):
+        for key in ("addKeywords", "removedKeywords"):
+            values = upgrades.get(key)
+            if isinstance(values, list):
+                for value in values:
+                    if isinstance(value, str) and value.strip():
+                        tags.append(value.strip().lower())
+
+    deduped: list[str] = []
+    seen: set[str] = set()
+    for tag in tags:
+        if tag not in seen:
+            deduped.append(tag)
+            seen.add(tag)
+    return deduped
+
+
 def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
     variables = card.get("variables")
     if not isinstance(variables, dict):
         variables = {}
 
-    candidate_text = ""
-    for key in ("text_default_eng", "text_raw_eng"):
-        value = card.get(key)
-        if isinstance(value, str) and value.strip():
-            candidate_text = value.strip()
-            break
+    candidate_text = _normalized_english_text(card)
 
     if not candidate_text:
-        return "unimplemented", {}
-
-    if "\n" in candidate_text or "\r" in candidate_text:
         return "unimplemented", {}
 
     text = _normalize_for_matching(candidate_text)
@@ -181,6 +290,13 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
         (re.compile(r"^Deal (?P<amount>(?:\d+|X|\{[^{}]+\})) damage\.$", re.IGNORECASE), "deal_damage"),
         (re.compile(r"^Gain (?P<amount>(?:\d+|X|\{[^{}]+\})) Block\.$", re.IGNORECASE), "gain_block"),
         (re.compile(r"^Draw (?P<amount>(?:\d+|X|\{[^{}]+\})) cards?\.$", re.IGNORECASE), "draw_cards"),
+        (
+            re.compile(
+                r"^Draw (?P<amount>(?:\d+|X|\{[^{}]+\})) \{[^{}]+\}\.$",
+                re.IGNORECASE,
+            ),
+            "draw_cards",
+        ),
         (re.compile(r"^Gain (?P<amount>(?:\d+|X|\{[^{}]+\})) Energy\.$", re.IGNORECASE), "gain_energy"),
     ]
 
@@ -193,7 +309,243 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
             return "unimplemented", {}
         return behavior_key, {"amount": amount}
 
+    energy_placeholder_match = re.match(r"^Gain (?P<amount>\{[^{}]+\})\.$", text, re.IGNORECASE)
+    if energy_placeholder_match:
+        placeholder_name = _parse_placeholder_name(energy_placeholder_match.group("amount"))
+        amount = _parse_amount_token(energy_placeholder_match.group("amount"), variables)
+        if amount is not None and placeholder_name and "energy" in placeholder_name.lower():
+            return "gain_energy", {"amount": amount}
+
+    buff_match = re.match(
+        r"^Gain (?P<amount>(?:\d+|\{[^{}]+\})) (?P<buff>Strength|Dexterity)\.$",
+        text,
+        re.IGNORECASE,
+    )
+    if buff_match:
+        amount = _parse_amount_token(buff_match.group("amount"), variables)
+        buff_key = SAFE_BUFF_KEYS.get(buff_match.group("buff").strip().lower())
+        if amount is not None and buff_key:
+            return "apply_buff", {"key": buff_key, "amount": amount, "target": "player"}
+
+    debuff_match = re.match(
+        r"^Apply (?P<amount>(?:\d+|\{[^{}]+\})) (?P<debuff>[A-Za-z]+)\.$",
+        text,
+        re.IGNORECASE,
+    )
+    if debuff_match:
+        amount = _parse_amount_token(debuff_match.group("amount"), variables)
+        debuff_key = SAFE_DEBUFF_KEYS.get(debuff_match.group("debuff").strip().lower())
+        if amount is not None and debuff_key:
+            return "apply_debuff", {"key": debuff_key, "amount": amount, "target": "enemy"}
+
+    sequence_patterns: list[tuple[re.Pattern[str], Any]] = [
+        (
+            re.compile(
+                r"^Gain (?P<block>(?:\d+|\{[^{}]+\})) Block\. Draw (?P<draw>(?:\d+|\{[^{}]+\})) (?:card|cards|\{[^{}]+\})\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("gain_block", {"amount": _parse_amount_token(m.group("block"), variables)}),
+                ("draw_cards", {"amount": _parse_amount_token(m.group("draw"), variables)}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Draw (?P<draw>(?:\d+|\{[^{}]+\})) (?:card|cards|\{[^{}]+\})\. Discard (?P<discard>(?:\d+|\{[^{}]+\})) (?:card|cards|\{[^{}]+\})\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("draw_cards", {"amount": _parse_amount_token(m.group("draw"), variables)}),
+                ("discard_cards", {"amount": _parse_amount_token(m.group("discard"), variables)}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Gain (?P<energy>(?:\d+|\{[^{}]+\}))(?: Energy)?\. Draw (?P<draw>(?:\d+|\{[^{}]+\})) (?:card|cards|\{[^{}]+\})\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("gain_energy", {"amount": _parse_amount_token(m.group("energy"), variables)}),
+                ("draw_cards", {"amount": _parse_amount_token(m.group("draw"), variables)}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage\. Draw (?P<draw>(?:\d+|\{[^{}]+\})) (?:card|cards|\{[^{}]+\})\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables)}),
+                ("draw_cards", {"amount": _parse_amount_token(m.group("draw"), variables)}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage\. Apply (?P<amount>(?:\d+|\{[^{}]+\})) (?P<debuff>Weak|Vulnerable|Poison)\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables)}),
+                (
+                    "apply_debuff",
+                    {
+                        "key": SAFE_DEBUFF_KEYS[m.group("debuff").strip().lower()],
+                        "amount": _parse_amount_token(m.group("amount"), variables),
+                        "target": "enemy",
+                    },
+                ),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Apply (?P<weak>(?:\d+|\{[^{}]+\})) Weak\. Apply (?P<vuln>(?:\d+|\{[^{}]+\})) Vulnerable\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("apply_debuff", {"key": "weak", "amount": _parse_amount_token(m.group("weak"), variables), "target": "enemy"}),
+                ("apply_debuff", {"key": "vulnerable", "amount": _parse_amount_token(m.group("vuln"), variables), "target": "enemy"}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage\. Apply (?P<weak>(?:\d+|\{[^{}]+\})) Weak\. Apply (?P<vuln>(?:\d+|\{[^{}]+\})) Vulnerable\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables)}),
+                ("apply_debuff", {"key": "weak", "amount": _parse_amount_token(m.group("weak"), variables), "target": "enemy"}),
+                ("apply_debuff", {"key": "vulnerable", "amount": _parse_amount_token(m.group("vuln"), variables), "target": "enemy"}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Gain (?P<block>(?:\d+|\{[^{}]+\})) Block\. Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("gain_block", {"amount": _parse_amount_token(m.group("block"), variables)}),
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables)}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage\. Draw 1 card\. Discard 1 card\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables)}),
+                ("draw_cards", {"amount": 1}),
+                ("discard_cards", {"amount": 1}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Gain (?P<block>(?:\d+|\{[^{}]+\})) Block\. Apply (?P<weak>(?:\d+|\{[^{}]+\})) Weak\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("gain_block", {"amount": _parse_amount_token(m.group("block"), variables)}),
+                ("apply_debuff", {"key": "weak", "amount": _parse_amount_token(m.group("weak"), variables), "target": "enemy"}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Exhaust (?P<count>(?:\d+|\{[^{}]+\})) card\. Draw (?P<draw>(?:\d+|\{[^{}]+\})) cards?\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("exhaust_from_hand", {"amount": _parse_amount_token(m.group("count"), variables)}),
+                ("draw_cards", {"amount": _parse_amount_token(m.group("draw"), variables)}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Gain (?P<block>(?:\d+|\{[^{}]+\})) Block\. Next turn, gain (?P<next>(?:\d+|\{[^{}]+\})) Block\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("gain_block", {"amount": _parse_amount_token(m.group("block"), variables)}),
+                (
+                    "schedule_effect",
+                    {
+                        "delay_turns": 1,
+                        "label": "next_turn_block",
+                        "effect": {
+                            "behavior_key": "gain_block",
+                            "params": {"amount": _parse_amount_token(m.group("next"), variables)},
+                        },
+                    },
+                ),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Gain (?P<block>(?:\d+|\{[^{}]+\})) Block\. Next turn, gain (?P<next>\{[^{}]+\})\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("gain_block", {"amount": _parse_amount_token(m.group("block"), variables)}),
+                (
+                    "schedule_effect",
+                    {
+                        "delay_turns": 1,
+                        "label": "next_turn_energy",
+                        "effect": {
+                            "behavior_key": "gain_energy",
+                            "params": {"amount": _parse_amount_token(m.group("next"), variables)},
+                        },
+                    },
+                ),
+            ),
+        ),
+    ]
+
+    for pattern, builder in sequence_patterns:
+        matched = pattern.match(text)
+        if not matched:
+            continue
+        behavior_key, params = builder(matched)
+        if _sequence_params_valid(params):
+            return behavior_key, params
+
+    repeat_match = re.match(
+        r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage (?P<repeat>(?:\d+|\{[^{}]+\})) (?:times|\{[^{}]+\})\.$",
+        text,
+        re.IGNORECASE,
+    )
+    if repeat_match:
+        damage = _parse_amount_token(repeat_match.group("damage"), variables)
+        repeat = _parse_repeat_token(repeat_match.group("repeat"), variables)
+        if damage is not None and repeat is not None:
+            return _sequence(*(("deal_damage", {"amount": damage}) for _ in range(repeat)))
+
+    twice_match = re.match(
+        r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage twice\.$",
+        text,
+        re.IGNORECASE,
+    )
+    if twice_match:
+        damage = _parse_amount_token(twice_match.group("damage"), variables)
+        if damage is not None:
+            return _sequence(("deal_damage", {"amount": damage}), ("deal_damage", {"amount": damage}))
+
     return "unimplemented", {}
+
+
+def _sequence_params_valid(params: dict[str, Any]) -> bool:
+    effects = params.get("effects")
+    if not isinstance(effects, list) or not effects:
+        return False
+    for effect in effects:
+        if not isinstance(effect, dict):
+            return False
+        nested = effect.get("params")
+        if not isinstance(nested, dict):
+            return False
+        for value in nested.values():
+            if value is None:
+                return False
+    return True
 
 
 def _is_single_card_payload(payload: Any) -> bool:
@@ -237,7 +589,7 @@ def _normalize_single_card(
         "cost": _normalize_cost(card.get("cost")),
         "type": _normalize_type(card.get("type")),
         "rarity": _normalize_rarity(card.get("rarity")),
-        "tags": [],
+        "tags": _normalize_tags(card),
         "text": _pick_text(card),
         "behavior_key": "unimplemented",
         "params": {},

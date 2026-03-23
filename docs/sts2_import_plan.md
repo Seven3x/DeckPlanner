@@ -93,8 +93,14 @@ Validation includes:
 External importer mapping rules:
 
 - Conservatively maps only very safe behaviors (`deal_damage`, `gain_block`, `draw_cards`, `gain_energy`) when text is clearly single-effect.
+- Also allows very low-risk single-target debuff mapping for exact one-line `Apply X Weak / Vulnerable / Poison.` cards.
 - Complex/power/triggered/ambiguous cards default to `unimplemented`.
 - Keeps rich provenance in `source`, including original file path and raw text/variables/upgrades metadata.
+
+Repository note:
+
+- In the current repository snapshot, the reserved external directory may be empty.
+- The actual one-card dataset used for ingestion convergence lives under `data/sts2/raw/ea_01/` and is compatible with the external importer because each file already uses the same single-card payload shape.
 
 ## behavior_key design
 

@@ -8,8 +8,10 @@ from ..effects import (
     ApplyDebuff,
     Conditional,
     DealDamage,
+    DiscardCards,
     DrawCards,
     Effect,
+    ExhaustFromHand,
     GainBlock,
     GainEnergy,
     ScheduleEffect,
@@ -26,8 +28,11 @@ SUPPORTED_BEHAVIOR_KEYS = {
     "gain_block",
     "draw_cards",
     "gain_energy",
+    "discard_cards",
+    "exhaust_from_hand",
     "apply_buff",
     "apply_debuff",
+    "sequence",
     "set_next_attack_bonus",
     "replay_next_card",
     "schedule_effect",
@@ -54,8 +59,11 @@ ALIASES = {
     "block": "gain_block",
     "draw": "draw_cards",
     "energy": "gain_energy",
+    "discard": "discard_cards",
+    "exhaust_hand": "exhaust_from_hand",
     "buff": "apply_buff",
     "debuff": "apply_debuff",
+    "multi": "sequence",
     "next_attack_bonus": "set_next_attack_bonus",
     "replay": "replay_next_card",
     "delayed": "schedule_effect",
@@ -110,6 +118,20 @@ def build_behavior(behavior_key: Any, params: Any) -> BehaviorBuildResult:
             status="mapped",
         )
 
+    if key == "discard_cards":
+        return BehaviorBuildResult(
+            effects=[DiscardCards(amount=_required_int(row, "amount"))],
+            executable=True,
+            status="mapped",
+        )
+
+    if key == "exhaust_from_hand":
+        return BehaviorBuildResult(
+            effects=[ExhaustFromHand(amount=_required_int(row, "amount"))],
+            executable=True,
+            status="mapped",
+        )
+
     if key == "apply_buff":
         return BehaviorBuildResult(
             effects=[
@@ -132,6 +154,15 @@ def build_behavior(behavior_key: Any, params: Any) -> BehaviorBuildResult:
                     target=_optional_str(row, "target", "enemy"),
                 )
             ],
+            executable=True,
+            status="mapped",
+        )
+
+    if key == "sequence":
+        raw_effects = _required_list(row, "effects")
+        effects = _build_branch_effects(raw_effects, "effects")
+        return BehaviorBuildResult(
+            effects=effects,
             executable=True,
             status="mapped",
         )

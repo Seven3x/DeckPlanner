@@ -7,8 +7,11 @@ SUPPORTED_BEHAVIOR_KEYS = {
     "gain_block",
     "draw_cards",
     "gain_energy",
+    "discard_cards",
+    "exhaust_from_hand",
     "apply_buff",
     "apply_debuff",
+    "sequence",
     "set_next_attack_bonus",
     "replay_next_card",
     "schedule_effect",
@@ -22,8 +25,11 @@ ALIASES = {
     "block": "gain_block",
     "draw": "draw_cards",
     "energy": "gain_energy",
+    "discard": "discard_cards",
+    "exhaust_hand": "exhaust_from_hand",
     "buff": "apply_buff",
     "debuff": "apply_debuff",
+    "multi": "sequence",
     "next_attack_bonus": "set_next_attack_bonus",
     "replay": "replay_next_card",
     "delayed": "schedule_effect",
@@ -68,6 +74,10 @@ def validate_behavior_spec(behavior_key: str, params: Any, path: str = "card") -
         require_int("amount")
     elif behavior_key == "gain_energy":
         require_int("amount")
+    elif behavior_key == "discard_cards":
+        require_int("amount")
+    elif behavior_key == "exhaust_from_hand":
+        require_int("amount")
     elif behavior_key == "apply_buff":
         if not isinstance(params.get("key"), str):
             errors.append(f"{path}.params.key must be a string")
@@ -76,6 +86,18 @@ def validate_behavior_spec(behavior_key: str, params: Any, path: str = "card") -
         if not isinstance(params.get("key"), str):
             errors.append(f"{path}.params.key must be a string")
         require_int("amount")
+    elif behavior_key == "sequence":
+        steps = params.get("effects")
+        if not isinstance(steps, list) or not steps:
+            errors.append(f"{path}.params.effects must be a non-empty list")
+        else:
+            for idx, item in enumerate(steps):
+                if not isinstance(item, dict):
+                    errors.append(f"{path}.params.effects[{idx}] must be an object")
+                    continue
+                errors.extend(
+                    _validate_nested_behavior(item, f"{path}.params.effects[{idx}]")
+                )
     elif behavior_key == "set_next_attack_bonus":
         require_int("amount")
     elif behavior_key == "replay_next_card":

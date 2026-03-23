@@ -83,12 +83,14 @@ class GainBlock(Effect):
     def apply(self, state: GameState, ctx: dict) -> None:
         from .triggers import emit_event
 
-        state.block += self.amount
+        dexterity = state.buffs.get("dexterity", 0)
+        total_amount = self.amount + dexterity
+        state.block += max(0, total_amount)
         emit_event(
             state,
             "on_block_gained",
             {
-                "amount": self.amount,
+                "amount": max(0, total_amount),
                 "new_block": state.block,
             },
         )

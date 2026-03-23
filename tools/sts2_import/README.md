@@ -62,6 +62,12 @@
   - 可按角色/状态/诅咒等任意分层
   - 每个文件是一个单卡 payload（顶层含 `card`）
 
+当前仓库快照中的真实单卡数据集位于：
+
+- `data/sts2/raw/ea_01/`
+
+也就是，`external/sts2_database/` 当前主要是预留目录；若该目录下暂无版本子目录，可直接把 `data/sts2/raw/ea_01/` 当作单卡数据库输入运行 importer。
+
 ## 使用方式
 
 ### A. 构建原生 raw 合并 catalog（可选）
@@ -121,6 +127,14 @@ python tools/sts2_import/import_sts2_database.py \
   --version 0.98.2
 ```
 
+当前仓库内可直接运行的实际示例：
+
+```bash
+python tools/sts2_import/import_sts2_database.py \
+  --input-dir data/sts2/raw/ea_01 \
+  --version ea_01
+```
+
 可选输出路径：
 
 ```bash
@@ -140,6 +154,7 @@ Importer 行为：
   - `gain_block`
   - `draw_cards`
   - `gain_energy`
+  - `apply_debuff`（仅极明确的单句 `Weak / Vulnerable / Poison`）
 - 无法安全映射的卡统一标记 `unimplemented`
 - 在 `source` 中保留来源信息（版本、原始文本、变量、升级信息、原文件路径等）
 
@@ -207,3 +222,4 @@ python tools/sts2_import/sample_raw_loader.py --version sample_full_catalog_v1
 - `unimplemented` 是预期结果，不代表导入失败
 - 当前“全量导入”定义为 catalog 完整性，不等于全部卡牌都已可执行
 - 运行时导入适配位于 `src/slay2_ai/importers/`，与 GUI 主流程保持解耦
+- smoke check 只要求存在“非可执行卡”，不再强制必须出现 `text_only`
