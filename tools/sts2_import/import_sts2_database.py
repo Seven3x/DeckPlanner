@@ -16,6 +16,7 @@ MAPPED_BEHAVIOR_KEYS = {
     "gain_energy",
     "discard_cards",
     "exhaust_from_hand",
+    "channel_orb",
     "apply_debuff",
     "apply_buff",
     "sequence",
@@ -24,6 +25,8 @@ MAPPED_BEHAVIOR_KEYS = {
 SAFE_BUFF_KEYS = {
     "strength": "strength",
     "dexterity": "dexterity",
+    "focus": "focus",
+    "orb slots": "orb_slots",
 }
 
 TYPE_MAP = {
@@ -317,7 +320,7 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
             return "gain_energy", {"amount": amount}
 
     buff_match = re.match(
-        r"^Gain (?P<amount>(?:\d+|\{[^{}]+\})) (?P<buff>Strength|Dexterity)\.$",
+        r"^Gain (?P<amount>(?:\d+|\{[^{}]+\})) (?P<buff>Strength|Dexterity|Focus|Orb Slots)\.$",
         text,
         re.IGNORECASE,
     )
@@ -326,6 +329,16 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
         buff_key = SAFE_BUFF_KEYS.get(buff_match.group("buff").strip().lower())
         if amount is not None and buff_key:
             return "apply_buff", {"key": buff_key, "amount": amount, "target": "player"}
+
+    channel_match = re.match(
+        r"^Channel (?P<amount>(?:\d+|\{[^{}]+\})) (?P<orb>Lightning|Frost)\.$",
+        text,
+        re.IGNORECASE,
+    )
+    if channel_match:
+        amount = _parse_amount_token(channel_match.group("amount"), variables)
+        if amount is not None:
+            return "channel_orb", {"orb_type": channel_match.group("orb").strip().lower(), "amount": amount}
 
     debuff_match = re.match(
         r"^Apply (?P<amount>(?:\d+|\{[^{}]+\})) (?P<debuff>[A-Za-z]+)\.$",
@@ -496,6 +509,110 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
                         },
                     },
                 ),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage to ALL enemies\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables), "target": "enemy"}),
+        ),
+        (
+            re.compile(
+                r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage to ALL enemies twice\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables), "target": "enemy"}),
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables), "target": "enemy"}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage (?P<repeat>(?:\d+|\{[^{}]+\})) times to ALL enemies\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                *(("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables), "target": "enemy"}) for _ in range(_parse_repeat_token(m.group("repeat"), variables) or 0))
+            ),
+        ),
+        (
+            re.compile(
+                r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage to a random enemy twice\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables), "target": "enemy"}),
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables), "target": "enemy"}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage to a random enemy (?P<repeat>(?:\d+|\{[^{}]+\})) times\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                *(("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables), "target": "enemy"}) for _ in range(_parse_repeat_token(m.group("repeat"), variables) or 0))
+            ),
+        ),
+        (
+            re.compile(
+                r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage and apply (?P<amount>(?:\d+|\{[^{}]+\})) Vulnerable to ALL enemies\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables), "target": "enemy"}),
+                ("apply_debuff", {"key": "vulnerable", "amount": _parse_amount_token(m.group("amount"), variables), "target": "enemy"}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Apply (?P<amount>(?:\d+|\{[^{}]+\})) Poison to a random enemy (?P<repeat>(?:\d+|\{[^{}]+\})) times\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                *(("apply_debuff", {"key": "poison", "amount": _parse_amount_token(m.group("amount"), variables), "target": "enemy"}) for _ in range(_parse_repeat_token(m.group("repeat"), variables) or 0))
+            ),
+        ),
+        (
+            re.compile(
+                r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage\. Channel (?P<amount>(?:\d+|\{[^{}]+\})) (?P<orb>Lightning|Frost)\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables)}),
+                ("channel_orb", {"orb_type": m.group("orb").strip().lower(), "amount": _parse_amount_token(m.group("amount"), variables)}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Channel (?P<amount>(?:\d+|\{[^{}]+\})) Frost\. Draw (?P<draw>(?:\d+|\{[^{}]+\})) (?:card|cards|\{[^{}]+\})\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("channel_orb", {"orb_type": "frost", "amount": _parse_amount_token(m.group("amount"), variables)}),
+                ("draw_cards", {"amount": _parse_amount_token(m.group("draw"), variables)}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Gain (?P<amount>(?:\d+|\{[^{}]+\})) Dexterity this turn\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("apply_buff", {"key": "dexterity", "amount": _parse_amount_token(m.group("amount"), variables), "target": "player"}),
+                ("schedule_effect", {"delay_turns": 1, "label": "expire_dexterity_this_turn", "effect": {"behavior_key": "apply_buff", "params": {"key": "dexterity", "amount": -(_parse_amount_token(m.group("amount"), variables) or 0), "target": "player"}}}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Gain (?P<amount>(?:\d+|\{[^{}]+\})) Strength this turn\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("apply_buff", {"key": "strength", "amount": _parse_amount_token(m.group("amount"), variables), "target": "player"}),
+                ("schedule_effect", {"delay_turns": 1, "label": "expire_strength_this_turn", "effect": {"behavior_key": "apply_buff", "params": {"key": "strength", "amount": -(_parse_amount_token(m.group("amount"), variables) or 0), "target": "player"}}}),
             ),
         ),
     ]

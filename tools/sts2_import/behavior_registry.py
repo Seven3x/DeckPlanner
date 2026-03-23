@@ -9,6 +9,7 @@ SUPPORTED_BEHAVIOR_KEYS = {
     "gain_energy",
     "discard_cards",
     "exhaust_from_hand",
+    "channel_orb",
     "apply_buff",
     "apply_debuff",
     "sequence",
@@ -27,6 +28,7 @@ ALIASES = {
     "energy": "gain_energy",
     "discard": "discard_cards",
     "exhaust_hand": "exhaust_from_hand",
+    "channel": "channel_orb",
     "buff": "apply_buff",
     "debuff": "apply_debuff",
     "multi": "sequence",
@@ -77,6 +79,10 @@ def validate_behavior_spec(behavior_key: str, params: Any, path: str = "card") -
     elif behavior_key == "discard_cards":
         require_int("amount")
     elif behavior_key == "exhaust_from_hand":
+        require_int("amount")
+    elif behavior_key == "channel_orb":
+        if not isinstance(params.get("orb_type"), str):
+            errors.append(f"{path}.params.orb_type must be a string")
         require_int("amount")
     elif behavior_key == "apply_buff":
         if not isinstance(params.get("key"), str):

@@ -1,23 +1,23 @@
-# STS2 Unimplemented Behavior Analysis (0.98.2)
+# STS2 未实现行为分析（0.98.2）
 
-- Source file: `data/sts2/normalized/cards.0.98.2.json`
-- Generated at (UTC): `2026-03-22T15:33:06+00:00`
-- Unimplemented filter: `behavior_key == "unimplemented"`
+- 源文件：`data/sts2/normalized/cards.0.98.2.json`
+- 生成时间（UTC）：`2026-03-22T15:33:06+00:00`
+- 未实现筛选条件：`behavior_key == "unimplemented"`
 
 ## 概览
 
-| Metric | Value |
+| 指标 | 值 |
 | --- | --- |
-| total_cards | 577 |
-| unimplemented_cards | 543 |
-| unimplemented_ratio | 94.11% |
-| analysis_top_n | 30 |
+| 总卡牌数 | 577 |
+| 未实现卡牌数 | 543 |
+| 未实现占比 | 94.11% |
+| 分析 Top N | 30 |
 
 ## 分布统计
 
-### By Character
+### 按角色
 
-| Key | Count |
+| 键 | 数量 |
 | --- | --- |
 | regent | 84 |
 | defect | 83 |
@@ -32,9 +32,9 @@
 | quest | 3 |
 | deprecated | 1 |
 
-### By Type
+### 按类型
 
-| Key | Count |
+| 键 | 数量 |
 | --- | --- |
 | skill | 213 |
 | attack | 181 |
@@ -43,9 +43,9 @@
 | status | 14 |
 | other | 5 |
 
-### By Rarity
+### 按稀有度
 
-| Key | Count |
+| 键 | 数量 |
 | --- | --- |
 | uncommon | 210 |
 | rare | 153 |
@@ -53,9 +53,9 @@
 | special | 78 |
 | basic | 9 |
 
-### By Cost
+### 按费用
 
-| Key | Count |
+| 键 | 数量 |
 | --- | --- |
 | 1 | 269 |
 | 0 | 100 |
@@ -71,7 +71,7 @@
 
 ### 最常见完整文本 Top 30
 
-| Rank | Count | Text | Sample Cards |
+| 排名 | 数量 | 文本 | 示例卡牌 |
 | --- | --- | --- | --- |
 | 1 | 3 | 不能被打出 | Injury, Soot, Wound |
 | 2 | 2 | 永恒,不能被打出 | Curse of the Bell, Greed |
@@ -106,7 +106,7 @@
 
 ### 最常见开头短语 Top 30
 
-| Rank | Count | Prefix |
+| 排名 | 数量 | 前缀 |
 | --- | --- | --- |
 | 1 | 95 | 造成<N>点伤害 |
 | 2 | 80 | 消耗 |
@@ -141,7 +141,7 @@
 
 ### 关键词覆盖（含指定关键字）Top 30
 
-| Rank | Keyword | Cards | Match Patterns |
+| 排名 | 关键词 | 卡牌数 | 匹配模式 |
 | --- | --- | --- | --- |
 | 1 | deal | 229 | \bdeal\b, 造成, 攻击 |
 | 2 | gain | 166 | \bgain\b, 获得 |
@@ -169,7 +169,7 @@
 
 模板归并规则：统一大小写；将数字归一化为 `<N>`；将独立 `X/x` 归一化为 `<X>`；统一中英文标点；压缩换行和空白。
 
-| Rank | Count | Normalized Pattern | Type Mix | Sample Cards |
+| 排名 | 数量 | 归一化模式 | 类型分布 | 示例卡牌 |
 | --- | --- | --- | --- | --- |
 | 1 | 4 | 造成<N>点伤害. / 给予<N>层易伤 | attack:4 | Beam Cell, Squash, Bash, Break |
 | 2 | 4 | 造成<N>点伤害. / 给予<N>层虚弱. / 给予<N>层易伤 | attack:4 | Uppercut, Comet, Falling Star, Gamma Blast |
@@ -208,9 +208,9 @@
 
 ### 1. 很可能可直接映射的简单模式
 
-- Card count: **217**
+- 卡牌数：**217**
 
-| Rank | Count | Pattern | Sample Cards |
+| 排名 | 数量 | 模式 | 示例卡牌 |
 | --- | --- | --- | --- |
 | 1 | 4 | 造成<N>点伤害. / 给予<N>层易伤 | Beam Cell, Squash, Bash, Break |
 | 2 | 4 | 造成<N>点伤害. / 给予<N>层虚弱. / 给予<N>层易伤 | Uppercut, Comet, Falling Star, Gamma Blast |
@@ -245,9 +245,9 @@
 
 ### 2. 需要少量参数提取即可支持的模式
 
-- Card count: **71**
+- 卡牌数：**71**
 
-| Rank | Count | Pattern | Sample Cards |
+| 排名 | 数量 | 模式 | 示例卡牌 |
 | --- | --- | --- | --- |
 | 1 | 2 | 随机对敌人造成<N>点伤害x次 | Volley, Stardust |
 | 2 | 1 | 消耗, 获得一瓶随机药水 | Alchemize |
@@ -282,9 +282,9 @@
 
 ### 3. 需要新 effect/trigger 支持的模式
 
-- Card count: **125**
+- 卡牌数：**125**
 
-| Rank | Count | Pattern | Sample Cards |
+| 排名 | 数量 | 模式 | 示例卡牌 |
 | --- | --- | --- | --- |
 | 1 | 3 | 获得<N>层覆甲 | Eternal Armor, Stone Armor, Neutron Aegis |
 | 2 | 2 | 造成<N>点伤害. / 在你的下个回合开始时, 将此卡返回你的手牌 | Bolas, Thrumming Hatchet |
@@ -319,9 +319,9 @@
 
 ### 4. 暂时不建议动的复杂模式
 
-- Card count: **130**
+- 卡牌数：**130**
 
-| Rank | Count | Pattern | Sample Cards |
+| 排名 | 数量 | 模式 | 示例卡牌 |
 | --- | --- | --- | --- |
 | 1 | 3 | 不能被打出 | Injury, Soot, Wound |
 | 2 | 2 | 消耗, 召唤<N> | Afterlife, Reanimate |
@@ -358,7 +358,7 @@
 
 ### 最常见未实现 Attack/Skill/Power
 
-| Type | Count | Pattern | Sample Cards |
+| 类型 | 数量 | 模式 | 示例卡牌 |
 | --- | --- | --- | --- |
 | attack | 4 | 造成<N>点伤害. / 给予<N>层易伤 | Beam Cell, Squash, Bash, Break |
 | skill | 3 | 获得<N>点格挡. / 抽<N>张牌 | Finesse, Shrug It Off, Backflip |
@@ -368,7 +368,7 @@
 
 - 注：以下角色在未实现集合中总数不足3张，未纳入该表：deprecated:1
 
-| Character | Examples | Cards |
+| 角色 | 示例数 | 卡牌 |
 | --- | --- | --- |
 | colorless | 3 | Eternal Armor, Finesse, Production |
 | curse | 3 | Injury, Curse of the Bell, Decay |

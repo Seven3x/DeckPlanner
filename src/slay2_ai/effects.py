@@ -113,6 +113,17 @@ class GainEnergy(Effect):
 
 
 @dataclass
+class ChannelOrb(Effect):
+    orb_type: str
+    amount: int = 1
+
+    def apply(self, state: GameState, ctx: dict) -> None:
+        del ctx
+        key = f"orb_{self.orb_type.strip().lower()}"
+        state.buffs[key] = state.buffs.get(key, 0) + self.amount
+
+
+@dataclass
 class ApplyBuff(Effect):
     key: str
     amount: int

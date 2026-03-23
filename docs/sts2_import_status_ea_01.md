@@ -1,34 +1,35 @@
-# STS2 Import Status (ea_01)
+# STS2 导入状态（ea_01）
 
-- Source file: `data/sts2/normalized/cards.ea_01.json`
-- Generated at (UTC): `2026-03-23T11:25:26+00:00`
+- 源文件：`data/sts2/normalized/cards.ea_01.json`
+- 生成时间（UTC）：`2026-03-23T13:11:34+00:00`
 
-## Summary
+## 摘要
 
-| Metric | Count |
+| 指标 | 数量 |
 | --- | ---: |
-| total_cards | 577 |
-| executable_cards | 85 |
-| mapped_cards | 85 |
-| text_only_cards | 0 |
-| unimplemented_cards | 492 |
+| 总卡牌数 | 577 |
+| 可执行卡牌数 | 101 |
+| 已映射卡牌数 | 101 |
+| 仅文本卡牌数 | 0 |
+| 未实现卡牌数 | 476 |
 
-## Behavior Key Counts
+## 行为键计数
 
-| Key | Count |
+| 键 | 数量 |
 | --- | ---: |
-| unimplemented | 492 |
-| sequence | 38 |
+| unimplemented | 476 |
+| sequence | 51 |
 | deal_damage | 16 |
 | gain_block | 13 |
 | draw_cards | 7 |
 | gain_energy | 6 |
+| apply_buff | 4 |
 | apply_debuff | 3 |
-| apply_buff | 2 |
+| channel_orb | 1 |
 
-## Character Counts
+## 角色计数
 
-| Key | Count |
+| 键 | 数量 |
 | --- | ---: |
 | defect | 88 |
 | necrobinder | 88 |
@@ -43,9 +44,9 @@
 | quest | 3 |
 | deprecated | 1 |
 
-## Type Counts
+## 类型计数
 
-| Key | Count |
+| 键 | 数量 |
 | --- | ---: |
 | skill | 230 |
 | attack | 197 |
@@ -54,9 +55,9 @@
 | status | 15 |
 | other | 5 |
 
-## Rarity Counts
+## 稀有度计数
 
-| Key | Count |
+| 键 | 数量 |
 | --- | ---: |
 | uncommon | 220 |
 | rare | 155 |

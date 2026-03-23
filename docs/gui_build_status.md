@@ -1,4 +1,4 @@
-# GUI Build Status
+# GUI 构建状态
 
 ## 当前 GUI 目标
 - 为 `slay2_ai` 提供一个本地单机助手面板（PySide6 + Qt Widgets）。
@@ -8,9 +8,9 @@
 ## 当前阶段
 - Stage 4: MVP 收尾（状态载入 / 分支比较 / 详情增强 / 接口梳理）已完成。
 
-## Stage 4 已完成项
+## 第 4 阶段已完成项
 
-### 1) JSON 载入 state（可用）
+### 1) 从 JSON 载入状态（可用）
 - 右侧操作区 `加载 JSON` 按钮可选择文件并载入状态。
 - 新增 `services/json_state_adapter.py`：
   - 在 GUI 侧完成 `JSON -> GameState` 适配，不改核心 `slay2_ai` 数据结构。
@@ -100,7 +100,7 @@
 - `Conditional`
 - `AddTriggerEffect`
 
-## 使用说明（Stage 4）
+## 使用说明（第 4 阶段）
 
 ### A. 从 JSON 载入状态
 1. 点击右侧 `加载 JSON`。

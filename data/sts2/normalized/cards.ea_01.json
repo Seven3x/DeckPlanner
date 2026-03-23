@@ -652,8 +652,34 @@
         "target:self"
       ],
       "text": "在本回合获得3点敏捷。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "dexterity",
+              "amount": 3,
+              "target": "player"
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "expire_dexterity_this_turn",
+              "effect": {
+                "behavior_key": "apply_buff",
+                "params": {
+                  "key": "dexterity",
+                  "amount": -3,
+                  "target": "player"
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -1256,8 +1282,24 @@
         "target:anyenemy"
       ],
       "text": "造成7点伤害。\n生成1个闪电充能球。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 7
+            }
+          },
+          {
+            "behavior_key": "channel_orb",
+            "params": {
+              "orb_type": "lightning",
+              "amount": 1
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -2626,8 +2668,35 @@
         "target:randomenemy"
       ],
       "text": "随机给予敌人3层中毒3次。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "apply_debuff",
+            "params": {
+              "key": "poison",
+              "amount": 3,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "apply_debuff",
+            "params": {
+              "key": "poison",
+              "amount": 3,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "apply_debuff",
+            "params": {
+              "key": "poison",
+              "amount": 3,
+              "target": "enemy"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -3642,8 +3711,12 @@
         "target:self"
       ],
       "text": "获得2个充能球栏位。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "apply_buff",
+      "params": {
+        "key": "orb_slots",
+        "amount": 2,
+        "target": "player"
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -4403,8 +4476,24 @@
         "target:anyenemy"
       ],
       "text": "造成6点伤害。\n生成1个冰霜充能球。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 6
+            }
+          },
+          {
+            "behavior_key": "channel_orb",
+            "params": {
+              "orb_type": "frost",
+              "amount": 1
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -4899,8 +4988,24 @@
         "target:self"
       ],
       "text": "生成1个冰霜充能球。\n抽1张牌。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "channel_orb",
+            "params": {
+              "orb_type": "frost",
+              "amount": 1
+            }
+          },
+          {
+            "behavior_key": "draw_cards",
+            "params": {
+              "amount": 1
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -5445,8 +5550,25 @@
         "target:allenemies"
       ],
       "text": "对所有敌人造成4点伤害两次。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 4,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 4,
+              "target": "enemy"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -6519,8 +6641,12 @@
         "target:self"
       ],
       "text": "获得1点集中。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "apply_buff",
+      "params": {
+        "key": "focus",
+        "amount": 1,
+        "target": "player"
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -8456,8 +8582,39 @@
         "target:allenemies"
       ],
       "text": "对所有敌人造成3点伤害4次。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 3,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 3,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 3,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 3,
+              "target": "enemy"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -8765,8 +8922,34 @@
         "target:self"
       ],
       "text": "在本回合内获得5点力量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "strength",
+              "amount": 5,
+              "target": "player"
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "expire_strength_this_turn",
+              "effect": {
+                "behavior_key": "apply_buff",
+                "params": {
+                  "key": "strength",
+                  "amount": -5,
+                  "target": "player"
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -12262,8 +12445,24 @@
         "target:anyenemy"
       ],
       "text": "造成19点伤害。\n生成3个冰霜充能球。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 19
+            }
+          },
+          {
+            "behavior_key": "channel_orb",
+            "params": {
+              "orb_type": "frost",
+              "amount": 3
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -18748,8 +18947,39 @@
         "target:randomenemy"
       ],
       "text": "奇巧,随机对敌人造成3点伤害4次。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 3,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 3,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 3,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 3,
+              "target": "enemy"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -18837,8 +19067,25 @@
         "target:randomenemy"
       ],
       "text": "随机对敌人造成7点伤害两次。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 7,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 7,
+              "target": "enemy"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -22773,8 +23020,32 @@
         "target:randomenemy"
       ],
       "text": "随机对敌人造成3点伤害3次。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 3,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 3,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 3,
+              "target": "enemy"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -23715,8 +23986,26 @@
         "target:allenemies"
       ],
       "text": "对所有敌人造成4点伤害，给予1层易伤。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 4,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "apply_debuff",
+            "params": {
+              "key": "vulnerable",
+              "amount": 1,
+              "target": "enemy"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -25513,8 +25802,11 @@
         "target:self"
       ],
       "text": "生成1个闪电充能球。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "channel_orb",
+      "params": {
+        "orb_type": "lightning",
+        "amount": 1
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",

@@ -81,6 +81,7 @@
             "gain_energy",
             "discard_cards",
             "exhaust_from_hand",
+            "channel_orb",
             "apply_buff",
             "apply_debuff",
             "sequence",

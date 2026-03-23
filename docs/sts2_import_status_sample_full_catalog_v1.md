@@ -1,21 +1,21 @@
-# STS2 Import Status (sample_full_catalog_v1)
+# STS2 导入状态（sample_full_catalog_v1）
 
-- Source file: `data/sts2/normalized/cards.sample_full_catalog_v1.json`
-- Generated at (UTC): `2026-03-21T17:19:36+00:00`
+- 源文件：`data/sts2/normalized/cards.sample_full_catalog_v1.json`
+- 生成时间（UTC）：`2026-03-21T17:19:36+00:00`
 
-## Summary
+## 摘要
 
-| Metric | Count |
+| 指标 | 数量 |
 | --- | ---: |
-| total_cards | 27 |
-| executable_cards | 15 |
-| mapped_cards | 15 |
-| text_only_cards | 6 |
-| unimplemented_cards | 6 |
+| 总卡牌数 | 27 |
+| 可执行卡牌数 | 15 |
+| 已映射卡牌数 | 15 |
+| 仅文本卡牌数 | 6 |
+| 未实现卡牌数 | 6 |
 
-## Behavior Key Counts
+## 行为键计数
 
-| Key | Count |
+| 键 | 数量 |
 | --- | ---: |
 | text_only | 6 |
 | unimplemented | 6 |
@@ -29,9 +29,9 @@
 | replay_next_card | 1 |
 | schedule_effect | 1 |
 
-## Character Counts
+## 角色计数
 
-| Key | Count |
+| 键 | 数量 |
 | --- | ---: |
 | ironclad | 7 |
 | silent | 7 |
@@ -39,9 +39,9 @@
 | curse | 4 |
 | status | 4 |
 
-## Type Counts
+## 类型计数
 
-| Key | Count |
+| 键 | 数量 |
 | --- | ---: |
 | skill | 12 |
 | attack | 5 |
@@ -49,9 +49,9 @@
 | status | 4 |
 | power | 2 |
 
-## Rarity Counts
+## 稀有度计数
 
-| Key | Count |
+| 键 | 数量 |
 | --- | ---: |
 | special | 8 |
 | common | 5 |

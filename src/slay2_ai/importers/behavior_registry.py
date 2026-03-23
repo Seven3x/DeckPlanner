@@ -6,6 +6,7 @@ from typing import Any, Callable
 from ..effects import (
     ApplyBuff,
     ApplyDebuff,
+    ChannelOrb,
     Conditional,
     DealDamage,
     DiscardCards,
@@ -30,6 +31,7 @@ SUPPORTED_BEHAVIOR_KEYS = {
     "gain_energy",
     "discard_cards",
     "exhaust_from_hand",
+    "channel_orb",
     "apply_buff",
     "apply_debuff",
     "sequence",
@@ -61,6 +63,7 @@ ALIASES = {
     "energy": "gain_energy",
     "discard": "discard_cards",
     "exhaust_hand": "exhaust_from_hand",
+    "channel": "channel_orb",
     "buff": "apply_buff",
     "debuff": "apply_debuff",
     "multi": "sequence",
@@ -128,6 +131,13 @@ def build_behavior(behavior_key: Any, params: Any) -> BehaviorBuildResult:
     if key == "exhaust_from_hand":
         return BehaviorBuildResult(
             effects=[ExhaustFromHand(amount=_required_int(row, "amount"))],
+            executable=True,
+            status="mapped",
+        )
+
+    if key == "channel_orb":
+        return BehaviorBuildResult(
+            effects=[ChannelOrb(orb_type=_required_str(row, "orb_type"), amount=_required_int(row, "amount"))],
             executable=True,
             status="mapped",
         )
