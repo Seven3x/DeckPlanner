@@ -8,6 +8,7 @@ from ..effects import (
     ApplyBuff,
     ApplyDebuff,
     ChannelOrb,
+    CompositeEffect,
     Conditional,
     DealDamage,
     DiscardCards,
@@ -185,6 +186,8 @@ def build_behavior(behavior_key: Any, params: Any) -> BehaviorBuildResult:
         event = _required_str(row, "event")
         nested_effect = _required_dict(row, "effect")
         effect = _build_nested_single_effect(nested_effect)
+        raw_condition = row.get("condition")
+        condition = _build_condition(raw_condition) if isinstance(raw_condition, dict) else None
         remaining_uses = row.get("remaining_uses", None)
         if remaining_uses is not None and (isinstance(remaining_uses, bool) or not isinstance(remaining_uses, int)):
             raise UnsupportedBehaviorError("add_trigger.remaining_uses must be an integer when provided")
@@ -196,6 +199,7 @@ def build_behavior(behavior_key: Any, params: Any) -> BehaviorBuildResult:
                     trigger=Trigger(
                         event=event,
                         effect=effect,
+                        condition=condition,
                         remaining_uses=remaining_uses,
                         expire_turn=None,
                         label=label,
@@ -265,11 +269,9 @@ def _build_nested_single_effect(raw_spec: dict[str, Any]) -> Effect:
         raise UnsupportedBehaviorError(
             f"Nested behavior '{normalize_behavior_key(nested_key)}' is not executable"
         )
-    if len(nested.effects) != 1:
-        raise UnsupportedBehaviorError(
-            "Nested behavior must map to exactly one Effect for schedule_effect"
-        )
-    return nested.effects[0]
+    if len(nested.effects) == 1:
+        return nested.effects[0]
+    return CompositeEffect(effects=nested.effects)
 
 
 def _build_branch_effects(raw_specs: list[Any], branch_name: str) -> list[Effect]:
@@ -322,6 +324,37 @@ def _build_condition(raw_spec: dict[str, Any]) -> ConditionFn:
 
         player_hp_ratio_lte.__name__ = f"normalized_cond_player_hp_ratio_lte_{ratio:g}"
         return player_hp_ratio_lte
+
+    if condition_type == "event_card_has_tag":
+        expected_tag = _required_str(raw_spec, "value").strip().lower()
+
+        def event_card_has_tag(state: GameState, ctx: dict) -> bool:
+            del state
+            tags = ctx.get("card_tags", [])
+            return expected_tag in {str(tag).strip().lower() for tag in tags}
+
+        event_card_has_tag.__name__ = f"normalized_cond_event_card_has_tag_{expected_tag}"
+        return event_card_has_tag
+
+    if condition_type == "event_card_character_is":
+        expected_character = _required_str(raw_spec, "value").strip().lower()
+
+        def event_card_character_is(state: GameState, ctx: dict) -> bool:
+            del state
+            return str(ctx.get("card_character", "")).strip().lower() == expected_character
+
+        event_card_character_is.__name__ = f"normalized_cond_event_card_character_is_{expected_character}"
+        return event_card_character_is
+
+    if condition_type == "event_debuff_key_is":
+        expected_key = _required_str(raw_spec, "value").strip().lower()
+
+        def event_debuff_key_is(state: GameState, ctx: dict) -> bool:
+            del state
+            return str(ctx.get("debuff_key", "")).strip().lower() == expected_key
+
+        event_debuff_key_is.__name__ = f"normalized_cond_event_debuff_key_is_{expected_key}"
+        return event_debuff_key_is
 
     raise UnsupportedBehaviorError(f"Unsupported conditional condition type '{condition_type}'")
 

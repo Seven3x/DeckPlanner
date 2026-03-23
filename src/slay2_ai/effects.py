@@ -15,6 +15,15 @@ class Effect:
         raise NotImplementedError
 
 
+@dataclass
+class CompositeEffect(Effect):
+    effects: list[Effect]
+
+    def apply(self, state: GameState, ctx: dict) -> None:
+        for effect in self.effects:
+            effect.apply(state, ctx)
+
+
 def _pop_with_choices(hand: list[str], choices_remaining: list[str]) -> str | None:
     while choices_remaining and choices_remaining[0] not in hand:
         choices_remaining.pop(0)
@@ -141,8 +150,23 @@ class ApplyDebuff(Effect):
     target: str = "enemy"
 
     def apply(self, state: GameState, ctx: dict) -> None:
+        from .triggers import emit_event
+
         container = state.debuffs if self.target == "player" else state.enemy_state.debuffs
         container[self.key] = container.get(self.key, 0) + self.amount
+        emit_event(
+            state,
+            "on_debuff_applied",
+            {
+                "debuff_key": self.key,
+                "amount": self.amount,
+                "target": self.target,
+                "source_card_id": ctx.get("card_id"),
+                "source_card_type": ctx.get("card_type"),
+                "card_tags": list(ctx.get("card_tags", [])),
+                "card_character": ctx.get("card_character"),
+            },
+        )
 
 
 @dataclass

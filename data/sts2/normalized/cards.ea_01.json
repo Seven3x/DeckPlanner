@@ -860,8 +860,23 @@
         "target:self"
       ],
       "text": "你每打出一张无色牌，都获得1点力量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "add_trigger",
+      "params": {
+        "event": "on_card_played",
+        "label": "on_colorless_play_gain_strength",
+        "condition": {
+          "type": "event_card_character_is",
+          "value": "colorless"
+        },
+        "effect": {
+          "behavior_key": "apply_buff",
+          "params": {
+            "key": "strength",
+            "amount": 1,
+            "target": "player"
+          }
+        }
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -13188,8 +13203,18 @@
         "target:self"
       ],
       "text": "每当你获得格挡时，对随机敌人造成5点伤害。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "add_trigger",
+      "params": {
+        "event": "on_block_gained",
+        "label": "on_gain_block_deal_damage",
+        "effect": {
+          "behavior_key": "deal_damage",
+          "params": {
+            "amount": 5,
+            "target": "enemy"
+          }
+        }
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -15275,8 +15300,42 @@
         "retain"
       ],
       "text": "每当你在本回合打出卡牌时，在本回合获得1点力量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "add_trigger",
+      "params": {
+        "event": "on_card_played",
+        "label": "this_turn_play_card_gain_temp_strength",
+        "expire_on_current_turn": true,
+        "effect": {
+          "behavior_key": "sequence",
+          "params": {
+            "effects": [
+              {
+                "behavior_key": "apply_buff",
+                "params": {
+                  "key": "strength",
+                  "amount": 1,
+                  "target": "player"
+                }
+              },
+              {
+                "behavior_key": "schedule_effect",
+                "params": {
+                  "delay_turns": 1,
+                  "label": "expire_monologue_strength",
+                  "effect": {
+                    "behavior_key": "apply_buff",
+                    "params": {
+                      "key": "strength",
+                      "amount": -1,
+                      "target": "player"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -20807,8 +20866,18 @@
         "target:self"
       ],
       "text": "每当你给予一个敌人负面状态时，使其受到9点伤害。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "add_trigger",
+      "params": {
+        "event": "on_debuff_applied",
+        "label": "on_apply_debuff_deal_damage",
+        "effect": {
+          "behavior_key": "deal_damage",
+          "params": {
+            "amount": 9,
+            "target": "enemy"
+          }
+        }
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -21547,8 +21616,21 @@
         "target:self"
       ],
       "text": "每当你打出一张虚无牌时，获得4点格挡。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "add_trigger",
+      "params": {
+        "event": "on_card_played",
+        "label": "on_ethereal_play_gain_block",
+        "condition": {
+          "type": "event_card_has_tag",
+          "value": "ethereal"
+        },
+        "effect": {
+          "behavior_key": "gain_block",
+          "params": {
+            "amount": 4
+          }
+        }
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -25158,8 +25240,21 @@
         "target:self"
       ],
       "text": "每当你给予易伤时，抽1张牌。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "add_trigger",
+      "params": {
+        "event": "on_debuff_applied",
+        "label": "on_apply_vulnerable_draw",
+        "condition": {
+          "type": "event_debuff_key_is",
+          "value": "vulnerable"
+        },
+        "effect": {
+          "behavior_key": "draw_cards",
+          "params": {
+            "amount": 1
+          }
+        }
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",

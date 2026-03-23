@@ -123,11 +123,46 @@
   - 导入器/报告/加载器 smoke check 通过
   - 定向验证确认 `Afterimage`、`Rage`、`Storm`、`Subroutine` 已进入 executable coverage
 
+### 第 8 次迭代
+
+- 可执行 / 未实现：`113 / 464`
+- 新增模式：
+  - 带简单条件过滤的确定性 trigger power
+  - `Whenever you play a Colorless card, gain Strength`
+  - `Whenever you play an Ethereal card, gain Block`
+  - `Whenever you apply Vulnerable, draw`
+  - `Whenever you apply a debuff to an enemy, they take damage`
+- 规则变更：
+  - 事件上下文现在携带 `card_tags` 与 `card_character`
+  - 新增 `on_debuff_applied` 事件
+  - `add_trigger` 现在支持按 `card_tags` / `card_character` / `debuff_key` 做简单条件过滤
+- 验证：
+  - 导入器/报告/加载器 smoke check 通过
+  - 定向验证确认 `Arsenal`、`SpiritOfAsh`、`Vicious`、`SleightOfFlesh` 已进入 executable coverage
+
+### 第 9 次迭代
+
+- 可执行 / 未实现：`115 / 462`
+- 新增模式：
+  - 事件型 trigger power 的下一层安全扩展
+  - `Whenever you gain Block, deal damage to a random enemy`
+  - `Whenever you play a card this turn, gain Strength this turn`
+- 规则变更：
+  - 运行时嵌套行为现在允许把多个基础 effect 安全打包为一个 trigger effect
+  - 导入器新增 `Juggernaut` 与 `Monologue` 的保守映射
+- 验证：
+  - 导入器/报告/加载器 smoke check 通过
+  - 定向运行时验证通过：
+    - `Monologue` 在本回合后续出牌时获得临时力量，并在下个玩家回合开始时归零
+    - `Juggernaut` 在获得格挡时对当前敌人触发伤害近似
+
 ## 新增支持的行为类别
 
 - 单效果 buff：`apply_buff`，用于 `strength` 和 `dexterity`
 - 计数器级充能球子系统支持：`channel_orb`、`focus`、`orb_slots`
 - 最小白名单持续 trigger power：`add_trigger`
+- 带简单条件过滤的 trigger power：按 `card_tags` / `card_character` / `debuff_key` 过滤
+- 带单一事件状态条件或临时复合效果的 trigger power
 - 通过 `sequence` 支持复合动作卡牌
 - 固定次数的重复攻击
 - 抽牌/弃牌类手牌操作卡牌
@@ -144,6 +179,6 @@
 
 ## 停止原因
 
-- 覆盖率已从 `39` 实质性提升到 `109`
+- 覆盖率已从 `39` 实质性提升到 `115`
 - 剩余未映射内容现在主要是触发、资源、被动、卡牌身份、条件等复杂度问题，而不是漏掉了简单模板
 - 最高影响的开放决策已收敛为一个更小的未决集合

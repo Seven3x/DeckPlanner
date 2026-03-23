@@ -28,6 +28,7 @@ SUPPORTED_EVENTS = {
     "on_attack_played",
     "on_skill_played",
     "on_power_played",
+    "on_debuff_applied",
     "on_damage_taken",
     "on_block_gained",
     "on_draw",

@@ -689,6 +689,130 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
                 },
             ),
         ),
+        (
+            re.compile(
+                r"^Whenever you play a Colorless card, gain (?P<amount>(?:\d+|\{[^{}]+\})) Strength\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: (
+                "add_trigger",
+                {
+                    "event": "on_card_played",
+                    "label": "on_colorless_play_gain_strength",
+                    "condition": {"type": "event_card_character_is", "value": "colorless"},
+                    "effect": {
+                        "behavior_key": "apply_buff",
+                        "params": {"key": "strength", "amount": _parse_amount_token(m.group("amount"), variables), "target": "player"},
+                    },
+                },
+            ),
+        ),
+        (
+            re.compile(
+                r"^Whenever you play an Ethereal card, gain (?P<amount>(?:\d+|\{[^{}]+\})) Block\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: (
+                "add_trigger",
+                {
+                    "event": "on_card_played",
+                    "label": "on_ethereal_play_gain_block",
+                    "condition": {"type": "event_card_has_tag", "value": "ethereal"},
+                    "effect": {
+                        "behavior_key": "gain_block",
+                        "params": {"amount": _parse_amount_token(m.group("amount"), variables)},
+                    },
+                },
+            ),
+        ),
+        (
+            re.compile(
+                r"^Whenever you apply Vulnerable, draw (?P<amount>(?:\d+|\{[^{}]+\})) (?:card|cards|\{[^{}]+\})\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: (
+                "add_trigger",
+                {
+                    "event": "on_debuff_applied",
+                    "label": "on_apply_vulnerable_draw",
+                    "condition": {"type": "event_debuff_key_is", "value": "vulnerable"},
+                    "effect": {
+                        "behavior_key": "draw_cards",
+                        "params": {"amount": _parse_amount_token(m.group("amount"), variables)},
+                    },
+                },
+            ),
+        ),
+        (
+            re.compile(
+                r"^Whenever you apply a debuff to an enemy, they take (?P<amount>(?:\d+|\{[^{}]+\})) damage\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: (
+                "add_trigger",
+                {
+                    "event": "on_debuff_applied",
+                    "label": "on_apply_debuff_deal_damage",
+                    "effect": {
+                        "behavior_key": "deal_damage",
+                        "params": {"amount": _parse_amount_token(m.group("amount"), variables), "target": "enemy"},
+                    },
+                },
+            ),
+        ),
+        (
+            re.compile(
+                r"^Whenever you gain Block, deal (?P<amount>(?:\d+|\{[^{}]+\})) damage to a random enemy\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: (
+                "add_trigger",
+                {
+                    "event": "on_block_gained",
+                    "label": "on_gain_block_deal_damage",
+                    "effect": {
+                        "behavior_key": "deal_damage",
+                        "params": {"amount": _parse_amount_token(m.group("amount"), variables), "target": "enemy"},
+                    },
+                },
+            ),
+        ),
+        (
+            re.compile(
+                r"^Whenever you play a card this turn, gain (?P<amount>(?:\d+|\{[^{}]+\})) Strength this turn\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: (
+                "add_trigger",
+                {
+                    "event": "on_card_played",
+                    "label": "this_turn_play_card_gain_temp_strength",
+                    "expire_on_current_turn": True,
+                    "effect": {
+                        "behavior_key": "sequence",
+                        "params": {
+                            "effects": [
+                                {
+                                    "behavior_key": "apply_buff",
+                                    "params": {"key": "strength", "amount": _parse_amount_token(m.group("amount"), variables), "target": "player"},
+                                },
+                                {
+                                    "behavior_key": "schedule_effect",
+                                    "params": {
+                                        "delay_turns": 1,
+                                        "label": "expire_monologue_strength",
+                                        "effect": {
+                                            "behavior_key": "apply_buff",
+                                            "params": {"key": "strength", "amount": -(_parse_amount_token(m.group("amount"), variables) or 0), "target": "player"},
+                                        },
+                                    },
+                                },
+                            ]
+                        },
+                    },
+                },
+            ),
+        ),
     ]
 
     for pattern, builder in sequence_patterns:

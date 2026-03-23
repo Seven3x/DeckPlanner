@@ -52,21 +52,32 @@
   - `Rage`
   - `Storm`
   - `Subroutine`
+- 当前已启用的简单条件过滤：
+  - `Arsenal`
+  - `SpiritOfAsh`
+  - `Vicious`
+  - `SleightOfFlesh`
+- 当前已启用的单一事件状态条件 / 临时复合触发：
+  - `Juggernaut`
+  - `Monologue`
 - 当前支持范围：
   - 确定性事件
   - 非随机目标
   - 非复杂条件
   - 可直接复用现有 effect 的嵌套行为
+  - 可按打出牌 `card_tags`
+  - 可按打出牌 `card_character`
+  - 可按 `debuff_key`
 - 仍待决定的扩展方向：
-  - `Whenever you gain Block ...`
-  - `Whenever you apply a debuff ...`
-  - `Whenever you play a Colorless card ...`
-  - `Whenever you play an Ethereal card ...`
-  - `Whenever you play a card this turn, gain X Strength this turn`
+  - `Whenever you apply Doom ...`
+  - `Whenever you play a card costing N or more ...`
+  - `Whenever you gain Block, if ...`
+  - `Whenever you play a card this turn, if ...`
+  - 依赖资源体系或更复杂标签判断的 trigger
 - 倾向选项：
-  - 下一步只扩大到“确定性 + 有简单条件过滤”的 trigger，例如按已打出牌的标签/类型过滤
+  - 下一步若继续推进，只扩大到“确定性 + 单一额外数值条件”的 trigger
 - 不确定原因：
-  - 再往前一步就需要在事件上下文里稳定携带卡牌标签、角色资源和更多条件判断，触发系统复杂度会明显上升。
+  - 再往前一步就需要在事件上下文里稳定携带更多数值条件、资源条件和多条件组合，触发系统复杂度会明显上升。
 - 影响：
   - 一批 power 卡，以及部分依赖事件计数/标签判断的技能牌
 

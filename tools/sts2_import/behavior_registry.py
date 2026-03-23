@@ -114,6 +114,11 @@ def validate_behavior_spec(behavior_key: str, params: Any, path: str = "card") -
             errors.append(f"{path}.params.effect must be an object")
         else:
             errors.extend(_validate_nested_behavior(nested, f"{path}.params.effect"))
+        condition = params.get("condition")
+        if condition is not None and not isinstance(condition, dict):
+            errors.append(f"{path}.params.condition must be an object when provided")
+        elif isinstance(condition, dict) and not isinstance(condition.get("type"), str):
+            errors.append(f"{path}.params.condition.type must be a string")
         remaining_uses = params.get("remaining_uses")
         if remaining_uses is not None and (isinstance(remaining_uses, bool) or not isinstance(remaining_uses, int)):
             errors.append(f"{path}.params.remaining_uses must be an integer when provided")
