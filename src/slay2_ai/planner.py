@@ -173,6 +173,8 @@ def _play_card_once(
             emit_event(state, "on_attack_played", ctx)
         elif card.card_type == "skill":
             emit_event(state, "on_skill_played", ctx)
+        elif card.card_type == "power":
+            emit_event(state, "on_power_played", ctx)
 
     for effect in card.effects:
         effect.apply(state, ctx)

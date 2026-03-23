@@ -45,46 +45,30 @@
 
 ## 剩余问题
 
-### Q3. 持续型触发 power 现在要映射，还是继续延期？
+### Q3. 持续型触发 power 的边界还要不要继续扩大？
 
-- 范围：一类卡牌
-- 示例卡牌：
-  - `AstralPulse` / Astral Pulse
-  - `DramaticEntrance` / Dramatic Entrance
-  - `DaggerSpray` / Dagger Spray
-- 原始文本：
-  - `Deal {Damage:diff()} damage to ALL enemies.`
-  - `Deal {Damage:diff()} damage to ALL enemies twice.`
-- 可能的解释：
-  - 将其视为对当前规划器敌人的单目标代理伤害
-  - 增加真正的多敌人状态和 AoE 语义
-  - 在规划器支持多敌人之前保持未实现
-- 倾向选项：
-  - 在存在明确的 AoE 抽象之前，保持未实现
-- 不确定原因：
-  - 当前引擎状态只有一个 `enemy_state`；把 AoE 压缩为单敌人可能会高估击杀压力并扭曲规划结果。
-- 影响：
-  - 一大类攻击卡
-
-- 范围：一类卡牌
-- 示例卡牌：
+- 当前已启用的最小白名单：
   - `Afterimage`
-  - `Caltrops`
-  - `Juggernaut`
-  - `Arsenal`
-- 原始文本：
-  - `Whenever you play a card, gain {AfterimagePower:diff()} Block.`
-  - `Whenever you gain Block, deal {JuggernautPower:diff()} damage to a random enemy.`
-- 可能的解释：
-  - 现在就增加一小组持续触发构造器
-  - 仅支持确定性的自触发，随机触发延期
-  - 在确认更广泛的触发设计之前，让 power 触发暂时不纳入范围
+  - `Rage`
+  - `Storm`
+  - `Subroutine`
+- 当前支持范围：
+  - 确定性事件
+  - 非随机目标
+  - 非复杂条件
+  - 可直接复用现有 effect 的嵌套行为
+- 仍待决定的扩展方向：
+  - `Whenever you gain Block ...`
+  - `Whenever you apply a debuff ...`
+  - `Whenever you play a Colorless card ...`
+  - `Whenever you play an Ethereal card ...`
+  - `Whenever you play a card this turn, gain X Strength this turn`
 - 倾向选项：
-  - 在用户确认触发抽象边界之后，仅支持确定性的自触发
+  - 下一步只扩大到“确定性 + 有简单条件过滤”的 trigger，例如按已打出牌的标签/类型过滤
 - 不确定原因：
-  - 有些 power 很直接，但一旦混入随机目标和外部资源，事件模型会迅速膨胀。
+  - 再往前一步就需要在事件上下文里稳定携带卡牌标签、角色资源和更多条件判断，触发系统复杂度会明显上升。
 - 影响：
-  - 许多 power 卡牌以及部分类似遗物的效果
+  - 一批 power 卡，以及部分依赖事件计数/标签判断的技能牌
 
 ## Q6. 手牌中的被动 curse/status 效果是否应算入可执行覆盖？
 

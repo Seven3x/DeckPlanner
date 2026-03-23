@@ -12,9 +12,9 @@
 | 指标 | 初始值 | 最终值 |
 | --- | ---: | ---: |
 | total_cards | 577 | 577 |
-| executable_cards | 39 | 101 |
-| mapped_cards | 39 | 101 |
-| unimplemented_cards | 538 | 476 |
+| executable_cards | 39 | 109 |
+| mapped_cards | 39 | 109 |
+| unimplemented_cards | 538 | 468 |
 
 ## 新增支持的模式
 
@@ -45,6 +45,11 @@
 - `Channel 1 Frost. Draw Y cards.`
 - `Channel 1 Lightning.`
 - `Gain Focus.` / `Gain Orb Slots.`
+- 最小白名单持续 trigger power：
+  - `Whenever you play a card, gain Block`
+  - `Whenever you play an Attack this turn, gain Block`
+  - `Whenever you play a Power, Channel Lightning`
+  - `Whenever you play a Power, gain Energy`
 
 ## 新增行为类别
 
@@ -58,6 +63,8 @@
   - 现在用于精确单行的 `strength` 和 `dexterity`
 - `channel_orb`
   - 为 `lightning` 和 `frost` 提供第一阶段、计数器级的 orb/channel 支持
+- `add_trigger`
+  - 为极小的确定性白名单提供持续 trigger 支持
 
 ## 小型引擎扩展
 
@@ -68,7 +75,7 @@
 
 ## 明确保持未实现的内容
 
-- 持续型触发 power
+- 更复杂的持续型触发 power
 - summon/Osty 卡牌
 - forge/star/doom 系统
 - 延迟回手 / 卡牌身份跟踪机制
@@ -82,9 +89,10 @@
 - buff 映射被有意限制在 `strength` 和 `dexterity`，没有做更广泛的泛化
 - AoE/随机目标映射目前是在单敌人规划器/运行时模型下的有意近似
 - orb 支持仍处于第一阶段且基于计数器；被动/evoke 语义仍不在范围内
+- 当前 trigger 支持仅覆盖极小白名单；带标签过滤、资源条件或随机目标的触发仍未纳入
 
 ## 建议
 
-- 下一块较干净的扩展边界，是不含随机目标的确定性触发 power。
+- 下一块较干净的扩展边界，是“带简单条件过滤”的确定性触发 power。
 - 再往后，一个高价值决策点是是否要在运行时评估中建模被动 curse/status 效果。
 - 如果继续推进，资源系统的后续顺序建议为：`summon/Osty` -> `forge` -> `stars` -> `doom`。

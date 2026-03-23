@@ -85,6 +85,7 @@
             "apply_buff",
             "apply_debuff",
             "sequence",
+            "add_trigger",
             "set_next_attack_bonus",
             "replay_next_card",
             "schedule_effect",

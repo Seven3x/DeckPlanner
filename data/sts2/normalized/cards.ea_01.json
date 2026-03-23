@@ -306,8 +306,17 @@
         "innate"
       ],
       "text": "你每打出一张牌，都获得1点格挡。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "add_trigger",
+      "params": {
+        "event": "on_card_played",
+        "label": "whenever_play_card_gain_block",
+        "effect": {
+          "behavior_key": "gain_block",
+          "params": {
+            "amount": 1
+          }
+        }
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -1048,8 +1057,11 @@
         "target:allenemies"
       ],
       "text": "对所有敌人造成14点伤害。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "deal_damage",
+      "params": {
+        "amount": 14,
+        "target": "enemy"
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -7508,8 +7520,11 @@
         "target:allenemies"
       ],
       "text": "消耗,固有,对所有敌人造成11点伤害。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "deal_damage",
+      "params": {
+        "amount": 11,
+        "target": "enemy"
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -9664,8 +9679,11 @@
         "target:allenemies"
       ],
       "text": "奇巧,对所有敌人造成7点伤害。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "deal_damage",
+      "params": {
+        "amount": 7,
+        "target": "enemy"
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -18063,8 +18081,18 @@
         "target:self"
       ],
       "text": "打出此牌后，你在这个回合内每打出一张攻击牌，获得3点格挡。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "add_trigger",
+      "params": {
+        "event": "on_attack_played",
+        "label": "this_turn_attack_gain_block",
+        "expire_on_current_turn": true,
+        "effect": {
+          "behavior_key": "gain_block",
+          "params": {
+            "amount": 3
+          }
+        }
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -21351,8 +21379,11 @@
         "target:allenemies"
       ],
       "text": "保留,对所有敌人造成8点伤害。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "deal_damage",
+      "params": {
+        "amount": 8,
+        "target": "enemy"
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -22167,8 +22198,18 @@
         "target:self"
       ],
       "text": "每当你打出一张能力牌时，生成1个闪电充能球。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "add_trigger",
+      "params": {
+        "event": "on_power_played",
+        "label": "on_power_played_channel_lightning",
+        "effect": {
+          "behavior_key": "channel_orb",
+          "params": {
+            "orb_type": "lightning",
+            "amount": 1
+          }
+        }
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -22547,8 +22588,17 @@
         "target:self"
       ],
       "text": "当你打出一张能力牌时，获得能量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "add_trigger",
+      "params": {
+        "event": "on_power_played",
+        "label": "on_power_played_gain_energy",
+        "effect": {
+          "behavior_key": "gain_energy",
+          "params": {
+            "amount": 1
+          }
+        }
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",

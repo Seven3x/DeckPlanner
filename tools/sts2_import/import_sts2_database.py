@@ -20,6 +20,7 @@ MAPPED_BEHAVIOR_KEYS = {
     "apply_debuff",
     "apply_buff",
     "sequence",
+    "add_trigger",
 }
 
 SAFE_BUFF_KEYS = {
@@ -176,6 +177,10 @@ def _parse_amount_token(token: str, variables: dict[str, Any]) -> int | None:
     token = token.strip()
     if token.isdigit():
         return int(token)
+
+    energy_icon = re.match(r"^\{[A-Za-z0-9_]+:energyIcons\((?P<amount>\d+)\)\}$", token)
+    if energy_icon:
+        return int(energy_icon.group("amount"))
 
     placeholder = re.match(r"^\{(?P<name>[A-Za-z0-9_]+)(?::[^}]*)?\}$", token)
     if not placeholder:
@@ -615,6 +620,75 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
                 ("schedule_effect", {"delay_turns": 1, "label": "expire_strength_this_turn", "effect": {"behavior_key": "apply_buff", "params": {"key": "strength", "amount": -(_parse_amount_token(m.group("amount"), variables) or 0), "target": "player"}}}),
             ),
         ),
+        (
+            re.compile(
+                r"^Whenever you play a card, gain (?P<amount>(?:\d+|\{[^{}]+\})) Block\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: (
+                "add_trigger",
+                {
+                    "event": "on_card_played",
+                    "label": "whenever_play_card_gain_block",
+                    "effect": {
+                        "behavior_key": "gain_block",
+                        "params": {"amount": _parse_amount_token(m.group("amount"), variables)},
+                    },
+                },
+            ),
+        ),
+        (
+            re.compile(
+                r"^Whenever you play an Attack this turn, gain (?P<amount>(?:\d+|\{[^{}]+\})) Block\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: (
+                "add_trigger",
+                {
+                    "event": "on_attack_played",
+                    "label": "this_turn_attack_gain_block",
+                    "expire_on_current_turn": True,
+                    "effect": {
+                        "behavior_key": "gain_block",
+                        "params": {"amount": _parse_amount_token(m.group("amount"), variables)},
+                    },
+                },
+            ),
+        ),
+        (
+            re.compile(
+                r"^Whenever you play a Power, Channel (?P<amount>(?:\d+|\{[^{}]+\})) Lightning\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: (
+                "add_trigger",
+                {
+                    "event": "on_power_played",
+                    "label": "on_power_played_channel_lightning",
+                    "effect": {
+                        "behavior_key": "channel_orb",
+                        "params": {"orb_type": "lightning", "amount": _parse_amount_token(m.group("amount"), variables)},
+                    },
+                },
+            ),
+        ),
+        (
+            re.compile(
+                r"^Whenever you play a Power, gain (?P<amount>\{[^{}]+\})\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: (
+                "add_trigger",
+                {
+                    "event": "on_power_played",
+                    "label": "on_power_played_gain_energy",
+                    "effect": {
+                        "behavior_key": "gain_energy",
+                        "params": {"amount": _parse_amount_token(m.group("amount"), variables)},
+                    },
+                },
+            ),
+        ),
     ]
 
     for pattern, builder in sequence_patterns:
@@ -622,7 +696,7 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
         if not matched:
             continue
         behavior_key, params = builder(matched)
-        if _sequence_params_valid(params):
+        if _behavior_params_resolved(behavior_key, params):
             return behavior_key, params
 
     repeat_match = re.match(
@@ -662,6 +736,33 @@ def _sequence_params_valid(params: dict[str, Any]) -> bool:
         for value in nested.values():
             if value is None:
                 return False
+    return True
+
+
+def _add_trigger_params_valid(params: dict[str, Any]) -> bool:
+    event = params.get("event")
+    effect = params.get("effect")
+    if not isinstance(event, str) or not event.strip():
+        return False
+    if not isinstance(effect, dict):
+        return False
+    nested_params = effect.get("params")
+    if not isinstance(nested_params, dict):
+        return False
+    for value in nested_params.values():
+        if value is None:
+            return False
+    return True
+
+
+def _behavior_params_resolved(behavior_key: str, params: dict[str, Any]) -> bool:
+    if behavior_key == "sequence":
+        return _sequence_params_valid(params)
+    if behavior_key == "add_trigger":
+        return _add_trigger_params_valid(params)
+    for value in params.values():
+        if value is None:
+            return False
     return True
 
 

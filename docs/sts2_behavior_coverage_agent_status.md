@@ -106,10 +106,28 @@
   - 导入器/报告/加载器 smoke check 通过
   - 针对临时 buff 到期和充能球计数累积的规划器验证通过
 
+### 第 7 次迭代
+
+- 可执行 / 未实现：`109 / 468`
+- 新增模式：
+  - 最小白名单持续 trigger power
+  - `Whenever you play a card, gain Block`
+  - `Whenever you play an Attack this turn, gain Block`
+  - `Whenever you play a Power, Channel Lightning`
+  - `Whenever you play a Power, gain Energy`
+- 规则变更：
+  - 新增 `add_trigger` 行为键
+  - 运行时新增 `on_power_played` 事件
+  - 导入器补充 `energyIcons(1)` 占位符解析，用于稳定映射 `Subroutine`
+- 验证：
+  - 导入器/报告/加载器 smoke check 通过
+  - 定向验证确认 `Afterimage`、`Rage`、`Storm`、`Subroutine` 已进入 executable coverage
+
 ## 新增支持的行为类别
 
 - 单效果 buff：`apply_buff`，用于 `strength` 和 `dexterity`
 - 计数器级充能球子系统支持：`channel_orb`、`focus`、`orb_slots`
+- 最小白名单持续 trigger power：`add_trigger`
 - 通过 `sequence` 支持复合动作卡牌
 - 固定次数的重复攻击
 - 抽牌/弃牌类手牌操作卡牌
@@ -120,12 +138,12 @@
 
 - 当前引擎中的 AoE 目标语义仍然是单敌人模型
 - 随机目标语义在当前单敌人模型下仍只是近似实现
-- 其余未覆盖内容仍以触发型和持续型 power 行为为主
+- 其余未覆盖内容仍以更复杂的触发型和持续型 power 行为为主
 - 目前只有第一个资源子系统（`orb/channel/focus`）完成了第一阶段支持；`summon/Osty`、`forge`、`stars`、`doom` 仍然延期
 - 临时属性到期逻辑目前仅覆盖精确单行的自我 buff 模式
 
 ## 停止原因
 
-- 覆盖率已从 `39` 实质性提升到 `101`
+- 覆盖率已从 `39` 实质性提升到 `109`
 - 剩余未映射内容现在主要是触发、资源、被动、卡牌身份、条件等复杂度问题，而不是漏掉了简单模板
 - 最高影响的开放决策已收敛为一个更小的未决集合

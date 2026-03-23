@@ -13,6 +13,7 @@ SUPPORTED_BEHAVIOR_KEYS = {
     "apply_buff",
     "apply_debuff",
     "sequence",
+    "add_trigger",
     "set_next_attack_bonus",
     "replay_next_card",
     "schedule_effect",
@@ -32,6 +33,7 @@ ALIASES = {
     "buff": "apply_buff",
     "debuff": "apply_debuff",
     "multi": "sequence",
+    "trigger": "add_trigger",
     "next_attack_bonus": "set_next_attack_bonus",
     "replay": "replay_next_card",
     "delayed": "schedule_effect",
@@ -104,6 +106,20 @@ def validate_behavior_spec(behavior_key: str, params: Any, path: str = "card") -
                 errors.extend(
                     _validate_nested_behavior(item, f"{path}.params.effects[{idx}]")
                 )
+    elif behavior_key == "add_trigger":
+        if not isinstance(params.get("event"), str):
+            errors.append(f"{path}.params.event must be a string")
+        nested = params.get("effect")
+        if not isinstance(nested, dict):
+            errors.append(f"{path}.params.effect must be an object")
+        else:
+            errors.extend(_validate_nested_behavior(nested, f"{path}.params.effect"))
+        remaining_uses = params.get("remaining_uses")
+        if remaining_uses is not None and (isinstance(remaining_uses, bool) or not isinstance(remaining_uses, int)):
+            errors.append(f"{path}.params.remaining_uses must be an integer when provided")
+        expire_on_current_turn = params.get("expire_on_current_turn")
+        if expire_on_current_turn is not None and not isinstance(expire_on_current_turn, bool):
+            errors.append(f"{path}.params.expire_on_current_turn must be a boolean when provided")
     elif behavior_key == "set_next_attack_bonus":
         require_int("amount")
     elif behavior_key == "replay_next_card":

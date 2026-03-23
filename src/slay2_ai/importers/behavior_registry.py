@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Any, Callable
 
 from ..effects import (
+    AddTriggerEffect,
     ApplyBuff,
     ApplyDebuff,
     ChannelOrb,
@@ -20,6 +21,7 @@ from ..effects import (
     SetReplayNextCard,
 )
 from ..game_state import GameState
+from ..triggers import Trigger
 
 
 ConditionFn = Callable[[GameState, dict], bool]
@@ -35,6 +37,7 @@ SUPPORTED_BEHAVIOR_KEYS = {
     "apply_buff",
     "apply_debuff",
     "sequence",
+    "add_trigger",
     "set_next_attack_bonus",
     "replay_next_card",
     "schedule_effect",
@@ -67,6 +70,7 @@ ALIASES = {
     "buff": "apply_buff",
     "debuff": "apply_debuff",
     "multi": "sequence",
+    "trigger": "add_trigger",
     "next_attack_bonus": "set_next_attack_bonus",
     "replay": "replay_next_card",
     "delayed": "schedule_effect",
@@ -173,6 +177,32 @@ def build_behavior(behavior_key: Any, params: Any) -> BehaviorBuildResult:
         effects = _build_branch_effects(raw_effects, "effects")
         return BehaviorBuildResult(
             effects=effects,
+            executable=True,
+            status="mapped",
+        )
+
+    if key == "add_trigger":
+        event = _required_str(row, "event")
+        nested_effect = _required_dict(row, "effect")
+        effect = _build_nested_single_effect(nested_effect)
+        remaining_uses = row.get("remaining_uses", None)
+        if remaining_uses is not None and (isinstance(remaining_uses, bool) or not isinstance(remaining_uses, int)):
+            raise UnsupportedBehaviorError("add_trigger.remaining_uses must be an integer when provided")
+        expire_on_current_turn = bool(row.get("expire_on_current_turn", False))
+        label = _optional_str(row, "label", "")
+        return BehaviorBuildResult(
+            effects=[
+                AddTriggerEffect(
+                    trigger=Trigger(
+                        event=event,
+                        effect=effect,
+                        remaining_uses=remaining_uses,
+                        expire_turn=None,
+                        label=label,
+                    ),
+                    expire_on_current_turn=expire_on_current_turn,
+                )
+            ],
             executable=True,
             status="mapped",
         )
