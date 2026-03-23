@@ -7,6 +7,7 @@ SUPPORTED_BEHAVIOR_KEYS = {
     "gain_block",
     "draw_cards",
     "gain_energy",
+    "lose_hp",
     "discard_cards",
     "exhaust_from_hand",
     "channel_orb",
@@ -18,6 +19,7 @@ SUPPORTED_BEHAVIOR_KEYS = {
     "replay_next_card",
     "schedule_effect",
     "conditional",
+    "passive_in_hand_trigger",
     "text_only",
     "unimplemented",
 }
@@ -27,6 +29,7 @@ ALIASES = {
     "block": "gain_block",
     "draw": "draw_cards",
     "energy": "gain_energy",
+    "hp_loss": "lose_hp",
     "discard": "discard_cards",
     "exhaust_hand": "exhaust_from_hand",
     "channel": "channel_orb",
@@ -38,6 +41,7 @@ ALIASES = {
     "replay": "replay_next_card",
     "delayed": "schedule_effect",
     "if_else": "conditional",
+    "passive_trigger": "passive_in_hand_trigger",
 }
 
 
@@ -77,6 +81,8 @@ def validate_behavior_spec(behavior_key: str, params: Any, path: str = "card") -
     elif behavior_key == "draw_cards":
         require_int("amount")
     elif behavior_key == "gain_energy":
+        require_int("amount")
+    elif behavior_key == "lose_hp":
         require_int("amount")
     elif behavior_key == "discard_cards":
         require_int("amount")
@@ -161,6 +167,14 @@ def validate_behavior_spec(behavior_key: str, params: Any, path: str = "card") -
                 errors.extend(
                     _validate_nested_behavior(item, f"{path}.params.{branch_name}[{idx}]")
                 )
+    elif behavior_key == "passive_in_hand_trigger":
+        if not isinstance(params.get("event"), str):
+            errors.append(f"{path}.params.event must be a string")
+        nested = params.get("effect")
+        if not isinstance(nested, dict):
+            errors.append(f"{path}.params.effect must be an object")
+        else:
+            errors.extend(_validate_nested_behavior(nested, f"{path}.params.effect"))
     elif behavior_key in {"text_only", "unimplemented"}:
         pass
 

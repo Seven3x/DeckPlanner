@@ -56,6 +56,7 @@ def main() -> None:
     print(f"Total cards: {summary.total_cards}")
     print(f"Executable cards: {summary.executable_cards}")
     print(f"Mapped cards: {summary.mapped_cards}")
+    print(f"Passive modeled cards: {summary.passive_modeled_cards}")
     print(f"Text-only cards: {summary.text_only_cards}")
     print(f"Unimplemented cards: {summary.unimplemented_cards}")
 
@@ -111,6 +112,11 @@ def main() -> None:
         "expected at least one non-executable card"
     )
     assert text_only_probe not in action_ids, "text_only/non-executable card should not be executable"
+    passive_modeled_ids = sorted(
+        card_id for card_id, card in cards.items() if card.source.get("behavior_status") == "passive_modeled"
+    )
+    if passive_modeled_ids:
+        assert passive_modeled_ids[0] not in action_ids, "passive_modeled card should not be executable"
     print("Validation checks passed.")
 
 

@@ -122,6 +122,22 @@ class GainEnergy(Effect):
 
 
 @dataclass
+class LoseHp(Effect):
+    amount: int
+    target: str = "player"
+
+    def apply(self, state: GameState, ctx: dict) -> None:
+        del ctx
+        loss = max(0, self.amount)
+        if self.target == "player":
+            state.player_hp = max(0, state.player_hp - loss)
+        elif self.target == "enemy":
+            state.enemy_state.hp = max(0, state.enemy_state.hp - loss)
+        else:
+            raise ValueError(f"Unknown target {self.target}")
+
+
+@dataclass
 class ChannelOrb(Effect):
     orb_type: str
     amount: int = 1
@@ -259,3 +275,14 @@ class Conditional(Effect):
         branch = self.if_true if self.condition(state, ctx) else self.if_false
         for effect in branch:
             effect.apply(state, ctx)
+
+
+@dataclass
+class PassiveInHandTrigger(Effect):
+    event: str
+    effect: Effect
+    label: str = ""
+
+    def apply(self, state: GameState, ctx: dict) -> None:
+        del state, ctx
+        return

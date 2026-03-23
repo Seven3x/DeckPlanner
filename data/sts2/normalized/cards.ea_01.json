@@ -1267,8 +1267,19 @@
         "target:none"
       ],
       "text": "永恒,不能被打出,在你的回合结束时，如果这张牌在你的手牌中，则失去13点生命。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "passive_in_hand_trigger",
+      "params": {
+        "event": "on_turn_end",
+        "label": "passive_in_hand_end_turn_hp_loss",
+        "effect": {
+          "behavior_key": "lose_hp",
+          "params": {
+            "amount": 13,
+            "target": "player"
+          }
+        },
+        "reason": "passive in-hand end-turn HP loss is modeled separately from executable card play"
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -2088,8 +2099,42 @@
         "target:self"
       ],
       "text": "每当你在本回合打出一张攻击牌时，本回合获得2点力量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "add_trigger",
+      "params": {
+        "event": "on_attack_played",
+        "label": "this_turn_play_attack_gain_temp_strength",
+        "expire_on_current_turn": true,
+        "effect": {
+          "behavior_key": "sequence",
+          "params": {
+            "effects": [
+              {
+                "behavior_key": "apply_buff",
+                "params": {
+                  "key": "strength",
+                  "amount": 2,
+                  "target": "player"
+                }
+              },
+              {
+                "behavior_key": "schedule_effect",
+                "params": {
+                  "delay_turns": 1,
+                  "label": "expire_attack_trigger_strength",
+                  "effect": {
+                    "behavior_key": "apply_buff",
+                    "params": {
+                      "key": "strength",
+                      "amount": -2,
+                      "target": "player"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -2172,8 +2217,24 @@
         "target:self"
       ],
       "text": "失去2点生命。\n获得16点格挡。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "lose_hp",
+            "params": {
+              "amount": 2,
+              "target": "player"
+            }
+          },
+          {
+            "behavior_key": "gain_block",
+            "params": {
+              "amount": 16
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -2215,8 +2276,24 @@
         "target:self"
       ],
       "text": "失去3点生命。\n获得2能量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "lose_hp",
+            "params": {
+              "amount": 3,
+              "target": "player"
+            }
+          },
+          {
+            "behavior_key": "gain_energy",
+            "params": {
+              "amount": 2
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -3258,8 +3335,19 @@
         "target:none"
       ],
       "text": "不能被打出,在你的回合结束时，如果这张牌在你的手牌中，你受到2点伤害。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "passive_in_hand_trigger",
+      "params": {
+        "event": "on_turn_end",
+        "label": "passive_in_hand_end_turn_hp_loss",
+        "effect": {
+          "behavior_key": "lose_hp",
+          "params": {
+            "amount": 2,
+            "target": "player"
+          }
+        },
+        "reason": "passive in-hand end-turn HP loss is modeled separately from executable card play"
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -5699,8 +5787,21 @@
         "target:self"
       ],
       "text": "每当你打出一张耗能大于等于2能量的牌时，获得3点格挡。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "add_trigger",
+      "params": {
+        "event": "on_card_played",
+        "label": "on_play_cost_gte_gain_block",
+        "condition": {
+          "type": "event_card_cost_gte",
+          "value": 2
+        },
+        "effect": {
+          "behavior_key": "gain_block",
+          "params": {
+            "amount": 3
+          }
+        }
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -5781,8 +5882,34 @@
         "target:anyenemy"
       ],
       "text": "消耗,使一名敌人在本回合失去9点力量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "strength",
+              "amount": -9,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "expire_enemy_strength_loss_this_turn",
+              "effect": {
+                "behavior_key": "apply_buff",
+                "params": {
+                  "key": "strength",
+                  "amount": 9,
+                  "target": "enemy"
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -6268,8 +6395,19 @@
         "target:none"
       ],
       "text": "不能被打出,在你的回合结束时，如果这张牌在你的手牌中,你受到2点伤害。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "passive_in_hand_trigger",
+      "params": {
+        "event": "on_turn_end",
+        "label": "passive_in_hand_end_turn_hp_loss",
+        "effect": {
+          "behavior_key": "lose_hp",
+          "params": {
+            "amount": 2,
+            "target": "player"
+          }
+        },
+        "reason": "passive in-hand end-turn HP loss is modeled separately from executable card play"
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -8017,8 +8155,34 @@
         "target:anyenemy"
       ],
       "text": "虚无,让一名敌人在本回合内失去8点力量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "strength",
+              "amount": -8,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "expire_enemy_strength_loss_this_turn",
+              "effect": {
+                "behavior_key": "apply_buff",
+                "params": {
+                  "key": "strength",
+                  "amount": 8,
+                  "target": "enemy"
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -11249,8 +11413,30 @@
         "target:anyenemy"
       ],
       "text": "造成12点伤害。\n在下一回合抽2张牌。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 12
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "next_turn_draw",
+              "effect": {
+                "behavior_key": "draw_cards",
+                "params": {
+                  "amount": 2
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -11797,8 +11983,30 @@
         "target:anyenemy"
       ],
       "text": "造成15点伤害。\n在下个回合获得2能量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 15
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "next_turn_energy",
+              "effect": {
+                "behavior_key": "gain_energy",
+                "params": {
+                  "amount": 2
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -12007,8 +12215,24 @@
         "target:anyenemy"
       ],
       "text": "失去2点生命。\n造成14点伤害。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "lose_hp",
+            "params": {
+              "amount": 2,
+              "target": "player"
+            }
+          },
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 14
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -12673,8 +12897,19 @@
         "target:none"
       ],
       "text": "不能被打出,在你的回合结束时，如果这张牌在你的手牌中，则受到3点伤害。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "passive_in_hand_trigger",
+      "params": {
+        "event": "on_turn_end",
+        "label": "passive_in_hand_end_turn_hp_loss",
+        "effect": {
+          "behavior_key": "lose_hp",
+          "params": {
+            "amount": 3,
+            "target": "player"
+          }
+        },
+        "reason": "passive in-hand end-turn HP loss is modeled separately from executable card play"
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -16029,8 +16264,30 @@
         "target:self"
       ],
       "text": "消耗,失去6点生命。\n获得2能量。\n抽3张牌。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "lose_hp",
+            "params": {
+              "amount": 6,
+              "target": "player"
+            }
+          },
+          {
+            "behavior_key": "gain_energy",
+            "params": {
+              "amount": 2
+            }
+          },
+          {
+            "behavior_key": "draw_cards",
+            "params": {
+              "amount": 3
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -16243,8 +16500,17 @@
         "target:self"
       ],
       "text": "在下个回合获得2能量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "schedule_effect",
+      "params": {
+        "delay_turns": 1,
+        "label": "next_turn_energy",
+        "effect": {
+          "behavior_key": "gain_energy",
+          "params": {
+            "amount": 2
+          }
+        }
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -17374,8 +17640,30 @@
         "target:anyenemy"
       ],
       "text": "造成15点伤害。\n在下个回合抽2张牌。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 15
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "next_turn_draw",
+              "effect": {
+                "behavior_key": "draw_cards",
+                "params": {
+                  "amount": 2
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -18850,8 +19138,43 @@
         "target:self"
       ],
       "text": "消耗,获得15点格挡。\n下个回合，抽2张牌并获得2能量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "gain_block",
+            "params": {
+              "amount": 15
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "next_turn_draw_and_energy",
+              "effect": {
+                "behavior_key": "sequence",
+                "params": {
+                  "effects": [
+                    {
+                      "behavior_key": "draw_cards",
+                      "params": {
+                        "amount": 2
+                      }
+                    },
+                    {
+                      "behavior_key": "gain_energy",
+                      "params": {
+                        "amount": 2
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -24309,8 +24632,19 @@
         "target:none"
       ],
       "text": "消耗,在你的回合结束时，这张牌在你的手牌中，则受到5点伤害。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "passive_in_hand_trigger",
+      "params": {
+        "event": "on_turn_end",
+        "label": "passive_in_hand_end_turn_hp_loss",
+        "effect": {
+          "behavior_key": "lose_hp",
+          "params": {
+            "amount": 5,
+            "target": "player"
+          }
+        },
+        "reason": "passive in-hand end-turn HP loss is modeled separately from executable card play"
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",

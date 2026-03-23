@@ -142,6 +142,7 @@ def main() -> None:
     print(f"Total cards: {summary.total_cards}")
     print(f"Executable cards: {summary.executable_cards}")
     print(f"Mapped cards: {summary.mapped_cards}")
+    print(f"Passive modeled cards: {summary.passive_modeled_cards}")
     print(f"Text-only cards: {summary.text_only_cards}")
     print(f"Unimplemented cards: {summary.unimplemented_cards}")
 
@@ -165,6 +166,7 @@ def main() -> None:
         ("total_cards", summary.total_cards),
         ("executable_cards", summary.executable_cards),
         ("mapped_cards", summary.mapped_cards),
+        ("passive_modeled_cards", summary.passive_modeled_cards),
         ("text_only_cards", summary.text_only_cards),
         ("unimplemented_cards", summary.unimplemented_cards),
     ]

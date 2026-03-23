@@ -33,6 +33,7 @@ class CatalogLoadSummary:
     total_cards: int
     executable_cards: int
     mapped_cards: int
+    passive_modeled_cards: int
     text_only_cards: int
     unimplemented_cards: int
 
@@ -125,6 +126,7 @@ def build_card_catalog(normalized_cards: list[NormalizedCard]) -> tuple[dict[str
 
     mapped_cards = 0
     executable_cards = 0
+    passive_modeled_cards = 0
     text_only_cards = 0
     unimplemented_cards = 0
 
@@ -141,6 +143,8 @@ def build_card_catalog(normalized_cards: list[NormalizedCard]) -> tuple[dict[str
 
         if effective_status == "mapped":
             mapped_cards += 1
+        elif effective_status == "passive_modeled":
+            passive_modeled_cards += 1
         elif effective_status == "text_only":
             text_only_cards += 1
         else:
@@ -160,6 +164,7 @@ def build_card_catalog(normalized_cards: list[NormalizedCard]) -> tuple[dict[str
         source["character"] = card.character
         source["rarity"] = card.rarity
         source["behavior_status"] = effective_status
+        source["model_status"] = effective_status
         if effective_note:
             source["behavior_note"] = effective_note
 
@@ -182,6 +187,7 @@ def build_card_catalog(normalized_cards: list[NormalizedCard]) -> tuple[dict[str
         total_cards=len(normalized_cards),
         executable_cards=executable_cards,
         mapped_cards=mapped_cards,
+        passive_modeled_cards=passive_modeled_cards,
         text_only_cards=text_only_cards,
         unimplemented_cards=unimplemented_cards,
     )

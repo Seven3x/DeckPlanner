@@ -17,6 +17,8 @@ from ..effects import (
     ExhaustFromHand,
     GainBlock,
     GainEnergy,
+    LoseHp,
+    PassiveInHandTrigger,
     ScheduleEffect,
     SetNextAttackBonus,
     SetReplayNextCard,
@@ -32,6 +34,7 @@ SUPPORTED_BEHAVIOR_KEYS = {
     "gain_block",
     "draw_cards",
     "gain_energy",
+    "lose_hp",
     "discard_cards",
     "exhaust_from_hand",
     "channel_orb",
@@ -43,6 +46,7 @@ SUPPORTED_BEHAVIOR_KEYS = {
     "replay_next_card",
     "schedule_effect",
     "conditional",
+    "passive_in_hand_trigger",
     "text_only",
     "unimplemented",
 }
@@ -65,6 +69,7 @@ ALIASES = {
     "block": "gain_block",
     "draw": "draw_cards",
     "energy": "gain_energy",
+    "hp_loss": "lose_hp",
     "discard": "discard_cards",
     "exhaust_hand": "exhaust_from_hand",
     "channel": "channel_orb",
@@ -76,6 +81,7 @@ ALIASES = {
     "replay": "replay_next_card",
     "delayed": "schedule_effect",
     "if_else": "conditional",
+    "passive_trigger": "passive_in_hand_trigger",
 }
 
 
@@ -122,6 +128,13 @@ def build_behavior(behavior_key: Any, params: Any) -> BehaviorBuildResult:
     if key == "gain_energy":
         return BehaviorBuildResult(
             effects=[GainEnergy(amount=_required_int(row, "amount"))],
+            executable=True,
+            status="mapped",
+        )
+
+    if key == "lose_hp":
+        return BehaviorBuildResult(
+            effects=[LoseHp(amount=_required_int(row, "amount"), target=_optional_str(row, "target", "player"))],
             executable=True,
             status="mapped",
         )
@@ -249,6 +262,18 @@ def build_behavior(behavior_key: Any, params: Any) -> BehaviorBuildResult:
             status="mapped",
         )
 
+    if key == "passive_in_hand_trigger":
+        event = _required_str(row, "event")
+        label = _optional_str(row, "label", "")
+        nested_effect = _required_dict(row, "effect")
+        effect = _build_nested_single_effect(nested_effect)
+        return BehaviorBuildResult(
+            effects=[PassiveInHandTrigger(event=event, effect=effect, label=label)],
+            executable=False,
+            status="passive_modeled",
+            note=_optional_str(row, "reason", "passive in-hand effect modeled outside legal actions"),
+        )
+
     if key == "text_only":
         note = _optional_str(row, "reason", "behavior intentionally text-only")
         return BehaviorBuildResult(effects=[], executable=False, status="text_only", note=note)
@@ -355,6 +380,17 @@ def _build_condition(raw_spec: dict[str, Any]) -> ConditionFn:
 
         event_debuff_key_is.__name__ = f"normalized_cond_event_debuff_key_is_{expected_key}"
         return event_debuff_key_is
+
+    if condition_type == "event_card_cost_gte":
+        threshold = _required_int(raw_spec, "value")
+
+        def event_card_cost_gte(state: GameState, ctx: dict) -> bool:
+            del state
+            card_cost = ctx.get("card_cost")
+            return isinstance(card_cost, int) and card_cost >= threshold
+
+        event_card_cost_gte.__name__ = f"normalized_cond_event_card_cost_gte_{threshold}"
+        return event_card_cost_gte
 
     raise UnsupportedBehaviorError(f"Unsupported conditional condition type '{condition_type}'")
 

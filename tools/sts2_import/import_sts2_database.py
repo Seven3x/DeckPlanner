@@ -14,6 +14,7 @@ MAPPED_BEHAVIOR_KEYS = {
     "gain_block",
     "draw_cards",
     "gain_energy",
+    "lose_hp",
     "discard_cards",
     "exhaust_from_hand",
     "channel_orb",
@@ -21,6 +22,8 @@ MAPPED_BEHAVIOR_KEYS = {
     "apply_buff",
     "sequence",
     "add_trigger",
+    "schedule_effect",
+    "passive_in_hand_trigger",
 }
 
 SAFE_BUFF_KEYS = {
@@ -359,6 +362,47 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
     sequence_patterns: list[tuple[re.Pattern[str], Any]] = [
         (
             re.compile(
+                r"^Lose (?P<hp>(?:\d+|\{[^{}]+\})) HP\. Gain (?P<block>(?:\d+|\{[^{}]+\})) Block\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("lose_hp", {"amount": _parse_amount_token(m.group("hp"), variables), "target": "player"}),
+                ("gain_block", {"amount": _parse_amount_token(m.group("block"), variables)}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Lose (?P<hp>(?:\d+|\{[^{}]+\})) HP\. Gain (?P<energy>\{[^{}]+\})\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("lose_hp", {"amount": _parse_amount_token(m.group("hp"), variables), "target": "player"}),
+                ("gain_energy", {"amount": _parse_amount_token(m.group("energy"), variables)}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Lose (?P<hp>(?:\d+|\{[^{}]+\})) HP\. Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("lose_hp", {"amount": _parse_amount_token(m.group("hp"), variables), "target": "player"}),
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables)}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Lose (?P<hp>(?:\d+|\{[^{}]+\})) HP\. Gain (?P<energy>\{[^{}]+\})\. Draw (?P<draw>(?:\d+|\{[^{}]+\})) cards?\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("lose_hp", {"amount": _parse_amount_token(m.group("hp"), variables), "target": "player"}),
+                ("gain_energy", {"amount": _parse_amount_token(m.group("energy"), variables)}),
+                ("draw_cards", {"amount": _parse_amount_token(m.group("draw"), variables)}),
+            ),
+        ),
+        (
+            re.compile(
                 r"^Gain (?P<block>(?:\d+|\{[^{}]+\})) Block\. Draw (?P<draw>(?:\d+|\{[^{}]+\})) (?:card|cards|\{[^{}]+\})\.$",
                 re.IGNORECASE,
             ),
@@ -518,6 +562,114 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
         ),
         (
             re.compile(
+                r"^Next turn, gain (?P<next>\{[^{}]+\})\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: (
+                "schedule_effect",
+                {
+                    "delay_turns": 1,
+                    "label": "next_turn_energy",
+                    "effect": {
+                        "behavior_key": "gain_energy",
+                        "params": {"amount": _parse_amount_token(m.group("next"), variables)},
+                    },
+                },
+            ),
+        ),
+        (
+            re.compile(
+                r"^Exhaust (?P<count>(?:\d+|\{[^{}]+\})) card\. Next turn, gain (?P<next>\{[^{}]+\})\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("exhaust_from_hand", {"amount": _parse_amount_token(m.group("count"), variables)}),
+                (
+                    "schedule_effect",
+                    {
+                        "delay_turns": 1,
+                        "label": "next_turn_energy",
+                        "effect": {
+                            "behavior_key": "gain_energy",
+                            "params": {"amount": _parse_amount_token(m.group("next"), variables)},
+                        },
+                    },
+                ),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage\. Next turn, gain (?P<next>\{[^{}]+\})\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables)}),
+                (
+                    "schedule_effect",
+                    {
+                        "delay_turns": 1,
+                        "label": "next_turn_energy",
+                        "effect": {
+                            "behavior_key": "gain_energy",
+                            "params": {"amount": _parse_amount_token(m.group("next"), variables)},
+                        },
+                    },
+                ),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage\. Next turn, draw (?P<draw>(?:\d+|\{[^{}]+\})) (?:card|cards|\{[^{}]+\})\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("deal_damage", {"amount": _parse_amount_token(m.group("damage"), variables)}),
+                (
+                    "schedule_effect",
+                    {
+                        "delay_turns": 1,
+                        "label": "next_turn_draw",
+                        "effect": {
+                            "behavior_key": "draw_cards",
+                            "params": {"amount": _parse_amount_token(m.group("draw"), variables)},
+                        },
+                    },
+                ),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Gain (?P<block>(?:\d+|\{[^{}]+\})) Block\. Next turn, draw (?P<draw>(?:\d+|\{[^{}]+\})) (?:card|cards|\{[^{}]+\}) and gain (?P<energy>\{[^{}]+\})\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("gain_block", {"amount": _parse_amount_token(m.group("block"), variables)}),
+                (
+                    "schedule_effect",
+                    {
+                        "delay_turns": 1,
+                        "label": "next_turn_draw_and_energy",
+                        "effect": {
+                            "behavior_key": "sequence",
+                            "params": {
+                                "effects": [
+                                    {
+                                        "behavior_key": "draw_cards",
+                                        "params": {"amount": _parse_amount_token(m.group("draw"), variables)},
+                                    },
+                                    {
+                                        "behavior_key": "gain_energy",
+                                        "params": {"amount": _parse_amount_token(m.group("energy"), variables)},
+                                    },
+                                ]
+                            },
+                        },
+                    },
+                ),
+            ),
+        ),
+        (
+            re.compile(
                 r"^Deal (?P<damage>(?:\d+|\{[^{}]+\})) damage to ALL enemies\.$",
                 re.IGNORECASE,
             ),
@@ -618,6 +770,16 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
             lambda m: _sequence(
                 ("apply_buff", {"key": "strength", "amount": _parse_amount_token(m.group("amount"), variables), "target": "player"}),
                 ("schedule_effect", {"delay_turns": 1, "label": "expire_strength_this_turn", "effect": {"behavior_key": "apply_buff", "params": {"key": "strength", "amount": -(_parse_amount_token(m.group("amount"), variables) or 0), "target": "player"}}}),
+            ),
+        ),
+        (
+            re.compile(
+                r"^Enemy loses (?P<amount>(?:\d+|\{[^{}]+\})) Strength this turn\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: _sequence(
+                ("apply_buff", {"key": "strength", "amount": -(_parse_amount_token(m.group("amount"), variables) or 0), "target": "enemy"}),
+                ("schedule_effect", {"delay_turns": 1, "label": "expire_enemy_strength_loss_this_turn", "effect": {"behavior_key": "apply_buff", "params": {"key": "strength", "amount": _parse_amount_token(m.group("amount"), variables), "target": "enemy"}}}),
             ),
         ),
         (
@@ -779,6 +941,42 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
         ),
         (
             re.compile(
+                r"^This turn, whenever you play an Attack, gain (?P<amount>(?:\d+|\{[^{}]+\})) Strength this turn\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: (
+                "add_trigger",
+                {
+                    "event": "on_attack_played",
+                    "label": "this_turn_play_attack_gain_temp_strength",
+                    "expire_on_current_turn": True,
+                    "effect": {
+                        "behavior_key": "sequence",
+                        "params": {
+                            "effects": [
+                                {
+                                    "behavior_key": "apply_buff",
+                                    "params": {"key": "strength", "amount": _parse_amount_token(m.group("amount"), variables), "target": "player"},
+                                },
+                                {
+                                    "behavior_key": "schedule_effect",
+                                    "params": {
+                                        "delay_turns": 1,
+                                        "label": "expire_attack_trigger_strength",
+                                        "effect": {
+                                            "behavior_key": "apply_buff",
+                                            "params": {"key": "strength", "amount": -(_parse_amount_token(m.group("amount"), variables) or 0), "target": "player"},
+                                        },
+                                    },
+                                },
+                            ]
+                        },
+                    },
+                },
+            ),
+        ),
+        (
+            re.compile(
                 r"^Whenever you play a card this turn, gain (?P<amount>(?:\d+|\{[^{}]+\})) Strength this turn\.$",
                 re.IGNORECASE,
             ),
@@ -813,6 +1011,24 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
                 },
             ),
         ),
+        (
+            re.compile(
+                r"^Whenever you play a card that costs (?P<cost>\{[^{}]+\}) or more, gain (?P<amount>(?:\d+|\{[^{}]+\})) Block\.$",
+                re.IGNORECASE,
+            ),
+            lambda m: (
+                "add_trigger",
+                {
+                    "event": "on_card_played",
+                    "label": "on_play_cost_gte_gain_block",
+                    "condition": {"type": "event_card_cost_gte", "value": _parse_amount_token(m.group("cost"), variables)},
+                    "effect": {
+                        "behavior_key": "gain_block",
+                        "params": {"amount": _parse_amount_token(m.group("amount"), variables)},
+                    },
+                },
+            ),
+        ),
     ]
 
     for pattern, builder in sequence_patterns:
@@ -843,6 +1059,27 @@ def _infer_behavior(card: dict[str, Any]) -> tuple[str, dict[str, Any]]:
         damage = _parse_amount_token(twice_match.group("damage"), variables)
         if damage is not None:
             return _sequence(("deal_damage", {"amount": damage}), ("deal_damage", {"amount": damage}))
+
+    passive_in_hand_match = re.match(
+        r"^At the end of your turn, if this is in your Hand, (?P<verb>take|lose) (?P<amount>(?:\d+|\{[^{}]+\})) (?P<kind>damage|HP)\.$",
+        text,
+        re.IGNORECASE,
+    )
+    if passive_in_hand_match:
+        amount = _parse_amount_token(passive_in_hand_match.group("amount"), variables)
+        if amount is not None:
+            return (
+                "passive_in_hand_trigger",
+                {
+                    "event": "on_turn_end",
+                    "label": "passive_in_hand_end_turn_hp_loss",
+                    "effect": {
+                        "behavior_key": "lose_hp",
+                        "params": {"amount": amount, "target": "player"},
+                    },
+                    "reason": "passive in-hand end-turn HP loss is modeled separately from executable card play",
+                },
+            )
 
     return "unimplemented", {}
 
@@ -884,6 +1121,8 @@ def _behavior_params_resolved(behavior_key: str, params: dict[str, Any]) -> bool
         return _sequence_params_valid(params)
     if behavior_key == "add_trigger":
         return _add_trigger_params_valid(params)
+    if behavior_key == "passive_in_hand_trigger":
+        return _add_trigger_params_valid({"event": params.get("event"), "effect": params.get("effect")})
     for value in params.values():
         if value is None:
             return False
@@ -1046,8 +1285,11 @@ def main() -> None:
     executable_cards = sum(
         1
         for card in normalized_cards
-        if card["behavior_key"] in MAPPED_BEHAVIOR_KEYS and isinstance(card["cost"], int)
+        if card["behavior_key"] in MAPPED_BEHAVIOR_KEYS
+        and card["behavior_key"] != "passive_in_hand_trigger"
+        and isinstance(card["cost"], int)
     )
+    passive_modeled_cards = sum(1 for card in normalized_cards if card["behavior_key"] == "passive_in_hand_trigger")
     unimplemented_cards = sum(1 for card in normalized_cards if card["behavior_key"] == "unimplemented")
 
     print(f"input_dir={_relative_path(input_dir, repo_root)}")
@@ -1056,6 +1298,7 @@ def main() -> None:
     print(f"valid_cards_imported={len(normalized_cards)}")
     print(f"skipped_files={len(skipped)}")
     print(f"executable_cards={executable_cards}")
+    print(f"passive_modeled_cards={passive_modeled_cards}")
     print(f"unimplemented_cards={unimplemented_cards}")
 
     if skipped:

@@ -158,6 +158,7 @@ def _play_card_once(
     ctx = {
         "card_id": action.card_id,
         "card_type": card.card_type,
+        "card_cost": card.cost,
         "card_character": card.source.get("character", ""),
         "card_tags": sorted(card.tags),
         "is_attack": card.card_type == "attack",

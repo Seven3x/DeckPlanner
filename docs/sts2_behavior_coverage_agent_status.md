@@ -5,180 +5,131 @@
 - 输入卡牌目录：`data/sts2/raw/ea_01`
 - 输出卡牌目录：`data/sts2/normalized/cards.ea_01.json`
 - 状态报告：`docs/sts2_import_status_ea_01.md`
-- 未实现分析：`docs/sts2_unimplemented_analysis_ea_01.md`
 
-## 基线
+## 本阶段目标
 
-- 初始可执行卡牌数：`39`
-- 初始未实现卡牌数：`538`
-- 目标：在不破坏加载器或规划器安全性的前提下，基于低风险文本模式，保守提升行为覆盖率。
+- 在 catalog ingestion 已完成的前提下，继续提升 behavior coverage
+- 优先提升 Attack / Skill 的可执行覆盖率
+- 仅在 Q3 边界内谨慎扩展 trigger power
+- 引入并统计 `passive_modeled`
+- 保持 Q7 相关“返回此牌到手牌”效果为 `unimplemented`
 
-## 迭代记录
+## 本阶段基线
 
-### 第 1 次迭代
+- 初始 executable coverage：`115 / 577`
+- 初始 passive-modeled coverage：`0 / 577`
+- 初始 unimplemented：`462 / 577`
 
-- 可执行 / 未实现：`39 / 538`
-- 重点：
-  - 检查高频未实现模板
-  - 识别低风险复合模式
-- 发现：
-  - 最适合优先处理的是固定多段攻击、伤害 + debuff、格挡 + 抽牌、抽牌 + 弃牌、伤害 + 抽牌，以及能量 + 抽牌。
-  - 运行时已经具备足够的基础 effect，可支撑通用的 `sequence` 包装层。
-- 验证：
-  - 基线导入器/报告/加载器通过
+## 本阶段迭代记录
 
-### 第 2 次迭代
+### 第 1 轮
 
-- 可执行 / 未实现：`42 / 535`
-- 新增模式：
-  - 通过重复 `deal_damage` 支持固定多段伤害
+- executable / passive_modeled / unimplemented：`123 / 5 / 449`
+- 新增支持：
+  - `Lose HP. Gain Block.`
+  - `Lose HP. Gain Energy.`
+  - `Lose HP. Deal damage.`
+  - `Lose HP. Gain Energy. Draw cards.`
+  - `Enemy loses Strength this turn.`
+  - `This turn, whenever you play an Attack, gain Strength this turn.`
+  - `Whenever you play a card that costs N or more, gain Block.`
+  - 手牌内被动 end-of-turn HP loss 归类为 `passive_modeled`
 - 规则变更：
-  - 在运行时和 schema 中引入 `sequence` 行为支持
-  - 加载器现在会识别归一化标签中的 `exhaust`
-- 发现：
-  - 增长幅度小于预期，因为句子归一化后残留的 `..` 分隔符挡住了大部分复合正则匹配。
+  - 新增 `lose_hp` effect
+  - 新增 `passive_in_hand_trigger` 行为键，专门承载不可执行但已建模的手牌被动效果
+  - 加载器与状态报告新增 `passive_modeled_cards`
+  - 触发上下文新增 `card_cost`，支持单一额外数值条件
 - 验证：
-  - 导入器/报告/加载器/规划器 smoke check 通过
+  - importer / status report / loader smoke / planner legal actions smoke 通过
+  - 定向验证通过：
+    - `DanseMacabre` 只在打出费用 `>= N` 的牌时获得格挡
+    - `BladeOfInk` 在本回合攻击触发临时力量，并于下回合归零
+    - `Burn` / `Decay` / `BadLuck` / `Infection` / `Toxic` 不进入 legal actions
 
-### 第 3 次迭代
+### 第 2 轮
 
-- 可执行 / 未实现：`69 / 508`
-- 新增模式：
-  - `damage + weak`
-  - `damage + vulnerable`
-  - `damage + weak + vulnerable`
-  - `block + draw`
-  - `draw + discard`
-  - `damage + draw`
-  - `block + damage`
-  - `damage + draw + discard`
-  - `weak + vulnerable`
-  - 结合提取出的重复次数支持固定多段伤害
-- 规则变更：
-  - 修复导入器的英文文本归一化，使多行句子可以稳定匹配
+- executable / passive_modeled / unimplemented：`128 / 5 / 444`
+- 新增支持：
+  - `Next turn, gain Energy.`
+  - `Deal damage. Next turn, gain Energy.`
+  - `Deal damage. Next turn, draw cards.`
+  - `Gain Block. Next turn, draw cards and gain Energy.`
+  - `Exhaust 1 card. Next turn, gain Energy.`
+- 典型覆盖卡牌：
+  - `Outmaneuver`
+  - `Hegemony`
+  - `Predator`
+  - `GuidingStar`
+  - `Relax`
+  - `Scavenge`
 - 验证：
-  - 导入器/报告/加载器/规划器 smoke check 通过
+  - importer / status report / loader smoke / planner legal actions smoke 通过
+  - 定向验证确认 `Predator` 会正确挂起 `next_turn_draw`
 
-### 第 4 次迭代
+## 本阶段结果
 
-- 可执行 / 未实现：`83 / 494`
-- 新增模式：
-  - 占位符形式的 `gain_energy`
-  - `gain_energy + draw`
-  - `block + next_turn_block`
-  - `block + next_turn_energy`
-  - `exhaust_from_hand + draw`
-  - `block + weak`
-- 规则变更：
-  - 新增 `discard_cards` 和 `exhaust_from_hand` 行为键
-  - 复用 `schedule_effect` 表达安全的“下回合效果”
-- 验证：
-  - 导入器/报告/加载器 smoke check 通过
-  - 针对延迟效果和手牌选择效果的规划器验证通过
+- 最终 executable coverage：`128 / 577`
+- 最终 passive-modeled coverage：`5 / 577`
+- 最终 unimplemented：`444 / 577`
+- 相比本阶段基线：
+  - executable `+13`
+  - passive_modeled `+5`
+  - unimplemented `-18`
 
-### 第 5 次迭代
+## 本轮新增支持的主要模式
 
-- 可执行 / 未实现：`85 / 492`
-- 新增模式：
-  - 精确单行 `gain strength`
-  - 精确单行 `gain dexterity`
-- 规则变更：
-  - `GainBlock` 现在会应用玩家的 `dexterity`，作为一个最小化的本地引擎扩展
-- 验证：
-  - 导入器/报告/加载器 smoke check 通过
-  - 针对 buff 交互的验证通过
+- 自损生命 + 基础收益组合：
+  - `lose_hp + gain_block`
+  - `lose_hp + gain_energy`
+  - `lose_hp + deal_damage`
+  - `lose_hp + gain_energy + draw`
+- 精确的敌方临时力量下降：
+  - `Enemy loses Strength this turn.`
+- 技能型本回合攻击触发：
+  - `This turn, whenever you play an Attack, gain Strength this turn.`
+- 单一额外数值条件 trigger power：
+  - `Whenever you play a card that costs N or more, gain Block.`
+- 下回合延迟收益：
+  - `next_turn_energy`
+  - `next_turn_draw`
+  - `next_turn_draw + energy`
+- 不可执行但已建模的手牌被动 HP loss：
+  - `passive_modeled`
 
-### 第 6 次迭代
+## 刻意保持未实现的模式
 
-- 可执行 / 未实现：`101 / 476`
-- 新增模式：
-  - 以当前敌人状态为近似对象的简单 AoE 伤害
-  - 以当前敌人状态为近似对象的随机目标重复伤害/debuff
-  - 第一阶段充能球子系统支持：`channel_orb`、`focus`、`orb_slots`
-  - 精确单行 `Dexterity this turn` / `Strength this turn`
-  - `damage + channel_orb`
-  - `channel_orb + draw`
-- 规则变更：
-  - 新增 `channel_orb` 行为键及计数器级运行时效果
-  - 应用了经用户确认的 AoE/随机目标近似策略
-  - 通过延迟的逆向 buff 效果，应用了经用户确认的 `this turn` 持续时间策略
-- 验证：
-  - 导入器/报告/加载器 smoke check 通过
-  - 针对临时 buff 到期和充能球计数累积的规划器验证通过
+- `Deal damage. At the start of your next turn, return this to your Hand.`
+- 依赖 card instance identity / zone transfer 的延迟回手
+- doom / summon / Osty / forge / stars 等资源系统相关 trigger
+- 更复杂的持续型 power：
+  - 多事件混合
+  - 多层条件
+  - 长链式条件
+  - 语义明显超出当前 trigger/effect 模型的效果
+- `enemy loses HP` 与 `deal damage` 不等价的持续触发族
 
-### 第 7 次迭代
+## 风险与边界说明
 
-- 可执行 / 未实现：`109 / 468`
-- 新增模式：
-  - 最小白名单持续 trigger power
-  - `Whenever you play a card, gain Block`
-  - `Whenever you play an Attack this turn, gain Block`
-  - `Whenever you play a Power, Channel Lightning`
-  - `Whenever you play a Power, gain Energy`
-- 规则变更：
-  - 新增 `add_trigger` 行为键
-  - 运行时新增 `on_power_played` 事件
-  - 导入器补充 `energyIcons(1)` 占位符解析，用于稳定映射 `Subroutine`
-- 验证：
-  - 导入器/报告/加载器 smoke check 通过
-  - 定向验证确认 `Afterimage`、`Rage`、`Storm`、`Subroutine` 已进入 executable coverage
+- `passive_modeled` 只用于“已建模但不进入 legal actions”的效果，未混入 executable coverage
+- 手牌被动效果当前只做显式建模与分层统计，没有把它们伪装成可打出的牌
+- `lose_hp` 与 `deal_damage(target=player)` 分开处理，避免被格挡错误吸收
+- `cost >= N` trigger 只支持单一额外数值条件，不继续扩到复杂资源或多条件组合
+- `return this to your Hand` 仍然保持 `unimplemented`，避免污染模型
 
-### 第 8 次迭代
+## 下一步建议
 
-- 可执行 / 未实现：`113 / 464`
-- 新增模式：
-  - 带简单条件过滤的确定性 trigger power
-  - `Whenever you play a Colorless card, gain Strength`
-  - `Whenever you play an Ethereal card, gain Block`
-  - `Whenever you apply Vulnerable, draw`
-  - `Whenever you apply a debuff to an enemy, they take damage`
-- 规则变更：
-  - 事件上下文现在携带 `card_tags` 与 `card_character`
-  - 新增 `on_debuff_applied` 事件
-  - `add_trigger` 现在支持按 `card_tags` / `card_character` / `debuff_key` 做简单条件过滤
-- 验证：
-  - 导入器/报告/加载器 smoke check 通过
-  - 定向验证确认 `Arsenal`、`SpiritOfAsh`、`Vicious`、`SleightOfFlesh` 已进入 executable coverage
-
-### 第 9 次迭代
-
-- 可执行 / 未实现：`115 / 462`
-- 新增模式：
-  - 事件型 trigger power 的下一层安全扩展
-  - `Whenever you gain Block, deal damage to a random enemy`
-  - `Whenever you play a card this turn, gain Strength this turn`
-- 规则变更：
-  - 运行时嵌套行为现在允许把多个基础 effect 安全打包为一个 trigger effect
-  - 导入器新增 `Juggernaut` 与 `Monologue` 的保守映射
-- 验证：
-  - 导入器/报告/加载器 smoke check 通过
-  - 定向运行时验证通过：
-    - `Monologue` 在本回合后续出牌时获得临时力量，并在下个玩家回合开始时归零
-    - `Juggernaut` 在获得格挡时对当前敌人触发伤害近似
-
-## 新增支持的行为类别
-
-- 单效果 buff：`apply_buff`，用于 `strength` 和 `dexterity`
-- 计数器级充能球子系统支持：`channel_orb`、`focus`、`orb_slots`
-- 最小白名单持续 trigger power：`add_trigger`
-- 带简单条件过滤的 trigger power：按 `card_tags` / `card_character` / `debuff_key` 过滤
-- 带单一事件状态条件或临时复合效果的 trigger power
-- 通过 `sequence` 支持复合动作卡牌
-- 固定次数的重复攻击
-- 抽牌/弃牌类手牌操作卡牌
-- 延迟到下回合生效的格挡或能量
-- 借助标签感知运行时加载实现可执行的 `exhaust` 卡牌
-
-## 剩余阻塞项
-
-- 当前引擎中的 AoE 目标语义仍然是单敌人模型
-- 随机目标语义在当前单敌人模型下仍只是近似实现
-- 其余未覆盖内容仍以更复杂的触发型和持续型 power 行为为主
-- 目前只有第一个资源子系统（`orb/channel/focus`）完成了第一阶段支持；`summon/Osty`、`forge`、`stars`、`doom` 仍然延期
-- 临时属性到期逻辑目前仅覆盖精确单行的自我 buff 模式
+- 继续优先 Attack / Skill：
+  - 小范围延迟收益模板
+  - 少量明确的基础组合模板
+- 若继续扩 trigger power，建议只考虑：
+  - 单一精确卡牌过滤
+  - 单一简单 tag 过滤
+  - 仍可直接复用现有 effect 的模式
+- 若要让 `passive_modeled` 进入真实运行时评估，下一步应单独设计“非动作型被动注入”机制，但不要混入 planner legal actions
 
 ## 停止原因
 
-- 覆盖率已从 `39` 实质性提升到 `115`
-- 剩余未映射内容现在主要是触发、资源、被动、卡牌身份、条件等复杂度问题，而不是漏掉了简单模板
-- 最高影响的开放决策已收敛为一个更小的未决集合
+- executable coverage 已从 `115` 提升到 `128`，有实质提升
+- passive-modeled coverage 已工程化拆分并单独统计
+- Q3 边界内的 trigger power 已小幅扩张到“单一额外数值条件”
+- 剩余高影响缺口主要转向复杂机制、资源系统、HP loss 语义差异与 card instance identity 问题

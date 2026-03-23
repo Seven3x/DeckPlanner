@@ -12,6 +12,8 @@ from .effects import (
     ExhaustFromHand,
     GainBlock,
     GainEnergy,
+    LoseHp,
+    PassiveInHandTrigger,
     ScheduleEffect,
     SetNextAttackBonus,
     SetReplayNextCard,

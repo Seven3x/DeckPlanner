@@ -79,6 +79,7 @@
             "gain_block",
             "draw_cards",
             "gain_energy",
+            "lose_hp",
             "discard_cards",
             "exhaust_from_hand",
             "channel_orb",
@@ -90,6 +91,7 @@
             "replay_next_card",
             "schedule_effect",
             "conditional",
+            "passive_in_hand_trigger",
             "text_only",
             "unimplemented"
           ]
