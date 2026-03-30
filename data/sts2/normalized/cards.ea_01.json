@@ -5619,8 +5619,41 @@
         "target:allenemies"
       ],
       "text": "对所有敌人造成7点伤害。所有敌人在本回合失去1点力量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 7,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "strength",
+              "amount": -1,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "expire_enemy_strength_loss_this_turn",
+              "effect": {
+                "behavior_key": "apply_buff",
+                "params": {
+                  "key": "strength",
+                  "amount": 1,
+                  "target": "enemy"
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -6958,8 +6991,30 @@
         "target:self"
       ],
       "text": "获得11点格挡。\n在下个回合，\n获得1能量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "gain_block",
+            "params": {
+              "amount": 11
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "next_turn_energy",
+              "effect": {
+                "behavior_key": "gain_energy",
+                "params": {
+                  "amount": 1
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -7934,8 +7989,41 @@
         "target:allenemies"
       ],
       "text": "虚无,对所有敌人造成9点伤害。所有敌人在本回合中失去9点力量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 9,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "strength",
+              "amount": -9,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "expire_enemy_strength_loss_this_turn",
+              "effect": {
+                "behavior_key": "apply_buff",
+                "params": {
+                  "key": "strength",
+                  "amount": 9,
+                  "target": "enemy"
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -9396,8 +9484,39 @@
         "target:anyenemy"
       ],
       "text": "造成5点伤害两次。\n获得2点力量。\n该敌人获得1点力量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 5
+            }
+          },
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 5
+            }
+          },
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "strength",
+              "amount": 2,
+              "target": "player"
+            }
+          },
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "strength",
+              "amount": 1,
+              "target": "enemy"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -9947,8 +10066,40 @@
         "target:anyenemy"
       ],
       "text": "造成9点伤害。\n在本回合获得1点集中。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 9
+            }
+          },
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "focus",
+              "amount": 1,
+              "target": "player"
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "expire_focus_this_turn",
+              "effect": {
+                "behavior_key": "apply_buff",
+                "params": {
+                  "key": "focus",
+                  "amount": -1,
+                  "target": "player"
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -10807,8 +10958,24 @@
         "target:self"
       ],
       "text": "获得6点格挡。\n生成2个冰霜充能球。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "gain_block",
+            "params": {
+              "amount": 6
+            }
+          },
+          {
+            "behavior_key": "channel_orb",
+            "params": {
+              "orb_type": "frost",
+              "amount": 2
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -10849,8 +11016,24 @@
         "target:self"
       ],
       "text": "获得5点格挡。\n生成1个玻璃充能球。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "gain_block",
+            "params": {
+              "amount": 5
+            }
+          },
+          {
+            "behavior_key": "channel_orb",
+            "params": {
+              "orb_type": "glass",
+              "amount": 1
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -11894,8 +12077,12 @@
         "target:allenemies"
       ],
       "text": "奇巧,给予所有敌人4层中毒。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "apply_debuff",
+      "params": {
+        "key": "poison",
+        "amount": 4,
+        "target": "enemy"
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -12532,8 +12719,34 @@
         "target:self"
       ],
       "text": "在本回合获得2点集中。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "focus",
+              "amount": 2,
+              "target": "player"
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "expire_focus_this_turn",
+              "effect": {
+                "behavior_key": "apply_buff",
+                "params": {
+                  "key": "focus",
+                  "amount": -2,
+                  "target": "player"
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -12658,8 +12871,26 @@
         "target:allenemies"
       ],
       "text": "对所有敌人造成26点伤害。\n失去3点集中。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 26,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "focus",
+              "amount": -3,
+              "target": "player"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -14013,8 +14244,25 @@
         "target:anyenemy"
       ],
       "text": "给予2层虚弱。\n获得11点格挡。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "apply_debuff",
+            "params": {
+              "key": "weak",
+              "amount": 2,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "gain_block",
+            "params": {
+              "amount": 11
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -14552,8 +14800,40 @@
         "target:anyenemy"
       ],
       "text": "造成15点伤害。\n敌人在本回合失去10点力量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 15
+            }
+          },
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "strength",
+              "amount": -10,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "expire_enemy_strength_loss_this_turn",
+              "effect": {
+                "behavior_key": "apply_buff",
+                "params": {
+                  "key": "strength",
+                  "amount": 10,
+                  "target": "enemy"
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -14939,8 +15219,34 @@
         "target:allenemies"
       ],
       "text": "对所有敌人造成14点伤害。\n给予所有敌人2层虚弱和易伤。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 14,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "apply_debuff",
+            "params": {
+              "key": "weak",
+              "amount": 2,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "apply_debuff",
+            "params": {
+              "key": "vulnerable",
+              "amount": 2,
+              "target": "enemy"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -14983,8 +15289,24 @@
         "target:anyenemy"
       ],
       "text": "造成24点伤害。\n生成3个等离子充能球。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 24
+            }
+          },
+          {
+            "behavior_key": "channel_orb",
+            "params": {
+              "orb_type": "plasma",
+              "amount": 3
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -16218,8 +16540,32 @@
         "target:anyenemy"
       ],
       "text": "造成10点伤害。\n给予2层虚弱。\n生成1个黑暗充能球。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 10
+            }
+          },
+          {
+            "behavior_key": "apply_debuff",
+            "params": {
+              "key": "weak",
+              "amount": 2,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "channel_orb",
+            "params": {
+              "orb_type": "dark",
+              "amount": 1
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -19320,8 +19666,27 @@
         "target:allenemies"
       ],
       "text": "获得1点力量。所有敌人失去1点力量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "strength",
+              "amount": 1,
+              "target": "player"
+            }
+          },
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "strength",
+              "amount": -1,
+              "target": "enemy"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -20452,8 +20817,40 @@
         "target:anyenemy"
       ],
       "text": "造成7点伤害。\n在本回合内获得2点力量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 7
+            }
+          },
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "strength",
+              "amount": 2,
+              "target": "player"
+            }
+          },
+          {
+            "behavior_key": "schedule_effect",
+            "params": {
+              "delay_turns": 1,
+              "label": "expire_strength_this_turn",
+              "effect": {
+                "behavior_key": "apply_buff",
+                "params": {
+                  "key": "strength",
+                  "amount": -2,
+                  "target": "player"
+                }
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -20579,8 +20976,24 @@
         "target:self"
       ],
       "text": "获得11点格挡。\n生成1个黑暗充能球。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "gain_block",
+            "params": {
+              "amount": 11
+            }
+          },
+          {
+            "behavior_key": "channel_orb",
+            "params": {
+              "orb_type": "dark",
+              "amount": 1
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -20744,8 +21157,27 @@
         "target:anyenemy"
       ],
       "text": "消耗,失去2点力量。\n敌人失去2点力量。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "strength",
+              "amount": -2,
+              "target": "player"
+            }
+          },
+          {
+            "behavior_key": "apply_buff",
+            "params": {
+              "key": "strength",
+              "amount": -2,
+              "target": "enemy"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -20924,8 +21356,27 @@
         "target:allenemies"
       ],
       "text": "消耗,给予所有敌人3层虚弱和易伤。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "apply_debuff",
+            "params": {
+              "key": "weak",
+              "amount": 3,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "apply_debuff",
+            "params": {
+              "key": "vulnerable",
+              "amount": 3,
+              "target": "enemy"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -23396,8 +23847,23 @@
         "target:self"
       ],
       "text": "获得8点格挡。\n丢弃1张牌。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "gain_block",
+            "params": {
+              "amount": 8
+            }
+          },
+          {
+            "behavior_key": "discard_cards",
+            "params": {
+              "amount": 1
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -23438,8 +23904,24 @@
         "target:allenemies"
       ],
       "text": "对所有敌人造成6点伤害。\n抽1张牌。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "deal_damage",
+            "params": {
+              "amount": 6,
+              "target": "enemy"
+            }
+          },
+          {
+            "behavior_key": "draw_cards",
+            "params": {
+              "amount": 1
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",
@@ -23853,8 +24335,25 @@
         "target:anyenemy"
       ],
       "text": "获得7点格挡。\n给予1层易伤。",
-      "behavior_key": "unimplemented",
-      "params": {},
+      "behavior_key": "sequence",
+      "params": {
+        "effects": [
+          {
+            "behavior_key": "gain_block",
+            "params": {
+              "amount": 7
+            }
+          },
+          {
+            "behavior_key": "apply_debuff",
+            "params": {
+              "key": "vulnerable",
+              "amount": 1,
+              "target": "enemy"
+            }
+          }
+        ]
+      },
       "source": {
         "source_kind": "sts2_database",
         "game_version": "0.98.2",

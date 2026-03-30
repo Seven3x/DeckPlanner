@@ -11,10 +11,10 @@
 | 指标 | 初始值 | 最终值 |
 | --- | ---: | ---: |
 | total_cards | 577 | 577 |
-| executable_cards | 115 | 131 |
+| executable_cards | 115 | 154 |
 | passive_modeled_cards | 0 | 5 |
-| mapped_cards | 115 | 131 |
-| unimplemented_cards | 462 | 441 |
+| mapped_cards | 115 | 154 |
+| unimplemented_cards | 462 | 418 |
 
 ## 本轮新增支持的主要模式
 
@@ -33,6 +33,26 @@
 - `Lose HP. Exhaust 1 card. Gain Strength.`
 - `Lose HP. Deal damage to ALL enemies.`
 - `Whenever you play Sovereign Blade, gain Block.`
+- `Gain Block. Discard 1 card.`
+- `Gain Block. Next turn, gain Energy.`
+- `Lose Strength. Enemy loses Strength.`
+- `Apply Weak. Gain Block.`
+- `Gain Block. Apply Vulnerable.`
+- `Deal damage to ALL enemies. Draw cards.`
+- `Gain Block. Channel Frost/Dark/Glass.`
+- `Deal damage. Apply Weak. Channel Dark.`
+- `Deal damage to ALL enemies. Apply Weak and Vulnerable.`
+- `Deal damage to ALL enemies. All enemies lose Strength this turn.`
+- `Apply Weak and Vulnerable to ALL enemies.`
+- `Apply Poison to ALL enemies.`
+- `Deal damage. Enemy loses Strength this turn.`
+- `Deal damage. Gain Strength this turn.`
+- `Deal damage twice. Gain Strength. The enemy gains Strength.`
+- `Gain Strength. ALL enemies lose Strength.`
+- `Gain Focus this turn.`
+- `Deal damage. Gain Focus this turn.`
+- `Deal damage. Channel Plasma.`
+- `Deal damage to ALL enemies. Lose Focus.`
 
 ## 本轮新增 passive-modeled coverage
 
@@ -61,6 +81,12 @@
   - 仅覆盖单一额外数值条件
 - trigger 条件新增 `event_card_id_is`
   - 仅覆盖单一卡牌 ID 精确过滤
+- importer 兼容 `Next turn,` 后换行造成的轻微标点变体
+  - 例如 `Delay`
+- 新增一批“现有效果顺序组合”模板
+  - 无需引入新资源子系统或复杂条件
+- 继续扩展 `orb/channel/focus` 的保守支持面
+  - 仍未把 doom、return-to-hand、复杂 Power 拉入当前模型
 
 ### 统计与分类
 
@@ -111,6 +137,18 @@
   - `Burn` / `Decay` / `BadLuck` / `Infection` / `Toxic` 不进入 legal actions
   - `Parry` 仅在 `card_id == SovereignBlade` 时触发
   - `Brand` / `Breakthrough` 已可执行并进入运行时
+  - `Survivor` 正确生成 discard 选择并弃掉指定牌
+  - `Delay` 正确挂起 `next_turn_energy`
+  - `SharedFate` 正确同时降低双方 `strength`
+  - `LegSweep` 正确同时施加 `weak` 并获得格挡
+  - `SweepingBeam` 正确执行 `aoe_damage + draw`
+  - `Glacier` 正确执行 `gain_block + channel_frost`
+  - `DyingStar` 的敌方临时 `strength` 下降会在下回合恢复
+  - `Shockwave` 正确同时施加 `weak` 与 `vulnerable`
+  - `Mangle` 的敌方临时 `strength` 下降会在下回合恢复
+  - `MeteorStrike` 正确执行 `deal_damage + channel_plasma`
+  - `Hotfix` / `FocusedStrike` 的临时 `focus` 会在下回合归零
+  - `Haze` 正确施加 `poison`
 
 ## 下一步建议
 

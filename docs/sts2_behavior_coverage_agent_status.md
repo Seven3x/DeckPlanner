@@ -93,15 +93,99 @@
     - `Acrobatics` 不会误触发 `Parry`
     - `Brand` / `Breakthrough` 已作为 executable 卡进入运行时
 
+### 第 4 轮
+
+- executable / passive_modeled / unimplemented：`134 / 5 / 438`
+- 新增支持：
+  - `Gain Block. Discard 1 card.`
+  - `Gain Block. Next turn, gain Energy.`
+  - `Lose Strength. Enemy loses Strength.`
+- 典型覆盖卡牌：
+  - `Survivor`
+  - `Delay`
+  - `SharedFate`
+- 规则变更：
+  - importer 兼容 `Next turn,` 后换行形成的轻微标点变体
+- 验证：
+  - importer / status report / loader smoke / planner legal actions smoke 通过
+  - 定向验证通过：
+    - `Survivor` 正确要求 discard 选择并弃掉指定手牌
+    - `Delay` 正确挂起 `next_turn_energy`
+    - `SharedFate` 正确同时降低玩家与敌方 `strength`
+
+### 第 5 轮
+
+- executable / passive_modeled / unimplemented：`144 / 5 / 428`
+- 新增支持：
+  - `Apply Weak. Gain Block.`
+  - `Gain Block. Apply Vulnerable.`
+  - `Deal damage to ALL enemies. Draw cards.`
+  - `Gain Block. Channel Frost/Dark/Glass.`
+  - `Deal damage. Apply Weak. Channel Dark.`
+  - `Deal damage to ALL enemies. Apply Weak and Vulnerable.`
+  - `Deal damage to ALL enemies. All enemies lose Strength this turn.`
+- 典型覆盖卡牌：
+  - `LegSweep`
+  - `Taunt`
+  - `SweepingBeam`
+  - `Glacier`
+  - `ShadowShield`
+  - `Glasswork`
+  - `Null`
+  - `MeteorShower`
+  - `CrushUnder`
+  - `DyingStar`
+- 验证：
+  - importer / status report / loader smoke / planner legal actions smoke 通过
+  - 定向验证通过：
+    - `LegSweep` 正确同时施加 `weak` 并获得格挡
+    - `SweepingBeam` 正确执行 `aoe_damage + draw`
+    - `Glacier` 正确执行 `gain_block + channel_frost`
+    - `DyingStar` 的敌方临时 `strength` 下降会在下回合恢复
+
+### 第 6 轮
+
+- executable / passive_modeled / unimplemented：`154 / 5 / 418`
+- 新增支持：
+  - `Apply Weak and Vulnerable to ALL enemies.`
+  - `Apply Poison to ALL enemies.`
+  - `Deal damage. Enemy loses Strength this turn.`
+  - `Deal damage. Gain Strength this turn.`
+  - `Deal damage twice. Gain Strength. The enemy gains Strength.`
+  - `Gain Strength. ALL enemies lose Strength.`
+  - `Gain Focus this turn.`
+  - `Deal damage. Gain Focus this turn.`
+  - `Deal damage. Channel Plasma.`
+  - `Deal damage to ALL enemies. Lose Focus.`
+- 典型覆盖卡牌：
+  - `Shockwave`
+  - `Haze`
+  - `Mangle`
+  - `SetupStrike`
+  - `FightMe`
+  - `Resonance`
+  - `Hotfix`
+  - `FocusedStrike`
+  - `MeteorStrike`
+  - `Hyperbeam`
+- 验证：
+  - importer / status report / loader smoke / planner legal actions smoke 通过
+  - 定向验证通过：
+    - `Shockwave` 正确同时施加 `weak` 与 `vulnerable`
+    - `Mangle` 的敌方临时 `strength` 下降会在下回合恢复
+    - `MeteorStrike` 正确执行 `deal_damage + channel_plasma`
+    - `Hotfix` / `FocusedStrike` 的临时 `focus` 会在下回合归零
+    - `Haze` 正确施加 `poison`
+
 ## 本阶段结果
 
-- 最终 executable coverage：`131 / 577`
+- 最终 executable coverage：`154 / 577`
 - 最终 passive-modeled coverage：`5 / 577`
-- 最终 unimplemented：`441 / 577`
+- 最终 unimplemented：`418 / 577`
 - 相比本阶段基线：
-  - executable `+16`
+  - executable `+39`
   - passive_modeled `+5`
-  - unimplemented `-21`
+  - unimplemented `-44`
 
 ## 本轮新增支持的主要模式
 
@@ -123,6 +207,26 @@
 - 额外低风险 Attack / Skill 组合：
   - `lose_hp + exhaust_from_hand + gain_strength`
   - `lose_hp + aoe_damage`
+  - `gain_block + discard_cards`
+  - `gain_block + next_turn_energy`
+  - `player_strength_loss + enemy_strength_loss`
+  - `apply_weak + gain_block`
+  - `gain_block + apply_vulnerable`
+  - `aoe_damage + draw`
+  - `gain_block + channel_orb`
+  - `deal_damage + apply_weak + channel_dark`
+  - `aoe_damage + weak + vulnerable`
+  - `aoe_damage + enemy_strength_loss_this_turn`
+  - `apply_weak + vulnerable`
+  - `apply_poison`
+  - `deal_damage + enemy_strength_loss_this_turn`
+  - `deal_damage + temp_strength`
+  - `deal_damage_twice + player_strength + enemy_strength`
+  - `player_strength_gain + enemy_strength_loss`
+  - `temp_focus`
+  - `deal_damage + temp_focus`
+  - `deal_damage + channel_plasma`
+  - `aoe_damage + focus_loss`
 - 单一卡牌 ID 精确过滤 trigger：
   - `Whenever you play Sovereign Blade, gain Block.`
 - 不可执行但已建模的手牌被动 HP loss：
